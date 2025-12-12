@@ -1,0 +1,203 @@
+# 生成日: 2025-12-10
+
+layout:
+  type: sidebar-main
+  description: サイドバー付きの管理画面レイアウト（ホテル施設管理システム）
+
+sidebar:
+  class: sidebar
+  logo:
+    text: PMS Admin
+    class: logo
+
+  navigation:
+    - section: null
+      items:
+        - id: dashboard
+          label: ダッシュボード
+          href: dashboard.html
+          icon: home
+          visible: true
+
+    - section: 施設管理
+      items:
+        - id: facility-list
+          label: 施設検索
+          href: facility_list.html
+          icon: building
+          visible: true
+        - id: room-type-list
+          label: 部屋タイプ管理
+          href: room_type_list.html
+          icon: layers
+          visible: true
+        - id: room-list
+          label: 部屋管理
+          href: room_list.html
+          icon: door-open
+          visible: true
+
+    - section: スタッフ管理
+      items:
+        - id: staff-list
+          label: スタッフ一覧
+          href: staff_list.html
+          icon: users
+          visible: true
+        - id: permission-list
+          label: 権限管理
+          href: permission_list.html
+          icon: shield
+          visible: true
+
+    - section: 料金管理
+      items:
+        - id: season-list
+          label: シーズン管理
+          href: season_list.html
+          icon: calendar
+          visible: true
+        - id: rate-plan-list
+          label: レートプラン管理
+          href: rate_plan_list.html
+          icon: tag
+          visible: true
+        - id: sync-log
+          label: 同期ログ
+          href: sync_log.html
+          icon: refresh
+          visible: true
+
+    - section: 予約管理
+      items:
+        - id: reservation-dashboard
+          label: 予約ダッシュボード
+          href: reservation_dashboard.html
+          icon: clipboard
+          visible: true
+        - id: reservation-list
+          label: 予約一覧
+          href: reservation_list.html
+          icon: list
+          visible: true
+        - id: reservation-calendar
+          label: 予約カレンダー
+          href: reservation_calendar.html
+          icon: calendar-days
+          visible: true
+        - id: room-assign
+          label: 部屋アサイン
+          href: room_assign.html
+          icon: arrow-right-left
+          visible: true
+        - id: double-booking
+          label: ダブルブッキング対応
+          href: double_booking.html
+          icon: alert-triangle
+          visible: true
+
+    - section: 宿泊者管理
+      items:
+        - id: arrival-list
+          label: 到着予定一覧
+          href: arrival_list.html
+          icon: plane-landing
+          visible: true
+        - id: checkin
+          label: チェックイン処理
+          href: checkin.html
+          icon: log-in
+          visible: true
+        - id: checkout
+          label: チェックアウト処理
+          href: checkout.html
+          icon: log-out
+          visible: true
+        - id: guest-registry
+          label: 宿泊者名簿検索
+          href: guest_registry.html
+          icon: book-user
+          visible: true
+        - id: guide-mail
+          label: 案内メール送信
+          href: guide_mail.html
+          icon: mail
+          visible: true
+
+    - section: 清掃管理
+      items:
+        - id: housekeeping-dashboard
+          label: 清掃ダッシュボード
+          href: housekeeping_dashboard.html
+          icon: sparkles
+          visible: true
+        - id: cleaning-list
+          label: 清掃対象一覧
+          href: cleaning_list.html
+          icon: brush
+          visible: true
+        - id: room-status
+          label: 部屋状況一覧
+          href: room_status.html
+          icon: layout-grid
+          visible: true
+
+    - section: 売上分析
+      items:
+        - id: sales-dashboard
+          label: 売上ダッシュボード
+          href: sales_dashboard.html
+          icon: chart-bar
+          visible: true
+        - id: sales-report
+          label: 売上集計
+          href: sales_report.html
+          icon: file-text
+          visible: true
+        - id: kpi-analysis
+          label: 分析指標（KPI）
+          href: kpi_analysis.html
+          icon: trending-up
+          visible: true
+        - id: ota-analysis
+          label: OTA別分析
+          href: ota_analysis.html
+          icon: share-2
+          visible: true
+        - id: guest-analysis
+          label: 宿泊者属性分析
+          href: guest_analysis.html
+          icon: pie-chart
+          visible: true
+
+header:
+  class: header
+  components:
+    - id: breadcrumb
+      class: breadcrumb
+      description: パンくずリスト
+
+    - id: header-actions
+      class: header-actions
+      components:
+        - id: notification-badge
+          class: notification-badge
+          icon: bell
+          visible: true
+        - id: user-menu
+          class: user-menu
+          components:
+            - id: user-avatar
+              class: user-avatar
+            - id: user-name
+
+auth_pages:
+  layout:
+    type: centered-card
+    pages:
+      - id: login
+        href: login.html
+        label: ログイン
+      - id: password-reset
+        href: password_reset.html
+        label: パスワードリセット

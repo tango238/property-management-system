@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宿泊者管理 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+        .actor-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .actor-staff {
+            background: #28a745;
+            color: white;
+        }
+        .actor-guest {
+            background: #17a2b8;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>宿泊者管理 - モック画面一覧</h1>
+        <p class="subtitle">チェックイン前日の案内メール送信から、宿泊者名簿の記入、チェックイン・チェックアウト処理までの一連のゲスト対応フローを提供します。</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>
+                <strong>フロントスタッフ:</strong> 案内メール送信 → 到着予定一覧 → チェックイン処理 → チェックアウト処理<br>
+                <strong>ゲスト:</strong> 案内メール受信 → 宿泊者名簿入力 → 入力確認 → 完了
+            </p>
+        </div>
+
+        <div class="category">
+            <h2>チェックイン案内メール管理 <span class="actor-badge actor-staff">フロントスタッフ</span></h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="mail_send.html">
+                        <div class="title">案内メール送信画面</div>
+                        <div class="description">チェックイン前日の予約に対して案内メールを一括送信する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="mail_error_list.html">
+                        <div class="title">送信エラー一覧画面</div>
+                        <div class="description">メール送信失敗の詳細を確認し、対応方法を検討する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>宿泊者名簿管理 <span class="actor-badge actor-staff">フロントスタッフ</span></h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="arrival_list.html">
+                        <div class="title">到着予定一覧画面</div>
+                        <div class="description">本日チェックイン予定のゲストと宿泊者名簿記入状況を一覧で確認する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="registry_search.html">
+                        <div class="title">宿泊者名簿検索画面</div>
+                        <div class="description">過去の宿泊者名簿を検索し、詳細を確認する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="registry_detail.html">
+                        <div class="title">宿泊者名簿詳細画面</div>
+                        <div class="description">宿泊者名簿の詳細情報を確認する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="registry_archive.html">
+                        <div class="title">名簿保管管理画面</div>
+                        <div class="description">宿泊者名簿の保管状況を管理し、法定保管期間を遵守する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>チェックイン処理 <span class="actor-badge actor-staff">フロントスタッフ</span></h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="checkin.html">
+                        <div class="title">チェックイン処理画面</div>
+                        <div class="description">ゲストのチェックイン処理を行い、部屋をアサインする</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="front_registry_form.html">
+                        <div class="title">フロント宿泊者名簿入力画面</div>
+                        <div class="description">未記入ゲストの宿泊者名簿をフロントで入力する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>チェックアウト処理 <span class="actor-badge actor-staff">フロントスタッフ</span></h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="checkout.html">
+                        <div class="title">チェックアウト処理画面</div>
+                        <div class="description">ゲストのチェックアウト処理と精算を行う</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>ゲスト向け画面 <span class="actor-badge actor-guest">ゲスト</span></h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="guest_registry_form.html">
+                        <div class="title">宿泊者名簿入力画面</div>
+                        <div class="description">トークン認証後に宿泊者名簿を事前に記入する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="guest_registry_confirm.html">
+                        <div class="title">宿泊者名簿入力確認画面</div>
+                        <div class="description">入力内容を確認してから送信する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="guest_registry_complete.html">
+                        <div class="title">宿泊者名簿入力完了画面</div>
+                        <div class="description">宿泊者名簿の記入完了を通知する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="token_expired.html">
+                        <div class="title">トークン期限切れ画面</div>
+                        <div class="description">トークン期限切れを通知し、フロントでの対応を案内する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

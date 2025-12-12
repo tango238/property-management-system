@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スタッフ一覧画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #666; }
+        .filter-group input, .filter-group select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; }
+        .actions { margin-bottom: 20px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        tr:hover { background: #f5f5f5; }
+        .status-active { color: #28a745; }
+        .status-inactive { color: #dc3545; }
+        .action-buttons { display: flex; gap: 5px; }
+        .action-buttons .btn { padding: 5px 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">モック一覧</a> &gt; スタッフ一覧画面
+        </div>
+        <h1>スタッフ一覧画面</h1>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>名前</label>
+                <input type="text" placeholder="名前で検索">
+            </div>
+            <div class="filter-group">
+                <label>メールアドレス</label>
+                <input type="text" placeholder="メールで検索">
+            </div>
+            <div class="filter-group">
+                <label>権限ロール</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="admin">Admin</option>
+                    <option value="reservation">Reservation Manager</option>
+                    <option value="frontdesk">Front Desk</option>
+                    <option value="housekeeping">Housekeeping</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="owner">Owner View Only</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ステータス</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="active">有効</option>
+                    <option value="inactive">無効</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary">検索</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="location.href='staff_register.html'">新規登録</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>スタッフID</th>
+                    <th>名前</th>
+                    <th>メールアドレス</th>
+                    <th>電話番号</th>
+                    <th>権限ロール</th>
+                    <th>ステータス</th>
+                    <th>登録日</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>STF-001</td>
+                    <td>山田 太郎</td>
+                    <td>yamada@example.com</td>
+                    <td>090-1234-5678</td>
+                    <td>Admin</td>
+                    <td class="status-active">有効</td>
+                    <td>2024-01-15</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-secondary" onclick="location.href='staff_update.html'">編集</button>
+                        <button class="btn btn-danger" onclick="location.href='staff_delete.html'">削除</button>
+                        <button class="btn btn-warning" onclick="location.href='password_reset.html'">PW</button>
+                        <button class="btn btn-secondary" onclick="location.href='role_change.html'">権限</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-002</td>
+                    <td>佐藤 花子</td>
+                    <td>sato@example.com</td>
+                    <td>080-9876-5432</td>
+                    <td>Front Desk</td>
+                    <td class="status-active">有効</td>
+                    <td>2024-02-20</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-secondary" onclick="location.href='staff_update.html'">編集</button>
+                        <button class="btn btn-danger" onclick="location.href='staff_delete.html'">削除</button>
+                        <button class="btn btn-warning" onclick="location.href='password_reset.html'">PW</button>
+                        <button class="btn btn-secondary" onclick="location.href='role_change.html'">権限</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-003</td>
+                    <td>鈴木 一郎</td>
+                    <td>suzuki@example.com</td>
+                    <td>070-1111-2222</td>
+                    <td>Housekeeping</td>
+                    <td class="status-inactive">無効</td>
+                    <td>2023-11-10</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-secondary" onclick="location.href='staff_update.html'">編集</button>
+                        <button class="btn btn-danger" onclick="location.href='staff_delete.html'">削除</button>
+                        <button class="btn btn-warning" onclick="location.href='password_reset.html'">PW</button>
+                        <button class="btn btn-secondary" onclick="location.href='role_change.html'">権限</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

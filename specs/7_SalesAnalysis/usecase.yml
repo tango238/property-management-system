@@ -1,0 +1,491 @@
+usecases:
+  # 売上レポートの作成・出力
+  - usecase:
+    name: 月次売上レポートの作成と出力
+    stories:
+      - 経理担当者として、経営判断の基礎データを提供するために、集計期間を指定して売上金額を集計しレポート形式で出力したい
+      - 経理担当者として、正確な純売上を把握するために、OTA手数料を自動計算して売上から控除したい
+      - 経理担当者として、経営会議に必要な資料を準備するために、月次売上レポートをPDF/Excel形式で出力したい
+    trackings:
+      - "story.yml:5 - 集計期間を指定して売上金額を集計しレポート形式で出力"
+      - "story.yml:9 - OTA手数料を自動計算して売上から控除"
+      - "story.yml:13 - 月次売上レポートをPDF/Excel形式で出力"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 予約データが確定済みで、経理担当者がログイン済み
+    after: 売上レポートが出力され、経営会議資料として利用可能になる
+    boundary:
+      name: "売上集計画面"
+      as: SalesAggregationUI
+    control:
+      name: "売上集計\nコントローラ"
+      as: SalesAggregationCtrl
+    entity:
+      name: "売上レポート"
+      as: SalesReport
+    steps:
+      - step: Accountant --> SalesAggregationUI
+        label: 1.集計期間を設定
+        note: 月初〜月末を指定
+      - step: SalesAggregationUI --> SalesAggregationCtrl
+        label: 2.集計処理を実行
+      - step: SalesAggregationCtrl --> SalesReport
+        label: 3.予約データから売上を集計
+      - step: SalesAggregationCtrl --> SalesReport
+        label: 4.OTA手数料を自動計算
+        note: OTA種別に応じた手数料率を適用
+      - step: SalesAggregationCtrl --> SalesReport
+        label: 5.純売上を算出
+      - step: SalesReport --> SalesAggregationUI
+        label: 6.集計結果を表示
+      - step: Accountant --> SalesAggregationUI
+        label: 7.出力形式を選択
+        note: PDF/Excel形式
+      - step: SalesAggregationUI --> SalesReport
+        label: 8.レポートを出力
+
+  - usecase:
+    name: 監査対応用売上データの抽出
+    stories:
+      - 経理担当者として、監査対応をスムーズに行うために、過去7年以内の売上データを検索・エクスポートしたい
+      - 経理担当者として、法令遵守を確保するために、売上データを7年間保存したい
+    trackings:
+      - "story.yml:17 - 過去7年以内の売上データを検索・エクスポート"
+      - "story.yml:21 - 売上データを7年間保存"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 監査担当者から売上データの提出依頼がある
+    after: 監査対応用の売上データが抽出・提出される
+    boundary:
+      name: "売上データ検索画面"
+      as: SalesSearchUI
+    control:
+      name: "売上データ検索\nコントローラ"
+      as: SalesSearchCtrl
+    entity:
+      name: "売上レポート\n(アーカイブ)"
+      as: SalesArchive
+    steps:
+      - step: Accountant --> SalesSearchUI
+        label: 1.検索期間を指定
+        note: 過去7年以内
+      - step: SalesSearchUI --> SalesSearchCtrl
+        label: 2.検索を実行
+      - step: SalesSearchCtrl --> SalesArchive
+        label: 3.該当期間のデータを取得
+      - step: SalesArchive --> SalesSearchUI
+        label: 4.レポート一覧を表示
+      - step: Accountant --> SalesSearchUI
+        label: 5.必要なレポートを選択
+      - step: SalesSearchUI --> SalesArchive
+        label: 6.データをエクスポート
+
+  # 分析指標（ADR・OCC・RevPAR）の算出・表示
+  - usecase:
+    name: 分析指標（ADR・OCC・RevPAR）の算出と表示
+    stories:
+      - 経理担当者として、経営判断の基礎データを得るために、ADR・OCC・RevPARを自動計算して確認したい
+      - 経理担当者として、最新の指標を常に確認できるように、売上集計時に分析指標を自動更新したい
+    trackings:
+      - "story.yml:27 - ADR・OCC・RevPARを自動計算して確認"
+      - "story.yml:39 - 売上集計時に分析指標を自動更新"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 売上データが集計済み
+    after: ADR・OCC・RevPARが算出され、最新の指標が表示される
+    boundary:
+      name: "分析指標画面"
+      as: KPIIndicatorUI
+    control:
+      name: "分析指標算出\nコントローラ"
+      as: KPICalculatorCtrl
+    entity:
+      name: "分析指標"
+      as: KPIData
+    steps:
+      - step: Accountant --> KPIIndicatorUI
+        label: 1.分析指標画面を開く
+      - step: KPIIndicatorUI --> KPICalculatorCtrl
+        label: 2.指標算出を要求
+      - step: KPICalculatorCtrl --> KPIData
+        label: 3.ADRを算出
+        note: 総売上÷販売客室数
+      - step: KPICalculatorCtrl --> KPIData
+        label: 4.OCCを算出
+        note: 販売客室数÷総客室数
+      - step: KPICalculatorCtrl --> KPIData
+        label: 5.RevPARを算出
+        note: 総売上÷総客室数
+      - step: KPIData --> KPIIndicatorUI
+        label: 6.指標を表示
+
+  - usecase:
+    name: 日次稼働率の確認
+    stories:
+      - 経理担当者として、日々の稼働状況を把握するために、当日の稼働率（OCC）をダッシュボードで確認したい
+    trackings:
+      - "story.yml:31 - 当日の稼働率（OCC）をダッシュボードで確認"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 当日の予約・チェックインデータが登録済み
+    after: 当日の稼働状況が把握できる
+    boundary:
+      name: "ダッシュボード画面"
+      as: DashboardUI
+    control:
+      name: "日次稼働率\nコントローラ"
+      as: DailyOCCCtrl
+    entity:
+      name: "稼働率データ"
+      as: OCCData
+    steps:
+      - step: Accountant --> DashboardUI
+        label: 1.ダッシュボードを開く
+      - step: DashboardUI --> DailyOCCCtrl
+        label: 2.本日の稼働率を取得
+      - step: DailyOCCCtrl --> OCCData
+        label: 3.OCCを算出
+      - step: OCCData --> DashboardUI
+        label: 4.稼働率を表示
+      - step: DashboardUI --> DailyOCCCtrl
+        label: 5.過去7日間の推移を取得
+      - step: OCCData --> DashboardUI
+        label: 6.推移グラフを表示
+
+  - usecase:
+    name: 月次KPI分析と比較
+    stories:
+      - 経理担当者として、月次の業績評価を行うために、ADR・OCC・RevPARを前月・前年同月と比較したい
+    trackings:
+      - "story.yml:35 - ADR・OCC・RevPARを前月・前年同月と比較"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 月次売上データが集計済み
+    after: 月次KPIの分析が完了し、改善ポイントが特定される
+    boundary:
+      name: "月次KPI分析画面"
+      as: MonthlyKPIUI
+    control:
+      name: "KPI比較\nコントローラ"
+      as: KPICompareCtrl
+    entity:
+      name: "KPI履歴データ"
+      as: KPIHistory
+    steps:
+      - step: Accountant --> MonthlyKPIUI
+        label: 1.対象月を選択
+      - step: MonthlyKPIUI --> KPICompareCtrl
+        label: 2.KPI値を取得
+      - step: KPICompareCtrl --> KPIHistory
+        label: 3.当月のADR・OCC・RevPARを取得
+      - step: KPICompareCtrl --> KPIHistory
+        label: 4.前月・前年同月のデータを取得
+      - step: KPIHistory --> MonthlyKPIUI
+        label: 5.比較表を表示
+      - step: Accountant --> MonthlyKPIUI
+        label: 6.目標達成率を確認
+
+  # 売上推移の前年同月比較
+  - usecase:
+    name: 年間売上トレンド分析
+    stories:
+      - 経理担当者として、売上推移の傾向を把握するために、過去の同時期と売上を比較したい
+      - 経理担当者として、来年度の売上予測を立てるために、年間の売上トレンドと季節変動パターンを分析したい
+      - 経理担当者として、売上集計と同時に比較データを得るために、前年同月比を自動算出したい
+    trackings:
+      - "story.yml:45 - 過去の同時期と売上を比較"
+      - "story.yml:49 - 年間の売上トレンドと季節変動パターンを分析"
+      - "story.yml:57 - 前年同月比を自動算出"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 過去2年以上の売上データが蓄積されている
+    after: 年間の売上トレンドが把握でき、来年度計画の基礎データとなる
+    boundary:
+      name: "売上推移分析画面"
+      as: SalesTrendUI
+    control:
+      name: "売上推移分析\nコントローラ"
+      as: SalesTrendCtrl
+    entity:
+      name: "売上履歴データ"
+      as: SalesHistory
+    steps:
+      - step: Accountant --> SalesTrendUI
+        label: 1.比較対象期間を設定
+        note: 過去24ヶ月など
+      - step: SalesTrendUI --> SalesTrendCtrl
+        label: 2.売上推移を取得
+      - step: SalesTrendCtrl --> SalesHistory
+        label: 3.月別売上データを取得
+      - step: SalesTrendCtrl --> SalesHistory
+        label: 4.前年同月比を自動算出
+      - step: SalesHistory --> SalesTrendUI
+        label: 5.推移グラフを表示
+      - step: SalesTrendUI --> SalesTrendUI
+        label: 6.季節変動パターンを分析
+        note: 繁忙期・閑散期を特定
+
+  - usecase:
+    name: 売上減少要因の分析
+    stories:
+      - 経理担当者として、売上改善施策を立案するために、売上減少月の要因を分析したい
+    trackings:
+      - "story.yml:53 - 売上減少月の要因を分析"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 前年同月比で売上が減少している月がある
+    after: 売上減少の要因が特定され、改善施策が立案される
+    boundary:
+      name: "売上減少分析画面"
+      as: SalesDeclineUI
+    control:
+      name: "要因分析\nコントローラ"
+      as: DeclineAnalysisCtrl
+    entity:
+      name: "売上詳細データ"
+      as: SalesDetail
+    steps:
+      - step: Accountant --> SalesDeclineUI
+        label: 1.売上減少月を特定
+      - step: SalesDeclineUI --> DeclineAnalysisCtrl
+        label: 2.詳細比較を要求
+      - step: DeclineAnalysisCtrl --> SalesDetail
+        label: 3.前年同月との詳細比較
+      - step: DeclineAnalysisCtrl --> SalesDetail
+        label: 4.稼働率変動を分析
+      - step: DeclineAnalysisCtrl --> SalesDetail
+        label: 5.平均単価変動を分析
+      - step: SalesDetail --> SalesDeclineUI
+        label: 6.分析結果を表示
+      - step: Accountant --> SalesDeclineUI
+        label: 7.改善施策を立案
+
+  # OTA別売上分析
+  - usecase:
+    name: OTA別売上・収益性分析
+    stories:
+      - 経理担当者として、販売チャネル戦略を最適化するために、OTA別に売上・手数料・純利益を分析したい
+      - 経理担当者として、収益性の高いOTAを把握するために、OTA別の手数料額と純利益を比較したい
+      - 経理担当者として、売上集計と同時にチャネル別データを得るために、OTA別集計を自動実行したい
+    trackings:
+      - "story.yml:63 - OTA別に売上・手数料・純利益を分析"
+      - "story.yml:67 - OTA別の手数料額と純利益を比較"
+      - "story.yml:75 - OTA別集計を自動実行"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 月次売上データが集計済み、OTA手数料率が設定済み
+    after: OTA別の収益性が把握でき、チャネル戦略の見直し材料が得られる
+    boundary:
+      name: "OTA別売上分析画面"
+      as: OTASalesUI
+    control:
+      name: "OTA別分析\nコントローラ"
+      as: OTAAnalysisCtrl
+    entity:
+      name: "OTA別売上データ"
+      as: OTASalesData
+    steps:
+      - step: Accountant --> OTASalesUI
+        label: 1.対象期間を設定
+      - step: OTASalesUI --> OTAAnalysisCtrl
+        label: 2.OTA別集計を実行
+      - step: OTAAnalysisCtrl --> OTASalesData
+        label: 3.OTA別売上を自動集計
+      - step: OTAAnalysisCtrl --> OTASalesData
+        label: 4.手数料額を算出
+      - step: OTAAnalysisCtrl --> OTASalesData
+        label: 5.純利益を算出
+      - step: OTASalesData --> OTASalesUI
+        label: 6.OTA別一覧を表示
+      - step: Accountant --> OTASalesUI
+        label: 7.収益性を比較
+
+  - usecase:
+    name: 直接予約比率向上施策の検討
+    stories:
+      - 経理担当者として、手数料負担を削減するために、直接予約比率向上施策を検討したい
+    trackings:
+      - "story.yml:71 - 直接予約比率向上施策を検討"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: OTA経由の予約比率が高く、手数料負担が大きい
+    after: 直接予約比率向上のための施策が立案される
+    boundary:
+      name: "直接予約分析画面"
+      as: DirectBookingUI
+    control:
+      name: "直接予約分析\nコントローラ"
+      as: DirectBookingCtrl
+    entity:
+      name: "予約チャネルデータ"
+      as: ChannelData
+    steps:
+      - step: Accountant --> DirectBookingUI
+        label: 1.OTA別構成比を確認
+      - step: DirectBookingUI --> DirectBookingCtrl
+        label: 2.直接予約比率を取得
+      - step: DirectBookingCtrl --> ChannelData
+        label: 3.比率と推移を分析
+      - step: DirectBookingCtrl --> ChannelData
+        label: 4.手数料負担額を算出
+      - step: ChannelData --> DirectBookingUI
+        label: 5.分析結果を表示
+      - step: Accountant --> DirectBookingUI
+        label: 6.施策を検討
+        note: 会員特典、公式サイト割引など
+
+  # 宿泊者属性別売上分析
+  - usecase:
+    name: 宿泊者属性別売上分析
+    stories:
+      - 経理担当者として、ターゲット顧客層を特定するために、宿泊者の属性別に売上を分析したい
+      - 経理担当者として、売上集計と同時に顧客分析データを得るために、属性別集計を自動実行したい
+    trackings:
+      - "story.yml:81 - 宿泊者の属性別に売上を分析"
+      - "story.yml:93 - 属性別集計を自動実行"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 予約データに宿泊者属性情報が含まれている
+    after: ターゲット顧客層が特定され、マーケティング施策に活用できる
+    boundary:
+      name: "宿泊者属性分析画面"
+      as: GuestAttributeUI
+    control:
+      name: "属性別分析\nコントローラ"
+      as: AttributeAnalysisCtrl
+    entity:
+      name: "属性別売上データ"
+      as: AttributeSalesData
+    steps:
+      - step: Accountant --> GuestAttributeUI
+        label: 1.分析画面を開く
+      - step: GuestAttributeUI --> AttributeAnalysisCtrl
+        label: 2.属性別集計を実行
+      - step: AttributeAnalysisCtrl --> AttributeSalesData
+        label: 3.属性別売上を自動集計
+      - step: AttributeAnalysisCtrl --> AttributeSalesData
+        label: 4.平均単価を算出
+      - step: AttributeSalesData --> GuestAttributeUI
+        label: 5.属性別一覧を表示
+
+  - usecase:
+    name: インバウンド売上分析
+    stories:
+      - 経理担当者として、インバウンド戦略を立案するために、国籍別の売上・平均単価を分析したい
+    trackings:
+      - "story.yml:85 - 国籍別の売上・平均単価を分析"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 国籍情報を含む予約データが蓄積されている
+    after: インバウンド売上の構造が把握でき、ターゲット国が特定される
+    boundary:
+      name: "インバウンド分析画面"
+      as: InboundUI
+    control:
+      name: "国籍別分析\nコントローラ"
+      as: NationalityCtrl
+    entity:
+      name: "国籍別売上データ"
+      as: NationalitySales
+    steps:
+      - step: Accountant --> InboundUI
+        label: 1.インバウンド分析画面を開く
+      - step: InboundUI --> NationalityCtrl
+        label: 2.国籍別集計を実行
+      - step: NationalityCtrl --> NationalitySales
+        label: 3.国籍別売上を集計
+      - step: NationalityCtrl --> NationalitySales
+        label: 4.インバウンド比率を算出
+      - step: NationalitySales --> InboundUI
+        label: 5.国別構成比を表示
+      - step: Accountant --> InboundUI
+        label: 6.平均単価・滞在日数を比較
+      - step: Accountant --> InboundUI
+        label: 7.ターゲット国を選定
+
+  - usecase:
+    name: 利用目的別単価分析
+    stories:
+      - 経理担当者として、高収益プランを開発するために、利用目的別の平均単価を分析して高単価セグメントを特定したい
+    trackings:
+      - "story.yml:89 - 利用目的別の平均単価を分析して高単価セグメントを特定"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 利用目的（ビジネス、観光、帰省など）が予約データに含まれている
+    after: 利用目的別の収益性が把握でき、高単価セグメント向け施策が立案される
+    boundary:
+      name: "利用目的分析画面"
+      as: PurposeAnalysisUI
+    control:
+      name: "利用目的分析\nコントローラ"
+      as: PurposeAnalysisCtrl
+    entity:
+      name: "利用目的別データ"
+      as: PurposeData
+    steps:
+      - step: Accountant --> PurposeAnalysisUI
+        label: 1.利用目的別集計を実行
+      - step: PurposeAnalysisUI --> PurposeAnalysisCtrl
+        label: 2.目的別売上を取得
+      - step: PurposeAnalysisCtrl --> PurposeData
+        label: 3.目的別平均単価を算出
+      - step: PurposeData --> PurposeAnalysisUI
+        label: 4.目的別一覧を表示
+      - step: Accountant --> PurposeAnalysisUI
+        label: 5.高単価セグメントを特定
+        note: 記念日利用、長期滞在など
+      - step: Accountant --> PurposeAnalysisUI
+        label: 6.プラン開発を検討
+
+  # 横断的ユースケース
+  - usecase:
+    name: 総合経営分析レポートの作成
+    stories:
+      - 経理担当者として、総合的な経営分析を行うために、売上集計からKPI算出・OTA分析・属性分析まで一連のレポートを作成したい
+    trackings:
+      - "story.yml:99 - 売上集計からKPI算出・OTA分析・属性分析まで一連のレポートを作成"
+    actor:
+      name: "経理担当者"
+      as: Accountant
+    before: 予約データが確定済み、各種マスタが設定済み
+    after: 総合的な経営分析レポートが作成され、経営会議で利用可能になる
+    boundary:
+      name: "総合分析画面"
+      as: ComprehensiveUI
+    control:
+      name: "総合分析\nコントローラ"
+      as: ComprehensiveCtrl
+    entity:
+      name: "総合レポート"
+      as: ComprehensiveReport
+    steps:
+      - step: Accountant --> ComprehensiveUI
+        label: 1.集計期間を設定
+      - step: ComprehensiveUI --> ComprehensiveCtrl
+        label: 2.売上集計を実行
+      - step: ComprehensiveCtrl --> ComprehensiveReport
+        label: 3.売上データを集計
+      - step: ComprehensiveCtrl --> ComprehensiveReport
+        label: 4.KPI（ADR・OCC・RevPAR）を算出
+      - step: ComprehensiveCtrl --> ComprehensiveReport
+        label: 5.OTA別分析を実行
+      - step: ComprehensiveCtrl --> ComprehensiveReport
+        label: 6.宿泊者属性別分析を実行
+      - step: ComprehensiveCtrl --> ComprehensiveReport
+        label: 7.前年同月比較を実行
+      - step: ComprehensiveReport --> ComprehensiveUI
+        label: 8.総合レポートを表示
+      - step: Accountant --> ComprehensiveUI
+        label: 9.レポートを出力

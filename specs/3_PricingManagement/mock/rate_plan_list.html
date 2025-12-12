@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レートプラン検索画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+    .search-panel { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .search-panel h2 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #374151; }
+    .search-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 12px; font-weight: 500; color: #6b7280; }
+    .form-group input, .form-group select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .search-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-success { background: #059669; color: #fff; }
+    .btn-success:hover { background: #047857; }
+    .btn-warning { background: #d97706; color: #fff; }
+    .btn-warning:hover { background: #b45309; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .results-panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
+    .results-header { padding: 16px 20px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+    .results-header h2 { font-size: 14px; font-weight: 600; color: #374151; }
+    .results-count { font-size: 13px; color: #6b7280; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f9fafb; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; white-space: nowrap; }
+    td { font-size: 14px; }
+    tr:hover { background: #f9fafb; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-ota-rakuten { background: #fee2e2; color: #991b1b; }
+    .badge-ota-jalan { background: #fef3c7; color: #92400e; }
+    .badge-ota-booking { background: #dbeafe; color: #1e40af; }
+    .badge-ota-airbnb { background: #fce7f3; color: #9d174d; }
+    .badge-ota-direct { background: #d1fae5; color: #065f46; }
+    .badge-sync-success { background: #d1fae5; color: #065f46; }
+    .badge-sync-pending { background: #fef3c7; color: #92400e; }
+    .badge-sync-error { background: #fee2e2; color: #991b1b; }
+    .actions-cell { display: flex; gap: 8px; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+    .nav-link { color: #2563eb; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; レートプラン管理</div>
+        <h1>レートプラン検索画面</h1>
+      </div>
+      <a href="index.html" class="nav-link" style="color: #fff;">モック一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="search-panel">
+      <h2>検索条件</h2>
+      <div class="search-form">
+        <div class="form-group">
+          <label>OTA種別</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="rakuten">楽天トラベル</option>
+            <option value="jalan">じゃらん</option>
+            <option value="booking">Booking.com</option>
+            <option value="airbnb">Airbnb</option>
+            <option value="direct">直接予約</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>部屋タイプ</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="single">シングル</option>
+            <option value="double">ダブル</option>
+            <option value="twin">ツイン</option>
+            <option value="suite">スイート</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>シーズン</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="normal">通常期</option>
+            <option value="peak">繁忙期</option>
+            <option value="off">閑散期</option>
+            <option value="special">特別期間</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>販売期間（開始）</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>販売期間（終了）</label>
+          <input type="date">
+        </div>
+      </div>
+      <div class="search-actions">
+        <button class="btn btn-primary">検索</button>
+        <button class="btn btn-secondary">クリア</button>
+        <a href="rate_plan_form.html" class="btn btn-success">新規登録</a>
+        <a href="rate_plan_bulk_update.html" class="btn btn-warning">一括更新</a>
+        <button class="btn btn-secondary">エクスポート</button>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="results-header">
+        <h2>検索結果</h2>
+        <span class="results-count">8件</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>レートプラン名</th>
+            <th>OTA種別</th>
+            <th>部屋タイプ</th>
+            <th>シーズン</th>
+            <th>料金</th>
+            <th>販売期間</th>
+            <th>同期ステータス</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>楽天トラベル_シングル_通常期</td>
+            <td><span class="badge badge-ota-rakuten">楽天トラベル</span></td>
+            <td>シングル</td>
+            <td>通常期</td>
+            <td>¥8,000</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>楽天トラベル_シングル_繁忙期</td>
+            <td><span class="badge badge-ota-rakuten">楽天トラベル</span></td>
+            <td>シングル</td>
+            <td>繁忙期</td>
+            <td>¥12,000</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>じゃらん_シングル_通常期</td>
+            <td><span class="badge badge-ota-jalan">じゃらん</span></td>
+            <td>シングル</td>
+            <td>通常期</td>
+            <td>¥7,500</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-pending">同期中</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>じゃらん_シングル_繁忙期</td>
+            <td><span class="badge badge-ota-jalan">じゃらん</span></td>
+            <td>シングル</td>
+            <td>繁忙期</td>
+            <td>¥11,000</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-error">同期エラー</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Booking.com_ダブル_通常期</td>
+            <td><span class="badge badge-ota-booking">Booking.com</span></td>
+            <td>ダブル</td>
+            <td>通常期</td>
+            <td>¥15,000</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Airbnb_ツイン_繁忙期</td>
+            <td><span class="badge badge-ota-airbnb">Airbnb</span></td>
+            <td>ツイン</td>
+            <td>繁忙期</td>
+            <td>¥22,000</td>
+            <td>2025/01/01 〜 2025/12/31</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>直接予約_スイート_特別期間</td>
+            <td><span class="badge badge-ota-direct">直接予約</span></td>
+            <td>スイート</td>
+            <td>特別期間</td>
+            <td>¥50,000</td>
+            <td>2025/12/28 〜 2026/01/03</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>楽天トラベル_ダブル_閑散期</td>
+            <td><span class="badge badge-ota-rakuten">楽天トラベル</span></td>
+            <td>ダブル</td>
+            <td>閑散期</td>
+            <td>¥10,000</td>
+            <td>2025/01/07 〜 2025/03/19</td>
+            <td><span class="badge badge-sync-success">同期済</span></td>
+            <td class="actions-cell">
+              <a href="rate_plan_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="rate_plan_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

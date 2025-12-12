@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設検索画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .filters { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 14px; font-weight: bold; }
+        .filter-group input, .filter-group select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 200px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        .actions { margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        tr:hover { background: #f8f9fa; }
+        .action-buttons { display: flex; gap: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; 施設検索
+        </div>
+        <h1>施設検索画面</h1>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>施設名</label>
+                <input type="text" placeholder="施設名を入力">
+            </div>
+            <div class="filter-group">
+                <label>地域</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="tokyo">東京</option>
+                    <option value="osaka">大阪</option>
+                    <option value="kyoto">京都</option>
+                </select>
+            </div>
+            <button class="btn btn-primary">検索</button>
+            <button class="btn btn-secondary">クリア</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-success" onclick="location.href='facility_form.html'">新規登録</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>施設名</th>
+                    <th>住所</th>
+                    <th>電話番号</th>
+                    <th>部屋数</th>
+                    <th>登録日時</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>グランドホテル東京</td>
+                    <td>東京都千代田区丸の内1-1-1</td>
+                    <td>03-1234-5678</td>
+                    <td>120</td>
+                    <td>2024-01-15 10:30</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary btn-sm" onclick="location.href='facility_detail.html'">詳細</button>
+                        <button class="btn btn-secondary btn-sm" onclick="location.href='facility_edit.html'">編集</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirm('この施設を削除しますか？')">削除</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>シティホテル大阪</td>
+                    <td>大阪府大阪市北区梅田2-2-2</td>
+                    <td>06-2345-6789</td>
+                    <td>85</td>
+                    <td>2024-02-20 14:15</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary btn-sm" onclick="location.href='facility_detail.html'">詳細</button>
+                        <button class="btn btn-secondary btn-sm" onclick="location.href='facility_edit.html'">編集</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirm('この施設を削除しますか？')">削除</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>京都旅館 雅</td>
+                    <td>京都府京都市東山区祇園町3-3-3</td>
+                    <td>075-3456-7890</td>
+                    <td>25</td>
+                    <td>2024-03-10 09:00</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary btn-sm" onclick="location.href='facility_detail.html'">詳細</button>
+                        <button class="btn btn-secondary btn-sm" onclick="location.href='facility_edit.html'">編集</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirm('この施設を削除しますか？')">削除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

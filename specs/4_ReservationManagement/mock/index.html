@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約管理 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>予約管理 - モック画面一覧</h1>
+        <p class="subtitle">サイトコントローラーからのOTA予約取り込み、ダブルブッキングの検出・調整、予約の確認・更新、部屋のアサイン、キャンセル処理を提供</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>
+                予約管理ダッシュボード → 予約取り込み画面 → 予約一覧画面 → 予約詳細画面 / 部屋アサイン画面 / 予約キャンセル画面<br>
+                ダブルブッキング検出時: ダブルブッキング一覧画面 → 再割り当て画面<br>
+                予約検索: 予約検索画面 → 予約詳細画面
+            </p>
+        </div>
+
+        <div class="category">
+            <h2>ダッシュボード</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="dashboard.html">
+                        <div class="title">予約管理ダッシュボード</div>
+                        <div class="description">予約管理の全体状況を一覧で確認し、各種操作への導線を提供</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>予約取り込み</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="import.html">
+                        <div class="title">予約取り込み画面</div>
+                        <div class="description">サイトコントローラーからOTA予約を取り込み、取り込み状況を確認</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="import_error_list.html">
+                        <div class="title">取り込みエラー一覧画面</div>
+                        <div class="description">予約取り込み時に発生したエラーを確認し、対応</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>ダブルブッキング管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="double_booking_list.html">
+                        <div class="title">ダブルブッキング一覧画面</div>
+                        <div class="description">ダブルブッキングの状況を確認し、部屋の再割り当てを行う</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="double_booking_reassign.html">
+                        <div class="title">ダブルブッキング再割り当て画面</div>
+                        <div class="description">ダブルブッキング発生時に別の部屋を選択して再割り当て</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>予約一覧・カレンダー・検索</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="reservation_list.html">
+                        <div class="title">予約一覧画面</div>
+                        <div class="description">予約情報をリスト形式で確認し、各種操作を行う</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="reservation_calendar.html">
+                        <div class="title">予約カレンダー画面</div>
+                        <div class="description">予約状況をカレンダー形式で視覚的に確認</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="reservation_search.html">
+                        <div class="title">予約検索画面</div>
+                        <div class="description">条件を指定して予約を検索</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>予約詳細・更新</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="reservation_detail.html">
+                        <div class="title">予約詳細画面</div>
+                        <div class="description">予約の詳細情報を確認し、変更やゲスト要望の記録を行う</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>部屋アサイン</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="room_assign.html">
+                        <div class="title">部屋アサイン画面</div>
+                        <div class="description">予約に対して具体的な部屋番号を割り当てる</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>予約キャンセル</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="reservation_cancel.html">
+                        <div class="title">予約キャンセル画面</div>
+                        <div class="description">予約をキャンセルし、キャンセル料を判定</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

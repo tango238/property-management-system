@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宿泊者名簿詳細画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .detail-section { margin-bottom: 30px; }
+        .detail-section h2 { font-size: 18px; color: #007bff; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #ddd; }
+        .detail-row { display: flex; margin-bottom: 12px; }
+        .detail-label { width: 180px; font-weight: bold; color: #666; }
+        .detail-value { flex: 1; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .companion-card { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
+        .meta-info { background: #e7f3ff; padding: 10px 15px; border-radius: 4px; font-size: 13px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="registry_search.html">← 検索結果に戻る</a> |
+            <a href="index.html">画面一覧</a>
+        </div>
+        <h1>宿泊者名簿詳細画面</h1>
+
+        <div class="meta-info">
+            <strong>予約番号:</strong> RSV-2024-0156 &nbsp;|&nbsp;
+            <strong>記入日時:</strong> 2024/12/09 18:45 &nbsp;|&nbsp;
+            <strong>記入方法:</strong> オンライン
+        </div>
+
+        <div class="detail-section" style="margin-top: 20px;">
+            <h2>基本情報</h2>
+            <div class="detail-row">
+                <div class="detail-label">氏名（漢字）</div>
+                <div class="detail-value">山田 太郎</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">氏名（フリガナ）</div>
+                <div class="detail-value">ヤマダ タロウ</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">住所</div>
+                <div class="detail-value">〒100-0001 東京都千代田区千代田1-1-1</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">電話番号</div>
+                <div class="detail-value">090-1234-5678</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">メールアドレス</div>
+                <div class="detail-value">yamada@example.com</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">国籍</div>
+                <div class="detail-value">日本</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">職業</div>
+                <div class="detail-value">会社員</div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>宿泊情報</h2>
+            <div class="detail-row">
+                <div class="detail-label">宿泊日</div>
+                <div class="detail-value">2024/12/10 〜 2024/12/12（2泊）</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">部屋番号</div>
+                <div class="detail-value">301号室</div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>同伴者情報</h2>
+            <div class="companion-card">
+                <div class="detail-row">
+                    <div class="detail-label">同伴者氏名</div>
+                    <div class="detail-value">山田 花子</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">同伴者住所</div>
+                    <div class="detail-value">代表者と同じ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="location.href='registry_search.html'">戻る</button>
+            <button class="btn btn-primary">印刷</button>
+            <button class="btn btn-warning">編集</button>
+        </div>
+    </div>
+</body>
+</html>

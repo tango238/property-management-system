@@ -1,0 +1,542 @@
+view:
+  # ========================================
+  # 施設管理者向け画面
+  # ========================================
+
+  # シーズン管理
+  - name: "シーズン検索画面"
+    actor: "施設管理者"
+    purpose: "登録済みシーズンを検索・一覧表示する"
+    filters:
+      - "期間（開始日〜終了日）"
+      - "シーズン区分"
+    display_fields:
+      - "シーズン名"
+      - "期間（開始日〜終了日）"
+      - "シーズン区分"
+      - "料金倍率"
+      - "登録日時"
+    actions:
+      - "検索"
+      - "クリア"
+      - "新規登録"
+      - "編集"
+      - "削除"
+    related_models:
+      - "シーズン"
+    related_usecases:
+      - "シーズン情報の検索・参照（施設管理者）"
+
+  - name: "シーズン登録画面"
+    actor: "施設管理者"
+    purpose: "新規シーズンを登録する"
+    input_fields:
+      - field_name: "シーズン名"
+        type: "text"
+        required: true
+        description: "シーズンの名称"
+        validation: "50文字以内"
+        placeholder: "例：2025年GW繁忙期"
+      - field_name: "開始日"
+        type: "date_picker"
+        required: true
+        description: "シーズン適用開始日"
+      - field_name: "終了日"
+        type: "date_picker"
+        required: true
+        description: "シーズン適用終了日"
+      - field_name: "シーズン区分"
+        type: "select"
+        required: true
+        options:
+          - "通常期"
+          - "繁忙期"
+          - "閑散期"
+          - "特別期間"
+        description: "料金変動の基準となる区分"
+      - field_name: "料金倍率"
+        type: "number"
+        required: true
+        description: "標準料金に対する倍率"
+        validation: "0.1〜10.0の範囲"
+        placeholder: "例：1.5"
+        unit: "倍"
+        default: "1.0"
+      - field_name: "備考"
+        type: "textarea"
+        required: false
+        description: "シーズンに関する備考"
+        validation: "200文字以内"
+    actions:
+      - "登録"
+      - "キャンセル"
+    validations:
+      - "開始日は終了日より前である必要があります"
+      - "同一期間に重複するシーズンは登録できません"
+    related_models:
+      - "シーズン"
+    related_usecases:
+      - "シーズンの新規登録"
+
+  - name: "シーズン更新画面"
+    actor: "施設管理者"
+    purpose: "既存シーズンの情報を更新する"
+    display_fields:
+      - "シーズンID"
+      - "登録日時"
+      - "最終更新日時"
+    input_fields:
+      - field_name: "シーズン名"
+        type: "text"
+        required: true
+        description: "シーズンの名称"
+        validation: "50文字以内"
+      - field_name: "開始日"
+        type: "date_picker"
+        required: true
+        description: "シーズン適用開始日"
+      - field_name: "終了日"
+        type: "date_picker"
+        required: true
+        description: "シーズン適用終了日"
+      - field_name: "シーズン区分"
+        type: "select"
+        required: true
+        options:
+          - "通常期"
+          - "繁忙期"
+          - "閑散期"
+          - "特別期間"
+        description: "料金変動の基準となる区分"
+      - field_name: "料金倍率"
+        type: "number"
+        required: true
+        description: "標準料金に対する倍率"
+        validation: "0.1〜10.0の範囲"
+        unit: "倍"
+      - field_name: "備考"
+        type: "textarea"
+        required: false
+        description: "シーズンに関する備考"
+        validation: "200文字以内"
+    actions:
+      - "更新"
+      - "キャンセル"
+    validations:
+      - "開始日は終了日より前である必要があります"
+      - "更新時はレートプランの料金が再計算されます"
+    related_models:
+      - "シーズン"
+    related_usecases:
+      - "シーズンの期間・料金倍率更新"
+
+  - name: "シーズン削除確認画面"
+    actor: "施設管理者"
+    purpose: "シーズン削除時の影響を確認し削除を実行する"
+    display_fields:
+      - "シーズン名"
+      - "期間"
+      - "シーズン区分"
+      - "料金倍率"
+      - "紐づくレートプラン数"
+    actions:
+      - "削除実行"
+      - "キャンセル"
+    validations:
+      - "紐づくレートプランがある場合は警告を表示"
+    related_models:
+      - "シーズン"
+      - "レートプラン"
+    related_usecases:
+      - "シーズンの削除"
+
+  # レートプラン管理
+  - name: "レートプラン検索画面"
+    actor: "施設管理者"
+    purpose: "レートプランを検索・一覧表示する"
+    filters:
+      - "OTA種別"
+      - "部屋タイプ"
+      - "シーズン"
+      - "販売期間"
+    display_fields:
+      - "レートプラン名"
+      - "OTA種別"
+      - "部屋タイプ"
+      - "シーズン"
+      - "料金"
+      - "販売期間"
+      - "同期ステータス"
+    actions:
+      - "検索"
+      - "クリア"
+      - "新規登録"
+      - "編集"
+      - "削除"
+      - "一括更新"
+      - "エクスポート"
+    related_models:
+      - "レートプラン"
+      - "OTA"
+      - "部屋タイプ"
+    related_usecases:
+      - "全OTAレートプランの一斉料金改定"
+
+  - name: "レートプラン登録画面"
+    actor: "施設管理者"
+    purpose: "新規レートプランを登録する"
+    input_fields:
+      - field_name: "レートプラン名"
+        type: "text"
+        required: true
+        description: "レートプランの名称"
+        validation: "100文字以内"
+        placeholder: "例：楽天トラベル_シングル_通常期"
+      - field_name: "OTA種別"
+        type: "select"
+        required: true
+        options:
+          - "楽天トラベル"
+          - "じゃらん"
+          - "Booking.com"
+          - "Airbnb"
+          - "直接予約"
+        description: "販売先OTA"
+      - field_name: "部屋タイプ"
+        type: "select"
+        required: true
+        description: "対象の部屋タイプ"
+      - field_name: "シーズン別料金"
+        type: "repeater"
+        required: true
+        description: "各シーズンごとの料金設定"
+        fields:
+          - field_name: "シーズン"
+            type: "select"
+            required: true
+          - field_name: "料金"
+            type: "number"
+            required: true
+            unit: "円"
+      - field_name: "販売開始日"
+        type: "date_picker"
+        required: true
+        description: "販売期間の開始日"
+      - field_name: "販売終了日"
+        type: "date_picker"
+        required: true
+        description: "販売期間の終了日"
+      - field_name: "OTA手数料率"
+        type: "number"
+        required: false
+        description: "参考用のOTA手数料率"
+        unit: "%"
+        placeholder: "例：10"
+    actions:
+      - "登録"
+      - "キャンセル"
+    validations:
+      - "販売開始日は販売終了日より前である必要があります"
+      - "同一OTA・部屋タイプ・シーズンの重複は不可"
+    integration:
+      - "サイトコントローラー（自動同期）"
+    related_models:
+      - "レートプラン"
+      - "OTA"
+      - "部屋タイプ"
+      - "シーズン"
+    related_usecases:
+      - "レートプランの新規登録"
+
+  - name: "レートプラン更新画面"
+    actor: "施設管理者"
+    purpose: "既存レートプランの料金を更新する"
+    display_fields:
+      - "レートプランID"
+      - "OTA種別"
+      - "部屋タイプ"
+      - "登録日時"
+      - "最終更新日時"
+      - "同期ステータス"
+    input_fields:
+      - field_name: "レートプラン名"
+        type: "text"
+        required: true
+        description: "レートプランの名称"
+        validation: "100文字以内"
+      - field_name: "シーズン別料金"
+        type: "repeater"
+        required: true
+        description: "各シーズンごとの料金設定"
+        fields:
+          - field_name: "シーズン"
+            type: "select"
+            required: true
+          - field_name: "料金"
+            type: "number"
+            required: true
+            unit: "円"
+      - field_name: "販売開始日"
+        type: "date_picker"
+        required: true
+        description: "販売期間の開始日"
+      - field_name: "販売終了日"
+        type: "date_picker"
+        required: true
+        description: "販売期間の終了日"
+    actions:
+      - "更新"
+      - "キャンセル"
+    integration:
+      - "サイトコントローラー（自動同期）"
+    related_models:
+      - "レートプラン"
+    related_usecases:
+      - "全OTAレートプランの一斉料金改定"
+
+  - name: "レートプラン削除確認画面"
+    actor: "施設管理者"
+    purpose: "レートプラン削除を確認し実行する"
+    display_fields:
+      - "レートプラン名"
+      - "OTA種別"
+      - "部屋タイプ"
+      - "現在の料金"
+      - "販売期間"
+    actions:
+      - "削除実行"
+      - "キャンセル"
+    integration:
+      - "サイトコントローラー（販売停止同期）"
+    related_models:
+      - "レートプラン"
+    related_usecases:
+      - "レートプランの削除"
+
+  - name: "レートプラン一括更新画面"
+    actor: "施設管理者"
+    purpose: "複数のレートプランを一括で料金改定する"
+    filters:
+      - "OTA種別"
+      - "部屋タイプ"
+    display_fields:
+      - "レートプラン名"
+      - "OTA種別"
+      - "部屋タイプ"
+      - "現在の料金"
+    input_fields:
+      - field_name: "改定率"
+        type: "number"
+        required: false
+        description: "一括改定の倍率（例：1.1で10%アップ）"
+        unit: "倍"
+        placeholder: "例：1.1"
+      - field_name: "改定額"
+        type: "number"
+        required: false
+        description: "一括改定の加算額"
+        unit: "円"
+        placeholder: "例：1000"
+    actions:
+      - "プレビュー"
+      - "一括更新"
+      - "キャンセル"
+      - "エクスポート"
+    validations:
+      - "改定率と改定額は同時に指定できません"
+    integration:
+      - "サイトコントローラー（一括同期）"
+    related_models:
+      - "レートプラン"
+    related_usecases:
+      - "全OTAレートプランの一斉料金改定"
+
+  # 同期管理
+  - name: "同期ログ画面"
+    actor: "施設管理者"
+    purpose: "サイトコントローラーとの同期結果を確認する"
+    filters:
+      - "同期日時（範囲）"
+      - "OTA種別"
+      - "同期ステータス"
+    display_fields:
+      - "同期日時"
+      - "OTA種別"
+      - "レートプラン"
+      - "同期ステータス"
+      - "エラー内容"
+      - "リトライ回数"
+    actions:
+      - "検索"
+      - "クリア"
+      - "詳細表示"
+      - "手動再同期"
+    related_models:
+      - "レートプラン"
+      - "同期ログ"
+    related_usecases:
+      - "レートプランのサイトコントローラー自動同期"
+
+  - name: "同期エラー詳細画面"
+    actor: "施設管理者"
+    purpose: "同期エラーの詳細を確認し手動再同期を実行する"
+    display_fields:
+      - "同期日時"
+      - "OTA種別"
+      - "レートプラン名"
+      - "エラーコード"
+      - "エラー内容"
+      - "リトライ履歴"
+      - "最終リトライ日時"
+    actions:
+      - "手動再同期"
+      - "スキップ"
+      - "戻る"
+    integration:
+      - "サイトコントローラー（再同期）"
+    related_models:
+      - "レートプラン"
+      - "同期ログ"
+    related_usecases:
+      - "同期エラー発生時の対応と手動再同期"
+
+  # ========================================
+  # 予約管理担当者向け画面
+  # ========================================
+
+  - name: "シーズン料金確認画面"
+    actor: "予約管理担当者"
+    purpose: "顧客問い合わせ対応のためシーズン料金を確認する"
+    input_fields:
+      - field_name: "確認日程（開始日）"
+        type: "date_picker"
+        required: true
+        description: "料金を確認したい開始日"
+      - field_name: "確認日程（終了日）"
+        type: "date_picker"
+        required: true
+        description: "料金を確認したい終了日"
+      - field_name: "部屋タイプ"
+        type: "select"
+        required: false
+        description: "概算料金計算用の部屋タイプ"
+    display_fields:
+      - "対象期間"
+      - "適用シーズン"
+      - "シーズン区分"
+      - "料金倍率"
+      - "標準料金"
+      - "概算料金（シーズン適用後）"
+    actions:
+      - "検索"
+      - "クリア"
+    related_models:
+      - "シーズン"
+      - "部屋タイプ"
+    related_usecases:
+      - "顧客問い合わせ対応でのシーズン料金確認"
+
+  - name: "予約料金計算画面"
+    actor: "予約管理担当者"
+    purpose: "予約作成時にシーズン料金を自動計算・確認する"
+    input_fields:
+      - field_name: "宿泊開始日"
+        type: "date_picker"
+        required: true
+        description: "チェックイン日"
+      - field_name: "宿泊終了日"
+        type: "date_picker"
+        required: true
+        description: "チェックアウト日"
+      - field_name: "部屋タイプ"
+        type: "select"
+        required: true
+        description: "予約する部屋タイプ"
+      - field_name: "人数"
+        type: "number"
+        required: true
+        description: "宿泊人数"
+        unit: "名"
+    display_fields:
+      - "宿泊日数"
+      - "日別料金内訳"
+      - "適用シーズン（日別）"
+      - "シーズン倍率（日別）"
+      - "合計料金"
+    actions:
+      - "料金計算"
+      - "予約確定へ"
+      - "クリア"
+    related_models:
+      - "シーズン"
+      - "部屋タイプ"
+      - "予約"
+    related_usecases:
+      - "予約時のシーズン料金自動適用"
+
+# ========================================
+# 共通コンポーネント
+# ========================================
+common_components:
+  - component_name: "シーズン選択ドロップダウン"
+    description: "登録済みシーズンをドロップダウンで選択するコンポーネント"
+    used_in:
+      - "レートプラン登録画面"
+      - "レートプラン更新画面"
+      - "レートプラン検索画面"
+
+  - component_name: "OTA種別選択ドロップダウン"
+    description: "対応OTAをドロップダウンで選択するコンポーネント"
+    used_in:
+      - "レートプラン登録画面"
+      - "レートプラン検索画面"
+      - "レートプラン一括更新画面"
+      - "同期ログ画面"
+
+  - component_name: "部屋タイプ選択ドロップダウン"
+    description: "部屋タイプをドロップダウンで選択するコンポーネント"
+    used_in:
+      - "レートプラン登録画面"
+      - "レートプラン検索画面"
+      - "レートプラン一括更新画面"
+      - "シーズン料金確認画面"
+      - "予約料金計算画面"
+
+  - component_name: "同期ステータスバッジ"
+    description: "同期状態を色分けして表示するバッジコンポーネント"
+    used_in:
+      - "レートプラン検索画面"
+      - "同期ログ画面"
+
+  - component_name: "シーズン区分バッジ"
+    description: "シーズン区分（通常期/繁忙期/閑散期/特別期間）を色分けして表示するバッジ"
+    used_in:
+      - "シーズン検索画面"
+      - "シーズン料金確認画面"
+      - "予約料金計算画面"
+
+  - component_name: "確認ダイアログ"
+    description: "削除・更新前の確認ダイアログ"
+    used_in:
+      - "シーズン削除確認画面"
+      - "レートプラン削除確認画面"
+      - "レートプラン一括更新画面"
+
+# ========================================
+# バリデーションルール
+# ========================================
+validations:
+  - field: "シーズン期間"
+    rule: "開始日は終了日より前である必要がある"
+  - field: "シーズン重複"
+    rule: "同一期間に重複するシーズンは登録できない"
+  - field: "料金倍率"
+    rule: "0.1〜10.0の範囲で設定する"
+  - field: "レートプラン重複"
+    rule: "同一OTA・部屋タイプ・シーズンの組み合わせは一意である必要がある"
+  - field: "販売期間"
+    rule: "販売開始日は販売終了日より前である必要がある"
+  - field: "シーズン削除"
+    rule: "紐づくレートプランがある場合は警告を表示する"
+  - field: "一括改定"
+    rule: "改定率と改定額は同時に指定できない"

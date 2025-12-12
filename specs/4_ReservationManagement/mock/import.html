@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約取り込み画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .status-card { background: #e7f3ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #007bff; }
+        .status-card .label { font-size: 14px; color: #666; }
+        .status-card .value { font-size: 18px; font-weight: bold; color: #333; }
+        .stats-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .stat-item { background: #f8f9fa; padding: 15px 20px; border-radius: 4px; min-width: 150px; }
+        .stat-item .label { font-size: 12px; color: #666; }
+        .stat-item .value { font-size: 24px; font-weight: bold; }
+        .stat-item.warning .value { color: #dc3545; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #666; }
+        .filter-group input, .filter-group select { padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; min-width: 150px; }
+        .actions { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .btn-outline { background: white; color: #007bff; border: 1px solid #007bff; }
+        .btn-outline:hover { background: #e7f3ff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-success { background: #d4edda; color: #155724; }
+        .status-warning { background: #fff3cd; color: #856404; }
+        .status-error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+        </div>
+
+        <h1>予約取り込み画面</h1>
+
+        <div class="status-card">
+            <div class="label">最終取り込み日時</div>
+            <div class="value">2025-12-10 13:45:30</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="label">取り込み済み件数</div>
+                <div class="value">156</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">新規予約件数</div>
+                <div class="value">8</div>
+            </div>
+            <div class="stat-item warning">
+                <div class="label">ダブルブッキング検出件数</div>
+                <div class="value">1</div>
+            </div>
+            <div class="stat-item warning">
+                <div class="label">エラー件数</div>
+                <div class="value">2</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>取り込み日</label>
+                <input type="date" value="2025-12-10">
+            </div>
+            <div class="filter-group">
+                <label>OTA種別</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>楽天トラベル</option>
+                    <option>じゃらん</option>
+                    <option>Booking.com</option>
+                    <option>Airbnb</option>
+                    <option>直接予約</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ステータス</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>成功</option>
+                    <option>警告</option>
+                    <option>エラー</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="alert('取り込み処理を開始します')">今すぐ取り込み実行</button>
+            <button class="btn btn-secondary">自動取り込み設定</button>
+            <button class="btn btn-outline">取り込み履歴表示</button>
+            <a href="import_error_list.html" class="btn btn-outline">エラー一覧へ</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>取り込み日時</th>
+                    <th>OTA種別</th>
+                    <th>取り込み件数</th>
+                    <th>ステータス</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2025-12-10 13:45:30</td>
+                    <td>楽天トラベル</td>
+                    <td>3件</td>
+                    <td><span class="status-badge status-success">成功</span></td>
+                    <td><button class="btn btn-outline">詳細</button></td>
+                </tr>
+                <tr>
+                    <td>2025-12-10 13:45:28</td>
+                    <td>じゃらん</td>
+                    <td>2件</td>
+                    <td><span class="status-badge status-warning">ダブルブッキング検出</span></td>
+                    <td>
+                        <button class="btn btn-outline">詳細</button>
+                        <a href="double_booking_list.html" class="btn btn-outline">対応</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2025-12-10 13:45:25</td>
+                    <td>Booking.com</td>
+                    <td>0件</td>
+                    <td><span class="status-badge status-error">エラー</span></td>
+                    <td>
+                        <button class="btn btn-outline">詳細</button>
+                        <a href="import_error_list.html" class="btn btn-outline">対応</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2025-12-10 13:45:20</td>
+                    <td>Airbnb</td>
+                    <td>3件</td>
+                    <td><span class="status-badge status-success">成功</span></td>
+                    <td><button class="btn btn-outline">詳細</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シーズン検索画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .search-panel { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .search-panel h2 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #374151; }
+    .search-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 12px; font-weight: 500; color: #6b7280; }
+    .form-group input, .form-group select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .search-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-success { background: #059669; color: #fff; }
+    .btn-success:hover { background: #047857; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .results-panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .results-header { padding: 16px 20px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+    .results-header h2 { font-size: 14px; font-weight: 600; color: #374151; }
+    .results-count { font-size: 13px; color: #6b7280; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f9fafb; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; }
+    td { font-size: 14px; }
+    tr:hover { background: #f9fafb; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-normal { background: #e5e7eb; color: #374151; }
+    .badge-peak { background: #fef3c7; color: #92400e; }
+    .badge-off { background: #dbeafe; color: #1e40af; }
+    .badge-special { background: #fce7f3; color: #9d174d; }
+    .actions-cell { display: flex; gap: 8px; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+    .nav-link { color: #2563eb; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; シーズン管理</div>
+        <h1>シーズン検索画面</h1>
+      </div>
+      <a href="index.html" class="nav-link" style="color: #fff;">モック一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="search-panel">
+      <h2>検索条件</h2>
+      <div class="search-form">
+        <div class="form-group">
+          <label>期間（開始日）</label>
+          <input type="date" value="2025-01-01">
+        </div>
+        <div class="form-group">
+          <label>期間（終了日）</label>
+          <input type="date" value="2025-12-31">
+        </div>
+        <div class="form-group">
+          <label>シーズン区分</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="normal">通常期</option>
+            <option value="peak">繁忙期</option>
+            <option value="off">閑散期</option>
+            <option value="special">特別期間</option>
+          </select>
+        </div>
+      </div>
+      <div class="search-actions">
+        <button class="btn btn-primary">検索</button>
+        <button class="btn btn-secondary">クリア</button>
+        <a href="season_form.html" class="btn btn-success">新規登録</a>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="results-header">
+        <h2>検索結果</h2>
+        <span class="results-count">5件</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>シーズン名</th>
+            <th>期間</th>
+            <th>シーズン区分</th>
+            <th>料金倍率</th>
+            <th>登録日時</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025年GW繁忙期</td>
+            <td>2025/04/26 〜 2025/05/06</td>
+            <td><span class="badge badge-peak">繁忙期</span></td>
+            <td>1.5倍</td>
+            <td>2025/01/15 10:30</td>
+            <td class="actions-cell">
+              <a href="season_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="season_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025年夏季繁忙期</td>
+            <td>2025/07/20 〜 2025/08/31</td>
+            <td><span class="badge badge-peak">繁忙期</span></td>
+            <td>1.8倍</td>
+            <td>2025/01/15 10:35</td>
+            <td class="actions-cell">
+              <a href="season_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="season_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025年年末年始</td>
+            <td>2025/12/28 〜 2026/01/03</td>
+            <td><span class="badge badge-special">特別期間</span></td>
+            <td>2.0倍</td>
+            <td>2025/01/15 10:40</td>
+            <td class="actions-cell">
+              <a href="season_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="season_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025年閑散期（1-3月）</td>
+            <td>2025/01/07 〜 2025/03/19</td>
+            <td><span class="badge badge-off">閑散期</span></td>
+            <td>0.8倍</td>
+            <td>2025/01/15 10:45</td>
+            <td class="actions-cell">
+              <a href="season_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="season_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025年通常期</td>
+            <td>2025/03/20 〜 2025/04/25</td>
+            <td><span class="badge badge-normal">通常期</span></td>
+            <td>1.0倍</td>
+            <td>2025/01/15 10:50</td>
+            <td class="actions-cell">
+              <a href="season_edit.html" class="btn btn-secondary btn-sm">編集</a>
+              <a href="season_delete.html" class="btn btn-danger btn-sm">削除</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

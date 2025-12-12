@@ -1,0 +1,53 @@
+{
+    "feature_name": "3_PricingManagement",
+    "created_at": "2025-12-10T04:40:31Z",
+    "updated_at": "2025-12-10T04:49:43Z",
+    "language": "Japanese",
+    "last_execution": "generate-mock",
+    "readme": {
+        "checksum": "2c05d0b21374d22b54014d587e13aeda",
+        "last_modified": "2025-11-20T16:52:29"
+    },
+    "steps": [
+        {
+            "feature": {
+                "version": 1,
+                "checksum": "4ceece01a538e7621468ba2c4336cd0e",
+                "last_modified": "2025-12-10T13:40:23"
+            }
+        },
+        {
+            "story": {
+                "version": 1,
+                "checksum": "69b624f9318d508c452fa7d42a162159",
+                "last_modified": "2025-12-10T04:43:11Z"
+            }
+        },
+        {
+            "usecase": {
+                "version": 1,
+                "checksum": "2f75cb3d53ed838362218fa21f018a88",
+                "last_modified": "2025-12-10T04:45:52Z"
+            }
+        },
+        {
+            "ui": {
+                "version": 1,
+                "checksum": "13086328ff75996cd536a011e0aabf4a",
+                "last_modified": "2025-12-10T04:48:02Z"
+            }
+        },
+        {
+            "screenflow": {
+                "version": 1,
+                "checksum": "2e14e1fb275f23819d66b18fb37837ee",
+                "last_modified": "2025-12-10T04:49:43Z"
+            }
+        }
+    ],
+    "mock": {
+        "version": 1,
+        "checksum": "785b5ed672476b16ec791a089ea0b2fd",
+        "last_modified": "2025-12-10T05:00:00Z"
+    }
+}

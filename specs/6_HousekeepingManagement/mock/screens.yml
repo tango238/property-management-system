@@ -1,0 +1,14 @@
+screens:
+  # ダッシュボード
+  - [x] dashboard
+
+  # 清掃スタッフ向け画面
+  - [x] cleaning_list
+  - [x] cleaning_record
+  - [x] supply_shortage
+  - [x] supply_request
+  - [x] notification_list_staff
+
+  # フロントスタッフ向け画面
+  - [x] room_status_list
+  - [x] cleaning_complete_notification

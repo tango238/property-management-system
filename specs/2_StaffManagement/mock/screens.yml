@@ -1,0 +1,12 @@
+screens:
+  # スタッフ管理
+  - [x] staff_list
+  - [x] staff_register
+  - [x] staff_update
+  - [x] staff_delete
+  # パスワード管理
+  - [x] password_reset
+  # 権限管理
+  - [x] role_assign
+  - [x] role_change
+  - [x] role_search

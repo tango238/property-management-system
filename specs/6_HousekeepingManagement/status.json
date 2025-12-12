@@ -1,0 +1,52 @@
+{
+    "feature_name": "6_HousekeepingManagement",
+    "created_at": "2025-12-10T05:10:18Z",
+    "updated_at": "2025-12-10T05:20:12Z",
+    "language": "Japanese",
+    "last_execution": "generate-mock",
+    "readme": {
+        "checksum": "be002d45347410aabe745bb46b973bb5",
+        "last_modified": "2025-11-20T16:52:29"
+    },
+    "steps": [
+        {
+            "feature": {
+                "version": 1,
+                "checksum": "a80fb865d1fb281451e329c450bb46d3",
+                "last_modified": "2025-12-10T14:10:11"
+            }
+        },
+        {
+            "story": {
+                "version": 1,
+                "checksum": "11ada4749a814d532cfb8a2fd7f6488b",
+                "last_modified": "2025-12-10T05:12:36Z"
+            }
+        },
+        {
+            "usecase": {
+                "version": 1,
+                "checksum": "b8036659be8599aa70f9cdfe26112549",
+                "last_modified": "2025-12-10T05:14:15Z"
+            }
+        },
+        {
+            "ui": {
+                "version": 1,
+                "checksum": "10070b0979f3072c38746346b6e5cf2d",
+                "last_modified": "2025-12-10T05:15:32Z"
+            }
+        },
+        {
+            "screenflow": {
+                "version": 1,
+                "checksum": "c457b972afdabb72dc801fd7db78db48",
+                "last_modified": "2025-12-10T05:16:53Z"
+            }
+        }
+    ],
+    "mock": {
+        "version": 1,
+        "last_modified": "2025-12-10T05:20:12Z"
+    }
+}

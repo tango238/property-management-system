@@ -1,0 +1,47 @@
+screens:
+  # シーズン管理（施設管理者）
+  - id: season_list
+    name: シーズン検索画面
+    file: season_list.html
+  - id: season_form
+    name: シーズン登録画面
+    file: season_form.html
+  - id: season_edit
+    name: シーズン更新画面
+    file: season_edit.html
+  - id: season_delete
+    name: シーズン削除確認画面
+    file: season_delete.html
+
+  # レートプラン管理（施設管理者）
+  - id: rate_plan_list
+    name: レートプラン検索画面
+    file: rate_plan_list.html
+  - id: rate_plan_form
+    name: レートプラン登録画面
+    file: rate_plan_form.html
+  - id: rate_plan_edit
+    name: レートプラン更新画面
+    file: rate_plan_edit.html
+  - id: rate_plan_delete
+    name: レートプラン削除確認画面
+    file: rate_plan_delete.html
+  - id: rate_plan_bulk_update
+    name: レートプラン一括更新画面
+    file: rate_plan_bulk_update.html
+
+  # 同期管理（施設管理者）
+  - id: sync_log
+    name: 同期ログ画面
+    file: sync_log.html
+  - id: sync_error_detail
+    name: 同期エラー詳細画面
+    file: sync_error_detail.html
+
+  # 予約管理担当者向け
+  - id: season_rate_check
+    name: シーズン料金確認画面
+    file: season_rate_check.html
+  - id: reservation_pricing
+    name: 予約料金計算画面
+    file: reservation_pricing.html

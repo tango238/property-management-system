@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シーズン更新画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px; }
+    .form-panel { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .form-panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e5e7eb; color: #1f2937; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; padding: 16px; background: #f9fafb; border-radius: 6px; }
+    .info-item label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+    .info-item .value { font-size: 14px; font-weight: 500; color: #1f2937; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+    .form-group .required { color: #dc2626; margin-left: 4px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group .hint { font-size: 12px; color: #6b7280; margin-top: 4px; }
+    .form-group .unit { display: flex; align-items: center; gap: 8px; }
+    .form-group .unit input { flex: 1; }
+    .form-group .unit span { font-size: 14px; color: #6b7280; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .btn { padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .validation-note { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+    .validation-note h3 { font-size: 13px; font-weight: 600; color: #92400e; margin-bottom: 8px; }
+    .validation-note ul { font-size: 13px; color: #92400e; margin-left: 16px; }
+    .warning-note { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+    .warning-note p { font-size: 13px; color: #991b1b; }
+    .nav-link { color: #fff; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; <a href="season_list.html">シーズン管理</a> &gt; 更新</div>
+        <h1>シーズン更新画面</h1>
+      </div>
+      <a href="season_list.html" class="nav-link">一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="form-panel">
+      <h2>シーズン情報の更新</h2>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>シーズンID</label>
+          <div class="value">SEASON-2025-001</div>
+        </div>
+        <div class="info-item">
+          <label>登録日時</label>
+          <div class="value">2025/01/15 10:30</div>
+        </div>
+        <div class="info-item">
+          <label>最終更新日時</label>
+          <div class="value">2025/01/15 10:30</div>
+        </div>
+      </div>
+
+      <div class="warning-note">
+        <p>シーズン情報を更新すると、紐づくレートプランの料金が自動的に再計算されます。</p>
+      </div>
+
+      <div class="validation-note">
+        <h3>入力時の注意事項</h3>
+        <ul>
+          <li>開始日は終了日より前である必要があります</li>
+          <li>更新時はレートプランの料金が再計算されます</li>
+        </ul>
+      </div>
+
+      <form>
+        <div class="form-group">
+          <label>シーズン名<span class="required">*</span></label>
+          <input type="text" value="2025年GW繁忙期" maxlength="50">
+          <div class="hint">50文字以内で入力してください</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>開始日<span class="required">*</span></label>
+            <input type="date" value="2025-04-26">
+            <div class="hint">シーズン適用開始日</div>
+          </div>
+          <div class="form-group">
+            <label>終了日<span class="required">*</span></label>
+            <input type="date" value="2025-05-06">
+            <div class="hint">シーズン適用終了日</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>シーズン区分<span class="required">*</span></label>
+            <select>
+              <option value="normal">通常期</option>
+              <option value="peak" selected>繁忙期</option>
+              <option value="off">閑散期</option>
+              <option value="special">特別期間</option>
+            </select>
+            <div class="hint">料金変動の基準となる区分</div>
+          </div>
+          <div class="form-group">
+            <label>料金倍率<span class="required">*</span></label>
+            <div class="unit">
+              <input type="number" step="0.1" min="0.1" max="10.0" value="1.5">
+              <span>倍</span>
+            </div>
+            <div class="hint">0.1〜10.0の範囲で設定（標準料金に対する倍率）</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>備考</label>
+          <textarea maxlength="200">ゴールデンウィーク期間の繁忙期設定</textarea>
+          <div class="hint">200文字以内</div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">更新</button>
+          <a href="season_list.html" class="btn btn-secondary">キャンセル</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,496 @@
+view:
+  # 予約管理担当者向け画面
+  # 予約取り込み
+  - name: "予約取り込み画面"
+    actor: "予約管理担当者"
+    purpose: "サイトコントローラーからOTA予約を取り込み、取り込み状況を確認する"
+    display_fields:
+      - "最終取り込み日時"
+      - "取り込み済み件数"
+      - "新規予約件数"
+      - "ダブルブッキング検出件数"
+      - "エラー件数"
+    filters:
+      - "取り込み日"
+      - "OTA種別"
+      - "ステータス"
+    actions:
+      - "今すぐ取り込み実行"
+      - "自動取り込み設定"
+      - "取り込み履歴表示"
+      - "エラー一覧へ"
+    related_models:
+      - "予約"
+      - "サイトコントローラー"
+    integration:
+      - "サイトコントローラー (予約取り込み)"
+    related_usecases:
+      - "OTA予約の自動取り込みとダブルブッキング検出"
+
+  - name: "取り込みエラー一覧画面"
+    actor: "予約管理担当者"
+    purpose: "予約取り込み時に発生したエラーを確認し、対応する"
+    display_fields:
+      - "エラー発生日時"
+      - "予約番号"
+      - "OTA種別"
+      - "エラー種別"
+      - "エラー内容"
+      - "対応状況"
+    filters:
+      - "エラー発生日"
+      - "OTA種別"
+      - "エラー種別"
+      - "対応状況"
+    actions:
+      - "手動入力"
+      - "再取り込み"
+      - "エラー解消を記録"
+      - "詳細表示"
+    related_models:
+      - "取り込みエラーログ"
+    related_usecases:
+      - "予約取り込みエラーの確認と対応"
+
+  # ダブルブッキング管理
+  - name: "ダブルブッキング一覧画面"
+    actor: "予約管理担当者"
+    purpose: "ダブルブッキングの状況を確認し、部屋の再割り当てを行う"
+    display_fields:
+      - "検出日時"
+      - "部屋番号"
+      - "対象日程"
+      - "重複予約1（予約番号・ゲスト名）"
+      - "重複予約2（予約番号・ゲスト名）"
+      - "ステータス"
+    filters:
+      - "対象日"
+      - "部屋タイプ"
+      - "ステータス"
+    actions:
+      - "再割り当て"
+      - "予約詳細表示"
+      - "解消を記録"
+    related_models:
+      - "ダブルブッキング"
+      - "予約"
+      - "部屋"
+    related_usecases:
+      - "ダブルブッキングの検出と緊急通知受信"
+      - "ダブルブッキングの解消と部屋再割り当て"
+
+  - name: "ダブルブッキング再割り当て画面"
+    actor: "予約管理担当者"
+    purpose: "ダブルブッキング発生時に別の部屋を選択して再割り当てする"
+    display_fields:
+      - "対象予約情報"
+      - "現在の部屋"
+      - "対象日程"
+      - "ゲスト名"
+    input_fields:
+      - field_name: "再割り当て先部屋"
+        type: "select"
+        required: true
+        description: "空き状況を確認して選択"
+      - field_name: "調整メモ"
+        type: "textarea"
+        required: false
+        placeholder: "ゲストへの連絡内容など"
+    actions:
+      - "再割り当て実行"
+      - "キャンセル"
+    related_models:
+      - "ダブルブッキング"
+      - "部屋"
+    related_usecases:
+      - "ダブルブッキングの解消と部屋再割り当て"
+
+  # 予約一覧・カレンダー・検索
+  - name: "予約一覧画面"
+    actor: "予約管理担当者, フロントスタッフ"
+    purpose: "予約情報をリスト形式で確認し、各種操作を行う"
+    display_fields:
+      - "予約番号"
+      - "ゲスト名"
+      - "チェックイン日"
+      - "チェックアウト日"
+      - "部屋タイプ"
+      - "部屋番号"
+      - "OTA種別"
+      - "予約状態"
+      - "特記事項"
+    filters:
+      - "チェックイン日"
+      - "チェックアウト日"
+      - "部屋タイプ"
+      - "予約状態"
+      - "OTA種別"
+      - "施設"
+    actions:
+      - "新規予約作成"
+      - "予約詳細表示"
+      - "部屋アサイン"
+      - "キャンセル"
+      - "CSV出力"
+    related_models:
+      - "予約"
+      - "ゲスト"
+      - "部屋"
+    related_usecases:
+      - "当日チェックイン予約の確認と受け入れ準備"
+      - "予約取り込みから部屋アサインまでの一連フロー"
+
+  - name: "予約カレンダー画面"
+    actor: "予約管理担当者"
+    purpose: "予約状況をカレンダー形式で視覚的に確認する"
+    display_fields:
+      - "カレンダービュー（日/週/月）"
+      - "部屋別予約状況"
+      - "稼働率"
+      - "空室数"
+    input_fields:
+      - field_name: "表示期間"
+        type: "select"
+        options:
+          - "日"
+          - "週"
+          - "月"
+        required: true
+        default: "週"
+      - field_name: "対象施設"
+        type: "multi_select"
+        required: true
+        description: "複数施設を選択可能"
+    filters:
+      - "部屋タイプ"
+      - "予約状態"
+    actions:
+      - "予約詳細表示"
+      - "部屋アサイン"
+      - "日付移動"
+    related_models:
+      - "予約"
+      - "部屋"
+      - "施設"
+    related_usecases:
+      - "週間稼働状況のカレンダー確認"
+      - "複数施設の予約状況同時確認"
+
+  - name: "予約検索画面"
+    actor: "予約管理担当者, フロントスタッフ"
+    purpose: "条件を指定して予約を検索する"
+    input_fields:
+      - field_name: "予約番号"
+        type: "text"
+        required: false
+        placeholder: "予約番号を入力"
+      - field_name: "ゲスト名"
+        type: "text"
+        required: false
+        placeholder: "ゲスト名（部分一致）"
+      - field_name: "電話番号"
+        type: "text"
+        required: false
+      - field_name: "メールアドレス"
+        type: "text"
+        required: false
+      - field_name: "チェックイン日（From）"
+        type: "date_picker"
+        required: false
+      - field_name: "チェックイン日（To）"
+        type: "date_picker"
+        required: false
+      - field_name: "部屋タイプ"
+        type: "select"
+        required: false
+      - field_name: "OTA種別"
+        type: "select"
+        options:
+          - "楽天トラベル"
+          - "じゃらん"
+          - "Booking.com"
+          - "Airbnb"
+          - "直接予約"
+        required: false
+      - field_name: "予約状態"
+        type: "select"
+        options:
+          - "仮予約"
+          - "予約確定"
+          - "チェックイン済み"
+          - "チェックアウト済み"
+          - "キャンセル"
+        required: false
+    display_fields:
+      - "検索結果一覧"
+    actions:
+      - "検索"
+      - "クリア"
+      - "予約詳細表示"
+    related_models:
+      - "予約"
+      - "ゲスト"
+    related_usecases:
+      - "予約の検索"
+
+  # 予約詳細・更新
+  - name: "予約詳細画面"
+    actor: "予約管理担当者, フロントスタッフ"
+    purpose: "予約の詳細情報を確認し、変更やゲスト要望の記録を行う"
+    tabs:
+      - "基本情報"
+      - "ゲスト情報"
+      - "ゲスト要望"
+      - "料金情報"
+      - "変更履歴"
+    display_fields:
+      - "予約番号"
+      - "予約状態"
+      - "OTA種別"
+      - "チェックイン日時"
+      - "チェックアウト日時"
+      - "部屋タイプ"
+      - "部屋番号"
+      - "宿泊人数"
+      - "ゲスト名"
+      - "連絡先"
+      - "料金合計"
+      - "支払い状況"
+    input_fields:
+      - field_name: "チェックイン日"
+        type: "date_picker"
+        required: true
+      - field_name: "チェックアウト日"
+        type: "date_picker"
+        required: true
+      - field_name: "部屋タイプ"
+        type: "select"
+        required: true
+      - field_name: "宿泊人数"
+        type: "number"
+        required: true
+        validation: "1以上"
+      - field_name: "到着予定時刻"
+        type: "time_picker"
+        required: false
+      - field_name: "アレルギー情報"
+        type: "textarea"
+        required: false
+        placeholder: "食物アレルギー等"
+      - field_name: "部屋の希望"
+        type: "checkbox_group"
+        options:
+          - "高層階希望"
+          - "禁煙ルーム"
+          - "静かな部屋"
+          - "エレベーター近く"
+          - "バリアフリー"
+        required: false
+      - field_name: "特別リクエスト"
+        type: "textarea"
+        required: false
+        placeholder: "記念日、特別な目的など"
+      - field_name: "部門共有メモ"
+        type: "textarea"
+        required: false
+        placeholder: "清掃、レストラン等への共有事項"
+    actions:
+      - "保存"
+      - "部屋アサイン"
+      - "キャンセル処理"
+      - "変更履歴表示"
+    validations:
+      - "チェックアウト日はチェックイン日より後であること"
+      - "日程変更時は空室状況を自動チェック"
+    related_models:
+      - "予約"
+      - "ゲスト"
+      - "ゲスト要望"
+    integration:
+      - "サイトコントローラー (予約更新同期)"
+    related_usecases:
+      - "予約日程・部屋タイプの変更"
+      - "ゲスト特別リクエストの記録"
+
+  # 部屋アサイン
+  - name: "部屋アサイン画面"
+    actor: "予約管理担当者, フロントスタッフ"
+    purpose: "予約に対して具体的な部屋番号を割り当てる"
+    tabs:
+      - "未アサイン一覧"
+      - "アサイン済み一覧"
+    display_fields:
+      - "予約番号"
+      - "ゲスト名"
+      - "チェックイン日"
+      - "チェックアウト日"
+      - "部屋タイプ"
+      - "現在の部屋番号"
+      - "ゲスト要望"
+    input_fields:
+      - field_name: "対象日"
+        type: "date_picker"
+        required: true
+        default: "明日"
+      - field_name: "部屋番号"
+        type: "select"
+        required: true
+        description: "利用可能な部屋から選択"
+    filters:
+      - "対象日"
+      - "部屋タイプ"
+      - "アサイン状態"
+    actions:
+      - "アサイン実行"
+      - "アサイン変更"
+      - "一括アサイン"
+      - "清掃依頼送信"
+    validations:
+      - "未清掃の部屋をアサインする場合は警告を表示"
+      - "連泊予約は同じ部屋を継続アサイン"
+    related_models:
+      - "予約"
+      - "部屋"
+    related_usecases:
+      - "予約への部屋番号割り当て"
+      - "チェックイン前日の事前部屋アサイン"
+      - "当日の部屋アサイン変更"
+
+  # 予約キャンセル
+  - name: "予約キャンセル画面"
+    actor: "予約管理担当者, フロントスタッフ"
+    purpose: "予約をキャンセルし、キャンセル料を判定する"
+    display_fields:
+      - "予約番号"
+      - "ゲスト名"
+      - "チェックイン日"
+      - "チェックアウト日"
+      - "部屋タイプ"
+      - "料金合計"
+      - "キャンセルポリシー"
+      - "キャンセル料"
+    input_fields:
+      - field_name: "キャンセル理由"
+        type: "select"
+        options:
+          - "ゲスト都合"
+          - "ダブルブッキング調整"
+          - "予約変更に伴うキャンセル"
+          - "システムエラー"
+          - "その他"
+        required: true
+      - field_name: "キャンセル理由詳細"
+        type: "textarea"
+        required: false
+        placeholder: "詳細な理由を記入"
+      - field_name: "キャンセル料免除"
+        type: "radio_group"
+        options:
+          - "免除しない"
+          - "免除する"
+        required: true
+        default: "免除しない"
+      - field_name: "免除理由"
+        type: "textarea"
+        required: false
+        description: "キャンセル料免除の場合は必須"
+    actions:
+      - "キャンセル確定"
+      - "戻る"
+    validations:
+      - "チェックイン済みの予約はキャンセル不可"
+      - "キャンセル料免除の場合は理由必須"
+    related_models:
+      - "予約"
+    integration:
+      - "サイトコントローラー (キャンセル同期)"
+    related_usecases:
+      - "予約キャンセルとキャンセル料判定"
+      - "キャンセルによる在庫解放とOTA同期"
+
+  # ダッシュボード
+  - name: "予約管理ダッシュボード"
+    actor: "予約管理担当者"
+    purpose: "予約管理の全体状況を一覧で確認し、各種操作への導線を提供する"
+    display_fields:
+      - "本日のチェックイン予約数"
+      - "本日のチェックアウト予約数"
+      - "未アサイン予約数"
+      - "ダブルブッキング件数"
+      - "取り込みエラー件数"
+      - "週間稼働率"
+    actions:
+      - "予約取り込み"
+      - "予約一覧へ"
+      - "カレンダーへ"
+      - "ダブルブッキング対応へ"
+      - "エラー対応へ"
+    related_models:
+      - "予約"
+      - "ダブルブッキング"
+      - "取り込みエラーログ"
+    related_usecases:
+      - "予約取り込みから部屋アサインまでの一連フロー"
+
+common_components:
+  - component_name: "予約検索コンポーネント"
+    description: "予約番号またはゲスト名で予約を素早く検索するための共通検索ボックス"
+    used_in:
+      - "予約一覧画面"
+      - "予約詳細画面"
+      - "部屋アサイン画面"
+      - "予約キャンセル画面"
+
+  - component_name: "部屋選択コンポーネント"
+    description: "利用可能な部屋を清掃状況・空き状況とともに選択できるドロップダウン"
+    used_in:
+      - "部屋アサイン画面"
+      - "ダブルブッキング再割り当て画面"
+      - "予約詳細画面"
+
+  - component_name: "予約状態バッジ"
+    description: "予約状態を色分け表示するバッジコンポーネント（仮予約:黄、確定:青、チェックイン:緑、チェックアウト:灰、キャンセル:赤）"
+    used_in:
+      - "予約一覧画面"
+      - "予約詳細画面"
+      - "予約カレンダー画面"
+      - "部屋アサイン画面"
+
+  - component_name: "確認ダイアログ"
+    description: "キャンセルや重要な変更時に確認を求めるモーダルダイアログ"
+    used_in:
+      - "予約キャンセル画面"
+      - "ダブルブッキング再割り当て画面"
+      - "予約詳細画面"
+
+  - component_name: "日付範囲選択コンポーネント"
+    description: "チェックイン・チェックアウト日などの日付範囲を選択するカレンダーピッカー"
+    used_in:
+      - "予約検索画面"
+      - "予約詳細画面"
+      - "予約カレンダー画面"
+
+validations:
+  - field: "チェックアウト日"
+    rule: "チェックイン日より後の日付であること"
+
+  - field: "予約状態"
+    rule: "チェックイン済みの予約はキャンセル不可"
+
+  - field: "部屋アサイン"
+    rule: "未清掃の部屋をアサインする場合は警告を表示"
+
+  - field: "日程変更"
+    rule: "変更後の日程・部屋タイプで空室があるか自動チェック"
+
+  - field: "キャンセル料免除"
+    rule: "キャンセル料を免除する場合は理由の入力が必須"
+
+  - field: "ダブルブッキング"
+    rule: "同一部屋・同一日程で複数の予約確定は不可"
+
+  - field: "連泊予約"
+    rule: "連泊の場合は同じ部屋を継続してアサインすることを推奨"
+
+  - field: "グループ予約"
+    rule: "グループ予約の場合は隣接または近い部屋をアサインすることを推奨"

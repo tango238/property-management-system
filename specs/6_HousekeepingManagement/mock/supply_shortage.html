@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>備品不足記録画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .room-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .room-info .room-number { font-weight: bold; font-size: 18px; }
+        .room-info .datetime { font-size: 13px; color: #666; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group label .required { color: #dc3545; }
+        .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .form-group textarea { min-height: 80px; }
+        .form-group .note { font-size: 12px; color: #666; margin-top: 5px; }
+        .radio-group { display: flex; gap: 15px; }
+        .radio-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
+        .radio-group input[type="radio"] { width: auto; }
+        .file-upload { border: 2px dashed #dee2e6; padding: 20px; text-align: center; border-radius: 4px; cursor: pointer; }
+        .file-upload:hover { border-color: #007bff; background: #f8f9fa; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="cleaning_record.html">清掃作業記録</a>
+        </div>
+
+        <h1>備品不足記録画面</h1>
+
+        <div class="room-info">
+            <div class="room-number">301号室</div>
+            <div class="datetime">記録日時: 2025-12-10 10:30</div>
+        </div>
+
+        <div class="form-group">
+            <label>備品種類 <span class="required">*</span></label>
+            <select required>
+                <option value="">選択してください</option>
+                <option>タオル類</option>
+                <option>アメニティ</option>
+                <option>リネン類</option>
+                <option>消耗品</option>
+                <option>備品・設備</option>
+                <option>その他</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>備品名 <span class="required">*</span></label>
+            <input type="text" placeholder="例：バスタオル" required>
+        </div>
+
+        <div class="form-group">
+            <label>不足数量 <span class="required">*</span></label>
+            <input type="number" value="1" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>状態 <span class="required">*</span></label>
+            <div class="radio-group">
+                <label><input type="radio" name="status" value="不足" checked> 不足</label>
+                <label><input type="radio" name="status" value="破損"> 破損</label>
+                <label><input type="radio" name="status" value="汚損"> 汚損</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>破損写真</label>
+            <div class="file-upload">
+                📷 タップして写真を撮影・選択<br>
+                <span style="font-size: 12px; color: #666;">破損・汚損の場合は写真添付を推奨</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>備考</label>
+            <textarea placeholder="詳細を入力"></textarea>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="alert('備品不足を記録しました'); location.href='cleaning_record.html'">記録を保存</button>
+            <button class="btn btn-success" onclick="alert('備品不足を記録しました'); location.href='supply_request.html'">補充依頼へ進む</button>
+            <button class="btn btn-secondary" onclick="location.href='cleaning_record.html'">キャンセル</button>
+        </div>
+    </div>
+</body>
+</html>

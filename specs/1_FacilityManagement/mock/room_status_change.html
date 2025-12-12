@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部屋状態変更画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .role-badge { display: inline-block; padding: 4px 12px; background: #28a745; color: white; border-radius: 20px; font-size: 12px; margin-bottom: 20px; }
+        .filters { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 14px; font-weight: bold; }
+        .filter-group select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 150px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #28a745; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        tr:hover { background: #f8f9fa; }
+        .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .status-inspected { background: #6f42c1; color: white; }
+        .alert { padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; }
+        .alert-info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        .change-form { background: #e8f5e9; padding: 20px; border-radius: 4px; border: 1px solid #c8e6c9; }
+        .change-form h3 { font-size: 16px; margin-bottom: 15px; color: #2e7d32; }
+        .form-row { display: flex; gap: 20px; align-items: end; }
+        .form-group { margin-bottom: 0; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        .form-group select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; min-width: 200px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; 部屋状態変更
+        </div>
+        <span class="role-badge">フロントスタッフ</span>
+        <h1>部屋状態変更画面</h1>
+
+        <div class="alert alert-info">
+            検査合格（Inspected）状態の部屋をVacant（空き）状態に変更し、予約可能にします。
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>施設</label>
+                <select>
+                    <option value="1" selected>グランドホテル東京</option>
+                    <option value="2">シティホテル大阪</option>
+                    <option value="3">京都旅館 雅</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>部屋状態</label>
+                <select>
+                    <option value="inspected" selected>Inspected（検査待ち）</option>
+                </select>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>選択</th>
+                    <th>部屋番号</th>
+                    <th>部屋タイプ</th>
+                    <th>現在の状態</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="radio" name="room" value="201"></td>
+                    <td>201</td>
+                    <td>ダブル</td>
+                    <td><span class="status-badge status-inspected">Inspected</span></td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="room" value="301" checked></td>
+                    <td>301</td>
+                    <td>ツイン</td>
+                    <td><span class="status-badge status-inspected">Inspected</span></td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="room" value="402"></td>
+                    <td>402</td>
+                    <td>デラックスツイン</td>
+                    <td><span class="status-badge status-inspected">Inspected</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="change-form">
+            <h3>状態変更</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>変更後の状態</label>
+                    <select>
+                        <option value="vacant" selected>Vacant（空き）</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="return confirm('選択した部屋の状態をVacant（空き）に変更しますか？')">状態変更</button>
+                <button class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

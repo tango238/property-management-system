@@ -1,0 +1,25 @@
+screens:
+  # ダッシュボード
+  - [x] dashboard
+
+  # 予約取り込み
+  - [x] import
+  - [x] import_error_list
+
+  # ダブルブッキング管理
+  - [x] double_booking_list
+  - [x] double_booking_reassign
+
+  # 予約一覧・カレンダー・検索
+  - [x] reservation_list
+  - [x] reservation_calendar
+  - [x] reservation_search
+
+  # 予約詳細・更新
+  - [x] reservation_detail
+
+  # 部屋アサイン
+  - [x] room_assign
+
+  # 予約キャンセル
+  - [x] reservation_cancel

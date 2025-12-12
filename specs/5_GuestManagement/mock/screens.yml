@@ -1,0 +1,23 @@
+screens:
+  # フロントスタッフ向け画面 - チェックイン案内メール管理
+  - [x] mail_send
+  - [x] mail_error_list
+
+  # フロントスタッフ向け画面 - 宿泊者名簿管理
+  - [x] arrival_list
+  - [x] registry_search
+  - [x] registry_detail
+  - [x] registry_archive
+
+  # フロントスタッフ向け画面 - チェックイン処理
+  - [x] checkin
+  - [x] front_registry_form
+
+  # フロントスタッフ向け画面 - チェックアウト処理
+  - [x] checkout
+
+  # ゲスト向け画面
+  - [x] guest_registry_form
+  - [x] guest_registry_confirm
+  - [x] guest_registry_complete
+  - [x] token_expired

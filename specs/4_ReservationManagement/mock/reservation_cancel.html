@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約キャンセル画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .warning-box { background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 15px; border-radius: 4px; margin-bottom: 25px; }
+        .warning-box strong { display: block; margin-bottom: 5px; }
+        .info-card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+        .info-card h3 { font-size: 16px; margin-bottom: 15px; color: #333; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .info-item { display: flex; flex-direction: column; gap: 3px; }
+        .info-item .label { font-size: 12px; color: #666; }
+        .info-item .value { font-size: 14px; font-weight: bold; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group label .required { color: #dc3545; }
+        .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        .form-group textarea { min-height: 100px; resize: vertical; font-family: inherit; }
+        .form-group .note { font-size: 12px; color: #666; margin-top: 5px; }
+        .cancellation-fee { background: #f8d7da; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .cancellation-fee .label { font-size: 14px; color: #721c24; margin-bottom: 5px; }
+        .cancellation-fee .value { font-size: 24px; font-weight: bold; color: #721c24; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; }
+        .checkbox-group label { font-size: 14px; cursor: pointer; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="reservation_detail.html">予約詳細に戻る</a>
+        </div>
+
+        <h1>予約キャンセル画面</h1>
+
+        <div class="warning-box">
+            <strong>⚠️ キャンセル処理について</strong>
+            この操作は取り消しできません。キャンセルを実行すると、予約ステータスが「キャンセル」に変更され、アサインされた部屋が解放されます。
+        </div>
+
+        <div class="info-card">
+            <h3>キャンセル対象予約</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">予約番号</div>
+                    <div class="value">RES-2025121001</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">ゲスト名</div>
+                    <div class="value">山田 太郎</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">チェックイン日</div>
+                    <div class="value">2025-12-15</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">チェックアウト日</div>
+                    <div class="value">2025-12-17</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">部屋</div>
+                    <div class="value">301号室（ツイン）</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">宿泊料金</div>
+                    <div class="value">¥24,000</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>キャンセル理由 <span class="required">*</span></label>
+            <select required>
+                <option value="">選択してください</option>
+                <option value="guest_request">ゲスト都合</option>
+                <option value="no_show">ノーショー</option>
+                <option value="duplicate">重複予約</option>
+                <option value="hotel_reason">施設都合</option>
+                <option value="other">その他</option>
+            </select>
+        </div>
+
+        <div class="cancellation-fee">
+            <div class="label">キャンセル料（チェックイン5日前）</div>
+            <div class="value">¥0（無料キャンセル期間内）</div>
+        </div>
+
+        <div class="form-group">
+            <label>備考</label>
+            <textarea placeholder="キャンセルに関する詳細やゲストへの連絡事項を入力"></textarea>
+            <div class="note">ゲストからの連絡内容や対応履歴を記録してください</div>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="notify_guest">
+            <label for="notify_guest">ゲストにキャンセル通知メールを送信する</label>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="confirm_cancel" required>
+            <label for="confirm_cancel">上記内容を確認し、キャンセル処理を実行します <span style="color: #dc3545;">*</span></label>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="location.href='reservation_detail.html'">戻る</button>
+            <button class="btn btn-danger" onclick="if(document.getElementById('confirm_cancel').checked){alert('予約をキャンセルしました'); location.href='reservation_list.html';}else{alert('確認チェックを入れてください');}">キャンセル実行</button>
+        </div>
+    </div>
+</body>
+</html>

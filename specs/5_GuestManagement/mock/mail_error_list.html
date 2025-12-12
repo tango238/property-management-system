@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>送信エラー一覧画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; border-bottom: 2px solid #dc3545; padding-bottom: 10px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .filters { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
+        .filters label { font-weight: bold; font-size: 14px; }
+        .filters input, .filters select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .stats { background: #f8d7da; padding: 15px 20px; border-radius: 4px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
+        .stats .number { font-size: 32px; font-weight: bold; color: #dc3545; }
+        .stats .label { font-size: 14px; color: #721c24; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .error-reason { color: #dc3545; font-size: 13px; }
+        .resolved { opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="mail_send.html">← 案内メール送信画面に戻る</a> |
+            <a href="index.html">画面一覧</a>
+        </div>
+        <h1>送信エラー一覧画面</h1>
+
+        <div class="stats">
+            <div>
+                <div class="number">3</div>
+                <div class="label">未対応エラー件数</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div>
+                <label>発生日:</label>
+                <input type="date" value="2024-12-10">
+            </div>
+            <div>
+                <label>エラー種別:</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="invalid_email">メールアドレス不正</option>
+                    <option value="server_error">サーバーエラー</option>
+                    <option value="timeout">タイムアウト</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary">フィルター適用</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>予約番号</th>
+                    <th>ゲスト名</th>
+                    <th>メールアドレス</th>
+                    <th>エラー理由</th>
+                    <th>発生日時</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>RSV-2024-0003</td>
+                    <td>鈴木 一郎</td>
+                    <td>suzuki@invalid</td>
+                    <td class="error-reason">メールアドレス形式が不正です</td>
+                    <td>2024/12/10 14:32:15</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 5px 10px;">再送信</button>
+                        <button class="btn btn-success" style="padding: 5px 10px;">対応済み</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RSV-2024-0008</td>
+                    <td>高橋 健二</td>
+                    <td>takahashi@example.com</td>
+                    <td class="error-reason">メールサーバーに接続できませんでした</td>
+                    <td>2024/12/10 14:32:18</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 5px 10px;">再送信</button>
+                        <button class="btn btn-success" style="padding: 5px 10px;">対応済み</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RSV-2024-0012</td>
+                    <td>伊藤 由美</td>
+                    <td>ito@example.com</td>
+                    <td class="error-reason">送信タイムアウト</td>
+                    <td>2024/12/10 14:33:01</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 5px 10px;">再送信</button>
+                        <button class="btn btn-success" style="padding: 5px 10px;">対応済み</button>
+                    </td>
+                </tr>
+                <tr class="resolved">
+                    <td>RSV-2024-0005</td>
+                    <td>中村 優子</td>
+                    <td>nakamura@example.com</td>
+                    <td class="error-reason">メールアドレス形式が不正です（対応済み）</td>
+                    <td>2024/12/10 10:15:22</td>
+                    <td>
+                        <span style="color: #28a745;">✓ 対応済み</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="location.href='mail_send.html'">案内メール送信画面に戻る</button>
+        </div>
+    </div>
+</body>
+</html>

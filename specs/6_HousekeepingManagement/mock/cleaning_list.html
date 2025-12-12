@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清掃対象部屋一覧画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters select { padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .room-list { display: flex; flex-direction: column; gap: 10px; }
+        .room-card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
+        .room-card:hover { border-color: #007bff; background: #e7f3ff; }
+        .room-card.high-priority { border-left: 4px solid #dc3545; }
+        .room-info { flex: 1; }
+        .room-number { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .room-details { font-size: 13px; color: #666; }
+        .room-meta { text-align: right; }
+        .priority-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .priority-high { background: #f8d7da; color: #721c24; }
+        .priority-medium { background: #fff3cd; color: #856404; }
+        .priority-low { background: #d4edda; color: #155724; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-top: 5px; display: inline-block; }
+        .status-dirty { background: #f8d7da; color: #721c24; }
+        .status-cleaning { background: #fff3cd; color: #856404; }
+        .status-inspected { background: #cce5ff; color: #004085; }
+        .checkin-time { font-size: 12px; color: #666; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+        </div>
+
+        <h1>清掃対象部屋一覧画面</h1>
+
+        <div class="filters">
+            <select>
+                <option value="">フロア: すべて</option>
+                <option>2F</option>
+                <option>3F</option>
+                <option>4F</option>
+                <option>5F</option>
+            </select>
+            <select>
+                <option value="">部屋タイプ: すべて</option>
+                <option>シングル</option>
+                <option>ツイン</option>
+                <option>ダブル</option>
+                <option>スイート</option>
+            </select>
+            <select>
+                <option value="">清掃状態: すべて</option>
+                <option>未着手</option>
+                <option>清掃中</option>
+                <option>点検済み</option>
+            </select>
+            <button class="btn btn-primary" onclick="alert('最新情報を取得しました')">更新</button>
+        </div>
+
+        <div class="room-list">
+            <div class="room-card high-priority" onclick="location.href='cleaning_record.html'">
+                <div class="room-info">
+                    <div class="room-number">301号室</div>
+                    <div class="room-details">ツイン / 3F / 山田様（次の予約）</div>
+                </div>
+                <div class="room-meta">
+                    <span class="priority-badge priority-high">高優先</span>
+                    <div class="status-badge status-dirty">未着手</div>
+                    <div class="checkin-time">チェックイン: 14:00</div>
+                </div>
+            </div>
+
+            <div class="room-card high-priority" onclick="location.href='cleaning_record.html'">
+                <div class="room-info">
+                    <div class="room-number">205号室</div>
+                    <div class="room-details">シングル / 2F / 佐藤様（次の予約）</div>
+                </div>
+                <div class="room-meta">
+                    <span class="priority-badge priority-high">高優先</span>
+                    <div class="status-badge status-cleaning">清掃中</div>
+                    <div class="checkin-time">チェックイン: 14:30</div>
+                </div>
+            </div>
+
+            <div class="room-card" onclick="location.href='cleaning_record.html'">
+                <div class="room-info">
+                    <div class="room-number">402号室</div>
+                    <div class="room-details">ダブル / 4F / 田中様（次の予約）</div>
+                </div>
+                <div class="room-meta">
+                    <span class="priority-badge priority-medium">中優先</span>
+                    <div class="status-badge status-dirty">未着手</div>
+                    <div class="checkin-time">チェックイン: 16:00</div>
+                </div>
+            </div>
+
+            <div class="room-card" onclick="location.href='cleaning_record.html'">
+                <div class="room-info">
+                    <div class="room-number">503号室</div>
+                    <div class="room-details">スイート / 5F / 鈴木様（次の予約）</div>
+                </div>
+                <div class="room-meta">
+                    <span class="priority-badge priority-low">低優先</span>
+                    <div class="status-badge status-inspected">点検済み</div>
+                    <div class="checkin-time">チェックイン: 18:00</div>
+                </div>
+            </div>
+
+            <div class="room-card" onclick="location.href='cleaning_record.html'">
+                <div class="room-info">
+                    <div class="room-number">304号室</div>
+                    <div class="room-details">ツイン / 3F / 予約なし</div>
+                </div>
+                <div class="room-meta">
+                    <span class="priority-badge priority-low">低優先</span>
+                    <div class="status-badge status-dirty">未着手</div>
+                    <div class="checkin-time">チェックイン: -</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

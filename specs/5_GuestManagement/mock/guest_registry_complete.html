@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宿泊者名簿入力完了画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; color: #333; margin-bottom: 10px; }
+        .header .facility-name { color: #007bff; font-size: 18px; }
+        .success-icon { text-align: center; margin-bottom: 30px; }
+        .success-icon .icon { font-size: 80px; color: #28a745; }
+        .success-message { text-align: center; margin-bottom: 30px; }
+        .success-message h2 { color: #28a745; font-size: 22px; margin-bottom: 15px; }
+        .success-message p { color: #666; font-size: 16px; line-height: 1.8; }
+        .reservation-info { background: #e7f3ff; padding: 20px; border-radius: 4px; margin-bottom: 25px; }
+        .reservation-info .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #cce5ff; }
+        .reservation-info .info-row:last-child { border-bottom: none; }
+        .reservation-info .label { color: #666; }
+        .reservation-info .value { font-weight: bold; color: #333; }
+        .notice-box { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 25px; }
+        .notice-box h3 { font-size: 14px; color: #856404; margin: 0 0 10px 0; }
+        .notice-box ul { margin: 0; padding-left: 20px; color: #856404; font-size: 14px; }
+        .notice-box li { margin-bottom: 5px; }
+        .contact-info { background: #f8f9fa; padding: 15px; border-radius: 4px; text-align: center; }
+        .contact-info p { margin: 5px 0; font-size: 14px; color: #666; }
+        .contact-info .phone { font-size: 18px; font-weight: bold; color: #007bff; }
+        .nav { margin-bottom: 20px; text-align: center; }
+        .nav a { color: #007bff; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← デモ画面一覧に戻る</a>
+        </div>
+
+        <div class="header">
+            <div class="facility-name">サンプル旅館</div>
+            <h1>宿泊者名簿の送信完了</h1>
+        </div>
+
+        <div class="success-icon">
+            <div class="icon">✓</div>
+        </div>
+
+        <div class="success-message">
+            <h2>送信が完了しました</h2>
+            <p>宿泊者名簿の登録が正常に完了しました。<br>ご協力ありがとうございます。</p>
+        </div>
+
+        <div class="reservation-info">
+            <div class="info-row">
+                <span class="label">予約番号</span>
+                <span class="value">RSV-2024-0001</span>
+            </div>
+            <div class="info-row">
+                <span class="label">チェックイン日</span>
+                <span class="value">2024年12月11日</span>
+            </div>
+            <div class="info-row">
+                <span class="label">部屋タイプ</span>
+                <span class="value">ツインルーム</span>
+            </div>
+            <div class="info-row">
+                <span class="label">宿泊日数</span>
+                <span class="value">2泊</span>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <h3>チェックイン当日のご案内</h3>
+            <ul>
+                <li>チェックイン時間: 15:00〜</li>
+                <li>フロントにて本人確認書類をご提示ください</li>
+                <li>この画面を保存またはスクリーンショットしておくと便利です</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <p>ご不明な点がございましたらお気軽にお問い合わせください</p>
+            <p class="phone">03-1234-5678</p>
+            <p>受付時間: 9:00〜21:00</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+    "feature_name": "1_FacilityManagement",
+    "created_at": "2025-12-10T04:14:49Z",
+    "updated_at": "2025-12-10T04:32:36Z",
+    "language": "Japanese",
+    "last_execution": "generate-mock",
+    "readme": {
+        "checksum": "14f248305c9a4896cc9014c184fef76b",
+        "last_modified": "2025-11-20T16:52:29"
+    },
+    "steps": [
+        {
+            "feature": {
+                "version": 1,
+                "checksum": "040b8950f62b2dcd6a22a2c96c6ab89b",
+                "last_modified": "2025-12-10T13:14:38"
+            }
+        },
+        {
+            "story": {
+                "version": 1,
+                "checksum": "34936cc63849f219a9d3de60c11f8191",
+                "last_modified": "2025-12-10T13:16:26"
+            }
+        },
+        {
+            "usecase": {
+                "version": 1,
+                "checksum": "a511a01ff3e57d4ad28ed201492a8640",
+                "last_modified": "2025-12-10T13:19:13"
+            }
+        },
+        {
+            "ui": {
+                "version": 1,
+                "checksum": "b9f0202e6aa00099fc646df29a56b5fd",
+                "last_modified": "2025-12-10T13:21:48"
+            }
+        },
+        {
+            "screenflow": {
+                "version": 1,
+                "checksum": "b8ff21806557b72232265d59d4501eab",
+                "last_modified": "2025-12-10T13:23:39"
+            }
+        }
+    ],
+    "mock": {
+        "version": 1,
+        "last_modified": "2025-12-10T04:32:36Z"
+    }
+}

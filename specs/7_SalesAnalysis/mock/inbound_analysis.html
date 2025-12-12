@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インバウンド分析画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .section h2 { font-size: 18px; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .form-row { display: flex; gap: 20px; margin-bottom: 15px; align-items: flex-end; }
+        .form-group { flex: 1; }
+        .form-group label { display: block; font-size: 14px; color: #666; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #1e7e34; }
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        .ratio-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+        .ratio-card { padding: 25px; border-radius: 12px; text-align: center; }
+        .ratio-card.inbound { background: linear-gradient(135deg, #17a2b8, #138496); color: white; }
+        .ratio-card.domestic { background: linear-gradient(135deg, #6c757d, #545b62); color: white; }
+        .ratio-card .label { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+        .ratio-card .value { font-size: 42px; font-weight: bold; }
+        .ratio-card .sub { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: bold; color: #333; text-align: center; }
+        td:first-child { text-align: left; }
+        .chart-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-placeholder { background: #e9ecef; height: 250px; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: #666; }
+        .highlight-row { background: #fff3cd; }
+        .target-badge { display: inline-block; background: #ffc107; color: #212529; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+            <a href="guest_attribute_analysis.html">宿泊者属性分析</a>
+        </div>
+
+        <h1>インバウンド分析画面</h1>
+
+        <div class="section">
+            <h2>分析条件設定</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>対象期間開始日</label>
+                    <input type="date" value="2024-11-01" />
+                </div>
+                <div class="form-group">
+                    <label>対象期間終了日</label>
+                    <input type="date" value="2024-11-30" />
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary">集計実行</button>
+            </div>
+        </div>
+
+        <div class="ratio-cards">
+            <div class="ratio-card inbound">
+                <div class="label">インバウンド比率</div>
+                <div class="value">28.5%</div>
+                <div class="sub">売上: ¥2,807,250</div>
+            </div>
+            <div class="ratio-card domestic">
+                <div class="label">国内比率</div>
+                <div class="value">71.5%</div>
+                <div class="sub">売上: ¥7,042,750</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>国籍別売上一覧</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>国名</th>
+                        <th>売上金額</th>
+                        <th>予約件数</th>
+                        <th>構成比</th>
+                        <th>平均単価</th>
+                        <th>平均滞在日数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>日本</td>
+                        <td>¥7,042,750</td>
+                        <td>245件</td>
+                        <td>71.5%</td>
+                        <td>¥11,800</td>
+                        <td>1.6泊</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>台湾 <span class="target-badge">ターゲット</span></td>
+                        <td>¥985,000</td>
+                        <td>28件</td>
+                        <td>10.0%</td>
+                        <td>¥15,200</td>
+                        <td>3.2泊</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>韓国 <span class="target-badge">ターゲット</span></td>
+                        <td>¥788,000</td>
+                        <td>25件</td>
+                        <td>8.0%</td>
+                        <td>¥14,500</td>
+                        <td>2.8泊</td>
+                    </tr>
+                    <tr>
+                        <td>中国</td>
+                        <td>¥541,250</td>
+                        <td>15件</td>
+                        <td>5.5%</td>
+                        <td>¥16,800</td>
+                        <td>3.5泊</td>
+                    </tr>
+                    <tr>
+                        <td>アメリカ</td>
+                        <td>¥295,500</td>
+                        <td>8件</td>
+                        <td>3.0%</td>
+                        <td>¥18,500</td>
+                        <td>4.2泊</td>
+                    </tr>
+                    <tr>
+                        <td>その他</td>
+                        <td>¥197,500</td>
+                        <td>6件</td>
+                        <td>2.0%</td>
+                        <td>¥14,200</td>
+                        <td>2.5泊</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>グラフ表示</h2>
+            <div class="chart-container">
+                <div>
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 10px;">国別構成比グラフ</h3>
+                    <div class="chart-placeholder">[国籍別売上構成比の円グラフ表示エリア]</div>
+                </div>
+                <div>
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 10px;">インバウンド推移グラフ</h3>
+                    <div class="chart-placeholder">[インバウンド比率の月次推移グラフ表示エリア]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ターゲット国選定</h2>
+            <div style="background: #e7f3ff; padding: 15px; border-radius: 4px;">
+                <p style="margin: 0 0 10px 0;"><strong>推奨ターゲット国:</strong></p>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li>台湾: 平均単価¥15,200、滞在日数3.2泊と高収益</li>
+                    <li>韓国: 予約件数25件で安定した需要あり</li>
+                </ul>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary">ターゲット国選定</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-success">レポート出力</button>
+            <button class="btn btn-secondary" onclick="location.href='guest_attribute_analysis.html'">戻る</button>
+        </div>
+    </div>
+</body>
+</html>

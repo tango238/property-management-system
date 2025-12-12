@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - PMS Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gray-100">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <h1>PMS Admin</h1>
+                <p class="text-gray-500 text-sm mt-2">ホテル施設管理システム</p>
+            </div>
+            <form class="auth-form">
+                <div class="form-group">
+                    <label class="form-label required">メールアドレス</label>
+                    <input type="email" class="form-input" placeholder="example@hotel.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">パスワード</label>
+                    <input type="password" class="form-input" placeholder="パスワードを入力" required>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="mr-2">
+                        <span class="text-sm text-gray-600">ログイン状態を保持</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary auth-submit">ログイン</button>
+            </form>
+            <div class="auth-links">
+                <a href="password_reset.html">パスワードをお忘れですか？</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

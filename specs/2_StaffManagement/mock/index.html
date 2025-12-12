@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人事管理 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>人事管理 - モック画面一覧</h1>
+        <p class="subtitle">宿泊施設のスタッフ情報と権限を管理するための機能群</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>スタッフ一覧画面 → 新規登録/編集/削除/パスワードリセット/権限変更 → 各操作画面 → スタッフ一覧画面に戻る</p>
+        </div>
+
+        <div class="category">
+            <h2>スタッフ管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="staff_list.html">
+                        <div class="title">スタッフ一覧画面</div>
+                        <div class="description">スタッフの検索・一覧表示・各種操作への導線</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="staff_register.html">
+                        <div class="title">スタッフ登録画面</div>
+                        <div class="description">新規スタッフの情報登録とアカウント発行</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="staff_update.html">
+                        <div class="title">スタッフ更新画面</div>
+                        <div class="description">既存スタッフの情報変更</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="staff_delete.html">
+                        <div class="title">スタッフ削除確認画面</div>
+                        <div class="description">退職スタッフの削除とアカウント無効化</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>パスワード管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="password_reset.html">
+                        <div class="title">パスワードリセット画面</div>
+                        <div class="description">パスワードのリセットと仮パスワード発行</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>権限管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="role_assign.html">
+                        <div class="title">権限割り当て画面</div>
+                        <div class="description">新規スタッフへの権限ロール割り当て</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="role_change.html">
+                        <div class="title">権限変更画面</div>
+                        <div class="description">スタッフの権限ロール変更</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="role_search.html">
+                        <div class="title">権限検索画面</div>
+                        <div class="description">権限設定状況の検索・確認</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

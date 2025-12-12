@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清掃作業記録画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .room-info { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .room-info h2 { font-size: 28px; margin: 0 0 10px 0; }
+        .room-info .detail { font-size: 14px; color: #666; margin-bottom: 5px; }
+        .status-section { margin-bottom: 20px; }
+        .status-section h3 { font-size: 16px; margin-bottom: 10px; }
+        .status-badge { padding: 8px 16px; border-radius: 4px; font-size: 16px; font-weight: bold; display: inline-block; }
+        .status-dirty { background: #f8d7da; color: #721c24; }
+        .status-cleaning { background: #fff3cd; color: #856404; }
+        .status-inspected { background: #cce5ff; color: #004085; }
+        .status-vacant { background: #d4edda; color: #155724; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group textarea { width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; min-height: 80px; box-sizing: border-box; }
+        .actions { display: flex; flex-direction: column; gap: 10px; }
+        .btn { padding: 15px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; text-align: center; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-warning:hover { background: #e0a800; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .btn-outline { background: white; color: #007bff; border: 1px solid #007bff; }
+        .btn-outline:hover { background: #e7f3ff; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .checkin-alert { background: #fff3cd; border: 1px solid #ffc107; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="cleaning_list.html">清掃対象一覧</a>
+        </div>
+
+        <h1>清掃作業記録画面</h1>
+
+        <div class="room-info">
+            <h2>301号室</h2>
+            <div class="detail">部屋タイプ: ツイン</div>
+            <div class="detail">フロア: 3F</div>
+            <div class="detail">次のチェックイン: 14:00（山田様）</div>
+        </div>
+
+        <div class="checkin-alert">
+            ⚠️ チェックインまで残り2時間以内です。優先的に清掃を完了してください。
+        </div>
+
+        <div class="status-section">
+            <h3>現在の清掃状態</h3>
+            <span class="status-badge status-dirty">未着手（Dirty）</span>
+        </div>
+
+        <div class="form-group">
+            <label>備考</label>
+            <textarea placeholder="特記事項があれば入力"></textarea>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="if(confirm('清掃を開始しますか？')){alert('清掃開始を記録しました。状態: Cleaning'); location.reload();}">清掃開始</button>
+            <button class="btn btn-success" disabled title="Cleaning状態でのみ使用可能">清掃完了</button>
+            <button class="btn btn-warning" disabled title="Inspected状態でのみ使用可能">Vacant状態に変更</button>
+            <button class="btn btn-outline" onclick="location.href='supply_shortage.html'">備品不足を記録</button>
+            <button class="btn btn-secondary" onclick="location.href='cleaning_list.html'">戻る</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>売上分析 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>売上分析 - モック画面一覧</h1>
+        <p class="subtitle">宿泊施設の経営判断に必要な売上データの集計・分析を行う機能のモック画面です。ADR・OCC・RevPARなどの分析指標を算出し、OTA別・宿泊者属性別の売上分析を通じて、収益最大化の戦略立案を支援します。</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>ダッシュボード → 売上集計 / 分析指標 / OTA別分析 / 属性別分析 → 各詳細画面 → レポート出力</p>
+        </div>
+
+        <div class="category">
+            <h2>ダッシュボード</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="dashboard.html">
+                        <div class="title">売上分析ダッシュボード</div>
+                        <div class="description">日々の稼働状況とKPIを一目で把握するためのホーム画面</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>売上レポート作成</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="sales_summary.html">
+                        <div class="title">売上集計画面</div>
+                        <div class="description">集計期間を指定して売上金額を集計しレポート形式で出力する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="sales_data_search.html">
+                        <div class="title">売上データ検索画面</div>
+                        <div class="description">過去の売上データを検索しエクスポートする（監査対応用）</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>分析指標</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="analysis_metrics.html">
+                        <div class="title">分析指標画面</div>
+                        <div class="description">ADR・OCC・RevPARを確認し経営判断の基礎データを得る</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="monthly_kpi_analysis.html">
+                        <div class="title">月次KPI分析画面</div>
+                        <div class="description">月次KPIを前月・前年同月と比較し業績評価を行う</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>売上推移分析</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="sales_trend_analysis.html">
+                        <div class="title">売上推移分析画面</div>
+                        <div class="description">年間の売上トレンドと季節変動パターンを分析する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="sales_decline_analysis.html">
+                        <div class="title">売上減少分析画面</div>
+                        <div class="description">売上減少月の要因を分析し改善施策を立案する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>OTA別分析</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="ota_sales_analysis.html">
+                        <div class="title">OTA別売上分析画面</div>
+                        <div class="description">OTA別に売上・手数料・純利益を分析しチャネル戦略を検討する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="direct_booking_analysis.html">
+                        <div class="title">直接予約分析画面</div>
+                        <div class="description">直接予約比率を分析し手数料負担削減施策を検討する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>宿泊者属性別分析</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="guest_attribute_analysis.html">
+                        <div class="title">宿泊者属性分析画面</div>
+                        <div class="description">宿泊者属性別に売上を分析しターゲット顧客層を特定する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="inbound_analysis.html">
+                        <div class="title">インバウンド分析画面</div>
+                        <div class="description">国籍別売上を分析しインバウンド戦略を立案する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="purpose_analysis.html">
+                        <div class="title">利用目的分析画面</div>
+                        <div class="description">利用目的別の平均単価を分析し高単価セグメントを特定する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>総合分析</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="comprehensive_analysis.html">
+                        <div class="title">総合分析画面</div>
+                        <div class="description">売上集計からKPI・OTA・属性分析まで一連のレポートを作成する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

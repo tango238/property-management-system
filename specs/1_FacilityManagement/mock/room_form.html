@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部屋登録画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        .form-group label .required { color: #dc3545; margin-left: 4px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group textarea { height: 80px; resize: vertical; }
+        .form-group .hint { font-size: 12px; color: #666; margin-top: 4px; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .input-with-unit { display: flex; align-items: center; gap: 10px; }
+        .input-with-unit input { flex: 1; }
+        .input-with-unit .unit { color: #666; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; <a href="room_list.html">部屋検索</a> &gt; 部屋登録
+        </div>
+        <h1>部屋登録画面</h1>
+
+        <form>
+            <div class="form-group">
+                <label>対象施設<span class="required">*</span></label>
+                <select>
+                    <option value="">施設を選択してください</option>
+                    <option value="1">グランドホテル東京</option>
+                    <option value="2">シティホテル大阪</option>
+                    <option value="3">京都旅館 雅</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>部屋番号<span class="required">*</span></label>
+                    <input type="text" placeholder="例：101、A-201">
+                    <div class="hint">20文字以内、施設内で一意</div>
+                </div>
+                <div class="form-group">
+                    <label>階数</label>
+                    <div class="input-with-unit">
+                        <input type="number" min="1" placeholder="1">
+                        <span class="unit">階</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>部屋タイプ<span class="required">*</span></label>
+                <select>
+                    <option value="">部屋タイプを選択してください</option>
+                    <option value="1">シングル</option>
+                    <option value="2">ダブル</option>
+                    <option value="3">ツイン</option>
+                    <option value="4">デラックスツイン</option>
+                    <option value="5">スイート</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>初期状態<span class="required">*</span></label>
+                <select>
+                    <option value="vacant" selected>Vacant（空き）</option>
+                    <option value="out-of-order">Out-of-order（使用不可）</option>
+                </select>
+                <div class="hint">新規登録時はVacantまたはOut-of-orderのみ選択可能</div>
+            </div>
+
+            <div class="form-group">
+                <label>備考</label>
+                <textarea placeholder="部屋に関する備考を入力してください"></textarea>
+                <div class="hint">200文字以内</div>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" onclick="location.href='room_list.html'">キャンセル</button>
+                <button type="submit" class="btn btn-primary">登録</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

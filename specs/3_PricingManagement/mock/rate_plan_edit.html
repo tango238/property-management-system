@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レートプラン更新画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .form-panel { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .form-panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e5e7eb; color: #1f2937; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; padding: 16px; background: #f9fafb; border-radius: 6px; }
+    .info-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+    .info-item label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+    .info-item .value { font-size: 14px; font-weight: 500; color: #1f2937; }
+    .section { margin-bottom: 32px; }
+    .section h3 { font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+    .form-group .required { color: #dc2626; margin-left: 4px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .form-group .hint { font-size: 12px; color: #6b7280; margin-top: 4px; }
+    .form-group .unit { display: flex; align-items: center; gap: 8px; }
+    .form-group .unit input { flex: 1; }
+    .form-group .unit span { font-size: 14px; color: #6b7280; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .season-pricing { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+    .season-pricing-header { display: grid; grid-template-columns: 1fr 150px 100px; background: #f9fafb; padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; }
+    .season-pricing-row { display: grid; grid-template-columns: 1fr 150px 100px; padding: 12px 16px; border-top: 1px solid #e5e7eb; align-items: center; }
+    .season-pricing-row input { padding: 8px; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-normal { background: #e5e7eb; color: #374151; }
+    .badge-peak { background: #fef3c7; color: #92400e; }
+    .badge-off { background: #dbeafe; color: #1e40af; }
+    .badge-ota-rakuten { background: #fee2e2; color: #991b1b; }
+    .badge-sync-success { background: #d1fae5; color: #065f46; }
+    .form-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .btn { padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .info-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+    .info-note p { font-size: 13px; color: #1e40af; }
+    .nav-link { color: #fff; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; <a href="rate_plan_list.html">レートプラン管理</a> &gt; 更新</div>
+        <h1>レートプラン更新画面</h1>
+      </div>
+      <a href="rate_plan_list.html" class="nav-link">一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="form-panel">
+      <h2>レートプラン情報の更新</h2>
+
+      <div class="info-grid two-col">
+        <div class="info-item">
+          <label>レートプランID</label>
+          <div class="value">RATE-2025-001</div>
+        </div>
+        <div class="info-item">
+          <label>OTA種別</label>
+          <div class="value"><span class="badge badge-ota-rakuten">楽天トラベル</span></div>
+        </div>
+        <div class="info-item">
+          <label>部屋タイプ</label>
+          <div class="value">シングル</div>
+        </div>
+        <div class="info-item">
+          <label>同期ステータス</label>
+          <div class="value"><span class="badge badge-sync-success">同期済</span></div>
+        </div>
+        <div class="info-item">
+          <label>登録日時</label>
+          <div class="value">2025/01/15 10:30</div>
+        </div>
+        <div class="info-item">
+          <label>最終更新日時</label>
+          <div class="value">2025/01/20 14:15</div>
+        </div>
+      </div>
+
+      <div class="info-note">
+        <p>更新完了後、サイトコントローラーへの自動同期が開始されます。同期状況は「同期ログ画面」で確認できます。</p>
+      </div>
+
+      <form>
+        <div class="section">
+          <h3>基本情報</h3>
+          <div class="form-group">
+            <label>レートプラン名<span class="required">*</span></label>
+            <input type="text" value="楽天トラベル_シングル_通常期" maxlength="100">
+            <div class="hint">100文字以内で入力してください</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>シーズン別料金設定</h3>
+          <div class="season-pricing">
+            <div class="season-pricing-header">
+              <span>シーズン</span>
+              <span>料金</span>
+              <span></span>
+            </div>
+            <div class="season-pricing-row">
+              <span><span class="badge badge-normal">通常期</span> 2025年通常期</span>
+              <div class="unit">
+                <input type="number" value="8000">
+                <span>円</span>
+              </div>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">削除</button>
+            </div>
+            <div class="season-pricing-row">
+              <span><span class="badge badge-peak">繁忙期</span> 2025年GW繁忙期</span>
+              <div class="unit">
+                <input type="number" value="12000">
+                <span>円</span>
+              </div>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">削除</button>
+            </div>
+            <div class="season-pricing-row">
+              <span><span class="badge badge-off">閑散期</span> 2025年閑散期</span>
+              <div class="unit">
+                <input type="number" value="6400">
+                <span>円</span>
+              </div>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">削除</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>販売期間</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>販売開始日<span class="required">*</span></label>
+              <input type="date" value="2025-01-01">
+              <div class="hint">販売期間の開始日</div>
+            </div>
+            <div class="form-group">
+              <label>販売終了日<span class="required">*</span></label>
+              <input type="date" value="2025-12-31">
+              <div class="hint">販売期間の終了日</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">更新</button>
+          <a href="rate_plan_list.html" class="btn btn-secondary">キャンセル</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

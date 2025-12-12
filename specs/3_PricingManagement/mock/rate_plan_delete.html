@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レートプラン削除確認画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 600px; margin: 0 auto; padding: 24px; }
+    .confirm-panel { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .confirm-panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e5e7eb; color: #1f2937; }
+    .warning-banner { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 6px; padding: 16px; margin-bottom: 24px; display: flex; gap: 12px; }
+    .warning-icon { color: #dc2626; font-size: 24px; }
+    .warning-text h3 { font-size: 14px; font-weight: 600; color: #991b1b; margin-bottom: 4px; }
+    .warning-text p { font-size: 13px; color: #991b1b; }
+    .info-card { background: #f9fafb; border-radius: 6px; padding: 20px; margin-bottom: 24px; }
+    .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { width: 140px; font-size: 13px; color: #6b7280; }
+    .info-value { flex: 1; font-size: 14px; color: #1f2937; font-weight: 500; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-ota-rakuten { background: #fee2e2; color: #991b1b; }
+    .info-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+    .info-note p { font-size: 13px; color: #1e40af; }
+    .form-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .btn { padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .nav-link { color: #fff; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; <a href="rate_plan_list.html">レートプラン管理</a> &gt; 削除確認</div>
+        <h1>レートプラン削除確認画面</h1>
+      </div>
+      <a href="rate_plan_list.html" class="nav-link">一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="confirm-panel">
+      <h2>削除確認</h2>
+
+      <div class="warning-banner">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-text">
+          <h3>レートプランを削除しますか？</h3>
+          <p>この操作は取り消せません。削除後、サイトコントローラーに販売停止が同期されます。</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-label">レートプラン名</div>
+          <div class="info-value">楽天トラベル_シングル_通常期</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">OTA種別</div>
+          <div class="info-value"><span class="badge badge-ota-rakuten">楽天トラベル</span></div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">部屋タイプ</div>
+          <div class="info-value">シングル</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">現在の料金</div>
+          <div class="info-value">¥8,000（通常期）</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">販売期間</div>
+          <div class="info-value">2025/01/01 〜 2025/12/31</div>
+        </div>
+      </div>
+
+      <div class="info-note">
+        <p>削除処理完了後、サイトコントローラー経由でOTAへ販売停止が同期されます。同期状況は「同期ログ画面」で確認できます。</p>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-danger">削除実行</button>
+        <a href="rate_plan_list.html" class="btn btn-secondary">キャンセル</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

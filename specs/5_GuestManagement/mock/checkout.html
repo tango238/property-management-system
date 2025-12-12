@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チェックアウト処理画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .search-box { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
+        .search-box input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+        .tabs { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+        .tab { padding: 12px 25px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab.active { border-bottom-color: #007bff; color: #007bff; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .info-card { background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
+        .info-row { display: flex; margin-bottom: 10px; }
+        .info-label { width: 150px; font-weight: bold; color: #666; }
+        .info-value { flex: 1; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-lg { padding: 15px 30px; font-size: 16px; }
+        .billing-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .billing-table th, .billing-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .billing-table th { background: #f8f9fa; }
+        .billing-table .total-row { font-weight: bold; background: #e7f3ff; }
+        .billing-table .total-row td { border-top: 2px solid #007bff; }
+        .payment-section { background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
+        .payment-section label { font-weight: bold; margin-right: 15px; }
+        .payment-section select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 200px; }
+        .total-amount { font-size: 28px; font-weight: bold; color: #007bff; text-align: right; padding: 20px; background: #e7f3ff; border-radius: 4px; margin-bottom: 20px; }
+        .actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← 画面一覧に戻る</a>
+        </div>
+        <h1>チェックアウト処理画面</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="予約番号または部屋番号を入力" value="301">
+            <button class="btn btn-primary">予約検索</button>
+        </div>
+
+        <div class="info-card">
+            <div class="info-row">
+                <div class="info-label">予約番号</div>
+                <div class="info-value">RSV-2024-0001</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">ゲスト名</div>
+                <div class="info-value">山田 太郎 様</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">部屋番号</div>
+                <div class="info-value">301号室</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">滞在日数</div>
+                <div class="info-value">2泊 (2024/12/11 〜 2024/12/13)</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('billing')">精算内容</div>
+            <div class="tab" onclick="switchTab('detail')">追加料金明細</div>
+        </div>
+
+        <div id="billing" class="tab-content active">
+            <table class="billing-table">
+                <thead>
+                    <tr>
+                        <th>項目</th>
+                        <th>単価</th>
+                        <th>数量</th>
+                        <th style="text-align: right;">金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>宿泊料金（ツインルーム）</td>
+                        <td>¥15,000</td>
+                        <td>2泊</td>
+                        <td style="text-align: right;">¥30,000</td>
+                    </tr>
+                    <tr>
+                        <td>ミニバー</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td style="text-align: right;">¥1,500</td>
+                    </tr>
+                    <tr>
+                        <td>ルームサービス</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td style="text-align: right;">¥3,200</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">小計</td>
+                        <td style="text-align: right;">¥34,700</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">消費税（10%）</td>
+                        <td style="text-align: right;">¥3,470</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3">合計</td>
+                        <td style="text-align: right;">¥38,170</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="detail" class="tab-content">
+            <h3>追加料金明細</h3>
+            <table class="billing-table">
+                <thead>
+                    <tr>
+                        <th>日時</th>
+                        <th>項目</th>
+                        <th>内容</th>
+                        <th style="text-align: right;">金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024/12/11 22:15</td>
+                        <td>ミニバー</td>
+                        <td>ビール(2)、ジュース(1)</td>
+                        <td style="text-align: right;">¥1,500</td>
+                    </tr>
+                    <tr>
+                        <td>2024/12/12 08:30</td>
+                        <td>ルームサービス</td>
+                        <td>朝食セット(2名分)</td>
+                        <td style="text-align: right;">¥3,200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="total-amount">
+            合計金額: ¥38,170
+        </div>
+
+        <div class="payment-section">
+            <label>支払方法:</label>
+            <select>
+                <option value="cash">現金</option>
+                <option value="card" selected>クレジットカード</option>
+                <option value="emoney">電子マネー</option>
+                <option value="invoice">請求書払い</option>
+            </select>
+            <button class="btn btn-primary" style="margin-left: 20px;">精算実行</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary btn-lg">領収書発行</button>
+            <button class="btn btn-secondary btn-lg">明細印刷</button>
+            <button class="btn btn-success btn-lg" onclick="location.href='index.html'">チェックアウト完了</button>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>

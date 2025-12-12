@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宿泊者名簿入力確認画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; color: #333; margin-bottom: 10px; }
+        .header .facility-name { color: #007bff; font-size: 18px; }
+        .reservation-info { background: #e7f3ff; padding: 15px; border-radius: 4px; margin-bottom: 25px; text-align: center; }
+        .reservation-info .date { font-size: 18px; font-weight: bold; color: #007bff; }
+        .reservation-info .room { font-size: 14px; color: #666; }
+        .confirm-section { margin-bottom: 25px; }
+        .confirm-section h2 { font-size: 16px; color: #007bff; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #ddd; }
+        .confirm-row { display: flex; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .confirm-label { width: 140px; color: #666; font-size: 14px; }
+        .confirm-value { flex: 1; font-size: 14px; }
+        .companion-card { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
+        .btn { padding: 15px 30px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; margin-top: 10px; }
+        .buttons { margin-top: 30px; }
+        .alert-box { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 20px; text-align: center; }
+        .nav { margin-bottom: 20px; text-align: center; }
+        .nav a { color: #007bff; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← デモ画面一覧に戻る</a>
+        </div>
+
+        <div class="header">
+            <div class="facility-name">サンプル旅館</div>
+            <h1>入力内容の確認</h1>
+        </div>
+
+        <div class="alert-box">
+            以下の内容で送信します。内容をご確認ください。
+        </div>
+
+        <div class="reservation-info">
+            <div class="date">チェックイン: 2024年12月11日</div>
+            <div class="room">ツインルーム（2泊）</div>
+        </div>
+
+        <div class="confirm-section">
+            <h2>代表者情報</h2>
+            <div class="confirm-row">
+                <div class="confirm-label">氏名（漢字）</div>
+                <div class="confirm-value">山田 太郎</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">氏名（フリガナ）</div>
+                <div class="confirm-value">ヤマダ タロウ</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">住所</div>
+                <div class="confirm-value">〒100-0001<br>東京都千代田区千代田1-1-1</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">電話番号</div>
+                <div class="confirm-value">090-1234-5678</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">メールアドレス</div>
+                <div class="confirm-value">yamada@example.com</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">国籍</div>
+                <div class="confirm-value">日本</div>
+            </div>
+            <div class="confirm-row">
+                <div class="confirm-label">職業</div>
+                <div class="confirm-value">会社員</div>
+            </div>
+        </div>
+
+        <div class="confirm-section">
+            <h2>同伴者情報</h2>
+            <div class="companion-card">
+                <div class="confirm-row" style="border: none; padding-bottom: 0;">
+                    <div class="confirm-label">氏名</div>
+                    <div class="confirm-value">山田 花子</div>
+                </div>
+                <div class="confirm-row" style="border: none; padding-top: 5px;">
+                    <div class="confirm-label">住所</div>
+                    <div class="confirm-value">代表者と同じ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="location.href='guest_registry_complete.html'">送信する</button>
+            <button class="btn btn-secondary" onclick="location.href='guest_registry_form.html'">戻って修正</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "generated_at": "2025-12-10T15:30:00Z",
+  "sources": {
+    "1_FacilityManagement": "1",
+    "2_StaffManagement": "1",
+    "3_PricingManagement": "1",
+    "4_ReservationManagement": "1",
+    "5_GuestManagement": "1",
+    "6_HousekeepingManagement": "1",
+    "7_SalesAnalysis": "1"
+  }
+}

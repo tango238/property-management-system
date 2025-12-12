@@ -1,0 +1,542 @@
+view:
+  # ========================================
+  # 経理担当者向け画面
+  # ========================================
+
+  # ダッシュボード
+  - name: "売上分析ダッシュボード"
+    actor: "経理担当者"
+    purpose: "日々の稼働状況とKPIを一目で把握するためのホーム画面"
+    display_fields:
+      - "本日の稼働率（OCC）"
+      - "本日のADR"
+      - "本日のRevPAR"
+      - "過去7日間の稼働率推移グラフ"
+      - "当月累計売上"
+      - "前年同月比"
+    actions:
+      - "売上集計画面へ"
+      - "分析指標画面へ"
+      - "OTA別分析画面へ"
+      - "属性別分析画面へ"
+    related_models:
+      - "稼働率データ"
+      - "分析指標"
+    related_usecases:
+      - "日次稼働率の確認"
+
+  # 売上レポート作成
+  - name: "売上集計画面"
+    actor: "経理担当者"
+    purpose: "集計期間を指定して売上金額を集計しレポート形式で出力する"
+    input_fields:
+      - field_name: "集計開始日"
+        type: "date_picker"
+        required: true
+        description: "集計期間の開始日"
+      - field_name: "集計終了日"
+        type: "date_picker"
+        required: true
+        description: "集計期間の終了日"
+      - field_name: "出力形式"
+        type: "radio_group"
+        options:
+          - "PDF"
+          - "Excel"
+        required: true
+        description: "レポートの出力形式"
+    display_fields:
+      - "総売上金額"
+      - "OTA手数料合計"
+      - "純売上金額"
+      - "予約件数"
+      - "販売客室数"
+      - "OTA別売上内訳"
+    actions:
+      - "集計実行"
+      - "レポート出力"
+      - "クリア"
+    validations:
+      - "集計開始日は集計終了日より前である必要があります"
+    related_models:
+      - "売上レポート"
+      - "OTA手数料"
+    related_usecases:
+      - "月次売上レポートの作成と出力"
+
+  - name: "売上データ検索画面"
+    actor: "経理担当者"
+    purpose: "過去の売上データを検索しエクスポートする（監査対応用）"
+    input_fields:
+      - field_name: "検索開始日"
+        type: "date_picker"
+        required: true
+        description: "検索期間の開始日（過去7年以内）"
+      - field_name: "検索終了日"
+        type: "date_picker"
+        required: true
+        description: "検索期間の終了日"
+    filters:
+      - "年度"
+      - "月"
+      - "レポート種別"
+    display_fields:
+      - "レポート名"
+      - "対象期間"
+      - "作成日時"
+      - "総売上金額"
+      - "ステータス"
+    actions:
+      - "検索"
+      - "エクスポート"
+      - "一括ダウンロード"
+      - "クリア"
+    validations:
+      - "検索期間は過去7年以内である必要があります"
+    related_models:
+      - "売上レポート"
+    related_usecases:
+      - "監査対応用売上データの抽出"
+
+  # 分析指標
+  - name: "分析指標画面"
+    actor: "経理担当者"
+    purpose: "ADR・OCC・RevPARを確認し経営判断の基礎データを得る"
+    input_fields:
+      - field_name: "対象期間"
+        type: "select"
+        options:
+          - "本日"
+          - "今週"
+          - "今月"
+          - "カスタム"
+        required: true
+        description: "分析対象期間の選択"
+      - field_name: "カスタム開始日"
+        type: "date_picker"
+        required: false
+        description: "カスタム期間の開始日"
+      - field_name: "カスタム終了日"
+        type: "date_picker"
+        required: false
+        description: "カスタム期間の終了日"
+    display_fields:
+      - "ADR（平均客室単価）"
+      - "OCC（客室稼働率）"
+      - "RevPAR（客室あたり収益）"
+      - "総売上金額"
+      - "販売客室数"
+      - "総客室数"
+      - "計算式の説明"
+    actions:
+      - "再計算"
+      - "エクスポート"
+    related_models:
+      - "分析指標"
+    related_usecases:
+      - "分析指標（ADR・OCC・RevPAR）の算出と表示"
+
+  - name: "月次KPI分析画面"
+    actor: "経理担当者"
+    purpose: "月次KPIを前月・前年同月と比較し業績評価を行う"
+    input_fields:
+      - field_name: "対象年月"
+        type: "select"
+        required: true
+        description: "分析対象の年月"
+      - field_name: "目標ADR"
+        type: "number"
+        required: false
+        unit: "円"
+        description: "ADRの目標値"
+      - field_name: "目標OCC"
+        type: "number"
+        required: false
+        unit: "%"
+        description: "OCCの目標値"
+      - field_name: "目標RevPAR"
+        type: "number"
+        required: false
+        unit: "円"
+        description: "RevPARの目標値"
+    display_fields:
+      - "当月ADR・OCC・RevPAR"
+      - "前月ADR・OCC・RevPAR"
+      - "前年同月ADR・OCC・RevPAR"
+      - "前月比（増減率）"
+      - "前年同月比（増減率）"
+      - "目標達成率"
+      - "比較グラフ"
+    actions:
+      - "比較実行"
+      - "目標設定"
+      - "レポート出力"
+    related_models:
+      - "KPI履歴データ"
+      - "分析指標"
+    related_usecases:
+      - "月次KPI分析と比較"
+
+  # 売上推移分析
+  - name: "売上推移分析画面"
+    actor: "経理担当者"
+    purpose: "年間の売上トレンドと季節変動パターンを分析する"
+    input_fields:
+      - field_name: "比較期間"
+        type: "select"
+        options:
+          - "過去12ヶ月"
+          - "過去24ヶ月"
+          - "過去36ヶ月"
+          - "カスタム"
+        required: true
+        description: "比較対象期間の選択"
+      - field_name: "カスタム開始年月"
+        type: "select"
+        required: false
+        description: "カスタム期間の開始年月"
+      - field_name: "カスタム終了年月"
+        type: "select"
+        required: false
+        description: "カスタム期間の終了年月"
+    display_fields:
+      - "月別売上推移グラフ"
+      - "前年同月比推移グラフ"
+      - "月別売上一覧"
+      - "前年同月比（増減率）"
+      - "季節変動パターン"
+      - "繁忙期・閑散期の特定"
+    actions:
+      - "分析実行"
+      - "グラフ表示切替"
+      - "レポート出力"
+    related_models:
+      - "売上履歴データ"
+    related_usecases:
+      - "年間売上トレンド分析"
+
+  - name: "売上減少分析画面"
+    actor: "経理担当者"
+    purpose: "売上減少月の要因を分析し改善施策を立案する"
+    input_fields:
+      - field_name: "対象年月"
+        type: "select"
+        required: true
+        description: "分析対象の年月"
+    display_fields:
+      - "当月売上金額"
+      - "前年同月売上金額"
+      - "売上減少額"
+      - "売上減少率"
+      - "稼働率変動"
+      - "平均単価変動"
+      - "OTA別売上変動"
+      - "属性別売上変動"
+      - "外部要因メモ"
+    actions:
+      - "詳細分析"
+      - "施策メモ追加"
+      - "レポート出力"
+    related_models:
+      - "売上詳細データ"
+    related_usecases:
+      - "売上減少要因の分析"
+
+  # OTA別分析
+  - name: "OTA別売上分析画面"
+    actor: "経理担当者"
+    purpose: "OTA別に売上・手数料・純利益を分析しチャネル戦略を検討する"
+    input_fields:
+      - field_name: "対象期間開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "対象期間終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+    filters:
+      - "OTA種別"
+    display_fields:
+      - "OTA別売上一覧"
+      - "OTA名"
+      - "売上金額"
+      - "予約件数"
+      - "構成比"
+      - "手数料率"
+      - "手数料額"
+      - "純利益"
+      - "純利益率"
+      - "売上構成比グラフ（円グラフ）"
+      - "収益性比較グラフ（棒グラフ）"
+    actions:
+      - "集計実行"
+      - "収益性比較"
+      - "レポート出力"
+    related_models:
+      - "OTA別売上データ"
+    related_usecases:
+      - "OTA別売上・収益性分析"
+
+  - name: "直接予約分析画面"
+    actor: "経理担当者"
+    purpose: "直接予約比率を分析し手数料負担削減施策を検討する"
+    input_fields:
+      - field_name: "対象期間開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "対象期間終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+    display_fields:
+      - "OTA別構成比"
+      - "直接予約比率"
+      - "直接予約推移グラフ"
+      - "OTA経由手数料負担額"
+      - "直接予約増加による削減可能額シミュレーション"
+    actions:
+      - "分析実行"
+      - "シミュレーション"
+      - "施策メモ追加"
+    related_models:
+      - "予約チャネルデータ"
+    related_usecases:
+      - "直接予約比率向上施策の検討"
+
+  # 宿泊者属性別分析
+  - name: "宿泊者属性分析画面"
+    actor: "経理担当者"
+    purpose: "宿泊者属性別に売上を分析しターゲット顧客層を特定する"
+    input_fields:
+      - field_name: "対象期間開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "対象期間終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+      - field_name: "分析軸"
+        type: "select"
+        options:
+          - "国籍"
+          - "年齢層"
+          - "利用目的"
+          - "リピート回数"
+        required: true
+        description: "分析の切り口"
+    tabs:
+      - "国籍別"
+      - "年齢層別"
+      - "利用目的別"
+    display_fields:
+      - "属性別売上一覧"
+      - "属性名"
+      - "売上金額"
+      - "予約件数"
+      - "構成比"
+      - "平均単価"
+      - "平均滞在日数"
+      - "構成比グラフ"
+    actions:
+      - "集計実行"
+      - "レポート出力"
+    related_models:
+      - "属性別売上データ"
+    related_usecases:
+      - "宿泊者属性別売上分析"
+
+  - name: "インバウンド分析画面"
+    actor: "経理担当者"
+    purpose: "国籍別売上を分析しインバウンド戦略を立案する"
+    input_fields:
+      - field_name: "対象期間開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "対象期間終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+    display_fields:
+      - "国籍別売上一覧"
+      - "国名"
+      - "売上金額"
+      - "予約件数"
+      - "構成比"
+      - "平均単価"
+      - "平均滞在日数"
+      - "インバウンド比率"
+      - "国内比率"
+      - "国別構成比グラフ"
+      - "インバウンド推移グラフ"
+    actions:
+      - "集計実行"
+      - "ターゲット国選定"
+      - "レポート出力"
+    related_models:
+      - "国籍別売上データ"
+    related_usecases:
+      - "インバウンド売上分析"
+
+  - name: "利用目的分析画面"
+    actor: "経理担当者"
+    purpose: "利用目的別の平均単価を分析し高単価セグメントを特定する"
+    input_fields:
+      - field_name: "対象期間開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "対象期間終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+    display_fields:
+      - "利用目的別売上一覧"
+      - "利用目的"
+      - "売上金額"
+      - "予約件数"
+      - "構成比"
+      - "平均単価"
+      - "平均滞在日数"
+      - "高単価セグメントハイライト"
+      - "目的別構成比グラフ"
+      - "平均単価比較グラフ"
+    actions:
+      - "集計実行"
+      - "高単価セグメント特定"
+      - "プラン開発メモ追加"
+      - "レポート出力"
+    related_models:
+      - "利用目的別データ"
+    related_usecases:
+      - "利用目的別単価分析"
+
+  # 総合分析
+  - name: "総合分析画面"
+    actor: "経理担当者"
+    purpose: "売上集計からKPI・OTA・属性分析まで一連のレポートを作成する"
+    input_fields:
+      - field_name: "集計開始日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の開始日"
+      - field_name: "集計終了日"
+        type: "date_picker"
+        required: true
+        description: "分析期間の終了日"
+      - field_name: "含める分析項目"
+        type: "checkbox_group"
+        options:
+          - "売上集計"
+          - "KPI（ADR・OCC・RevPAR）"
+          - "OTA別分析"
+          - "宿泊者属性別分析"
+          - "前年同月比較"
+        required: true
+        description: "レポートに含める分析項目"
+      - field_name: "出力形式"
+        type: "radio_group"
+        options:
+          - "PDF"
+          - "Excel"
+        required: true
+        description: "レポートの出力形式"
+    tabs:
+      - "サマリー"
+      - "売上詳細"
+      - "KPI"
+      - "OTA別"
+      - "属性別"
+      - "前年比較"
+    display_fields:
+      - "総売上金額"
+      - "純売上金額"
+      - "ADR・OCC・RevPAR"
+      - "OTA別売上構成"
+      - "属性別売上構成"
+      - "前年同月比"
+    actions:
+      - "一括分析実行"
+      - "レポート出力"
+      - "経営会議資料として保存"
+    related_models:
+      - "総合レポート"
+    related_usecases:
+      - "総合経営分析レポートの作成"
+
+# ========================================
+# 共通コンポーネント
+# ========================================
+common_components:
+  - component_name: "期間選択コンポーネント"
+    description: "開始日・終了日を選択するための共通コンポーネント"
+    used_in:
+      - "売上集計画面"
+      - "売上データ検索画面"
+      - "OTA別売上分析画面"
+      - "宿泊者属性分析画面"
+      - "インバウンド分析画面"
+      - "利用目的分析画面"
+      - "総合分析画面"
+
+  - component_name: "KPI表示カード"
+    description: "ADR・OCC・RevPARを表示するカード型コンポーネント"
+    used_in:
+      - "売上分析ダッシュボード"
+      - "分析指標画面"
+      - "月次KPI分析画面"
+      - "総合分析画面"
+
+  - component_name: "売上推移グラフ"
+    description: "月別・日別の売上推移を表示する折れ線グラフコンポーネント"
+    used_in:
+      - "売上分析ダッシュボード"
+      - "売上推移分析画面"
+      - "直接予約分析画面"
+      - "インバウンド分析画面"
+
+  - component_name: "構成比グラフ"
+    description: "OTA別・属性別の構成比を表示する円グラフコンポーネント"
+    used_in:
+      - "OTA別売上分析画面"
+      - "宿泊者属性分析画面"
+      - "インバウンド分析画面"
+      - "利用目的分析画面"
+
+  - component_name: "比較表コンポーネント"
+    description: "前月・前年同月との比較を表形式で表示するコンポーネント"
+    used_in:
+      - "月次KPI分析画面"
+      - "売上推移分析画面"
+      - "売上減少分析画面"
+
+  - component_name: "レポート出力ボタン"
+    description: "PDF/Excel形式でレポートを出力するボタンコンポーネント"
+    used_in:
+      - "売上集計画面"
+      - "分析指標画面"
+      - "月次KPI分析画面"
+      - "売上推移分析画面"
+      - "OTA別売上分析画面"
+      - "宿泊者属性分析画面"
+      - "総合分析画面"
+
+# ========================================
+# バリデーションルール
+# ========================================
+validations:
+  - field: "集計期間"
+    rule: "開始日は終了日より前である必要がある"
+  - field: "検索期間"
+    rule: "過去7年以内のデータのみ検索可能（売上データ保存期間）"
+  - field: "目標値"
+    rule: "目標ADR・OCC・RevPARは0以上の数値である必要がある"
+  - field: "OCC目標値"
+    rule: "OCCの目標値は0〜100%の範囲である必要がある"
+  - field: "出力形式"
+    rule: "PDFまたはExcelのいずれかを選択する必要がある"
+  - field: "分析項目"
+    rule: "少なくとも1つの分析項目を選択する必要がある"

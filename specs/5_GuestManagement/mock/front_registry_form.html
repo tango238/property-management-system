@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フロント宿泊者名簿入力画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .form-section { margin-bottom: 30px; }
+        .form-section h2 { font-size: 18px; color: #007bff; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #ddd; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+        .form-group .required { color: #dc3545; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .form-group textarea { height: 80px; resize: vertical; }
+        .form-group .note { font-size: 12px; color: #666; margin-top: 5px; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-lg { padding: 15px 30px; font-size: 16px; }
+        .companion-card { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 15px; position: relative; }
+        .companion-card .remove-btn { position: absolute; top: 10px; right: 10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; }
+        .actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; }
+        .reservation-info { background: #e7f3ff; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="checkin.html">← チェックイン処理画面に戻る</a> |
+            <a href="index.html">画面一覧</a>
+        </div>
+        <h1>フロント宿泊者名簿入力画面</h1>
+
+        <div class="reservation-info">
+            <strong>予約番号:</strong> RSV-2024-0002 &nbsp;|&nbsp;
+            <strong>ゲスト名:</strong> 佐藤 花子 様 &nbsp;|&nbsp;
+            <strong>宿泊日:</strong> 2024/12/11 〜 2024/12/12
+        </div>
+
+        <div class="form-section">
+            <h2>代表者情報</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>氏名（漢字）<span class="required">*</span></label>
+                    <input type="text" placeholder="山田 太郎">
+                </div>
+                <div class="form-group">
+                    <label>氏名（フリガナ）<span class="required">*</span></label>
+                    <input type="text" placeholder="ヤマダ タロウ">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>郵便番号<span class="required">*</span></label>
+                    <input type="text" placeholder="123-4567">
+                    <div class="note">半角数字とハイフンのみ</div>
+                </div>
+                <div class="form-group">
+                    <label>電話番号<span class="required">*</span></label>
+                    <input type="text" placeholder="090-1234-5678">
+                    <div class="note">半角数字とハイフンのみ</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>住所<span class="required">*</span></label>
+                <textarea placeholder="都道府県から入力"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>メールアドレス</label>
+                    <input type="email" placeholder="example@email.com">
+                    <div class="note">任意</div>
+                </div>
+                <div class="form-group">
+                    <label>国籍<span class="required">*</span></label>
+                    <select>
+                        <option value="日本">日本</option>
+                        <option value="その他">その他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>職業</label>
+                <input type="text" placeholder="会社員">
+                <div class="note">任意</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>同伴者情報</h2>
+            <div id="companions">
+                <div class="companion-card">
+                    <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>同伴者氏名<span class="required">*</span></label>
+                            <input type="text" placeholder="山田 花子">
+                        </div>
+                        <div class="form-group">
+                            <label>同伴者住所</label>
+                            <input type="text" placeholder="代表者と同じ場合は省略可">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="addCompanion()">+ 同伴者を追加</button>
+        </div>
+
+        <div class="form-section">
+            <h2>署名</h2>
+            <div style="border: 2px dashed #ddd; height: 150px; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 4px;">
+                署名エリア（タブレット入力）
+            </div>
+            <div style="margin-top: 10px;">
+                <button class="btn btn-secondary">署名入力</button>
+                <button class="btn btn-secondary">クリア</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary btn-lg" onclick="location.href='checkin.html'">キャンセル</button>
+            <button class="btn btn-success btn-lg" onclick="location.href='checkin.html'">保存</button>
+        </div>
+    </div>
+
+    <script>
+        function addCompanion() {
+            const container = document.getElementById('companions');
+            const card = document.createElement('div');
+            card.className = 'companion-card';
+            card.innerHTML = `
+                <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>同伴者氏名<span class="required">*</span></label>
+                        <input type="text" placeholder="山田 花子">
+                    </div>
+                    <div class="form-group">
+                        <label>同伴者住所</label>
+                        <input type="text" placeholder="代表者と同じ場合は省略可">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+    </script>
+</body>
+</html>

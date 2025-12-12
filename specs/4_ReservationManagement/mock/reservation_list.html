@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約一覧画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #666; }
+        .filter-group input, .filter-group select { padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; min-width: 150px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-outline { background: white; color: #007bff; border: 1px solid #007bff; }
+        .btn-outline:hover { background: #e7f3ff; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .view-toggle { margin-bottom: 20px; }
+        .view-toggle a { padding: 8px 16px; border: 1px solid #dee2e6; text-decoration: none; color: #333; }
+        .view-toggle a:first-child { border-radius: 4px 0 0 4px; }
+        .view-toggle a:last-child { border-radius: 0 4px 4px 0; }
+        .view-toggle a.active { background: #007bff; color: white; border-color: #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-checkedin { background: #cce5ff; color: #004085; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .ota-badge { font-size: 11px; padding: 2px 6px; border-radius: 3px; background: #e9ecef; color: #495057; }
+        .pagination { display: flex; gap: 5px; margin-top: 20px; justify-content: center; }
+        .pagination a { padding: 8px 12px; border: 1px solid #dee2e6; text-decoration: none; color: #333; border-radius: 4px; }
+        .pagination a.active { background: #007bff; color: white; border-color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+            <a href="reservation_search.html">詳細検索</a>
+        </div>
+
+        <h1>予約一覧画面</h1>
+
+        <div class="view-toggle">
+            <a href="reservation_list.html" class="active">リスト表示</a>
+            <a href="reservation_calendar.html">カレンダー表示</a>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>チェックイン日</label>
+                <input type="date" value="2025-12-10">
+            </div>
+            <div class="filter-group">
+                <label>チェックアウト日</label>
+                <input type="date" value="2025-12-17">
+            </div>
+            <div class="filter-group">
+                <label>ステータス</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>予約確定</option>
+                    <option>チェックイン済み</option>
+                    <option>チェックアウト済み</option>
+                    <option>キャンセル</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>部屋タイプ</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>シングル</option>
+                    <option>ツイン</option>
+                    <option>ダブル</option>
+                    <option>スイート</option>
+                </select>
+            </div>
+            <button class="btn btn-primary">検索</button>
+            <a href="reservation_search.html" class="btn btn-outline">詳細検索</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>予約番号</th>
+                    <th>ゲスト名</th>
+                    <th>チェックイン</th>
+                    <th>チェックアウト</th>
+                    <th>部屋番号</th>
+                    <th>OTA</th>
+                    <th>ステータス</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>RES-2025121001</td>
+                    <td>山田 太郎</td>
+                    <td>2025-12-15</td>
+                    <td>2025-12-17</td>
+                    <td>301号室</td>
+                    <td><span class="ota-badge">じゃらん</span></td>
+                    <td><span class="status-badge status-confirmed">予約確定</span></td>
+                    <td>
+                        <a href="reservation_detail.html" class="btn btn-outline">詳細</a>
+                        <a href="room_assign.html" class="btn btn-success">アサイン</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RES-2025121002</td>
+                    <td>鈴木 花子</td>
+                    <td>2025-12-15</td>
+                    <td>2025-12-18</td>
+                    <td>未アサイン</td>
+                    <td><span class="ota-badge">楽天トラベル</span></td>
+                    <td><span class="status-badge status-pending">未アサイン</span></td>
+                    <td>
+                        <a href="reservation_detail.html" class="btn btn-outline">詳細</a>
+                        <a href="room_assign.html" class="btn btn-success">アサイン</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RES-2025121003</td>
+                    <td>佐藤 一郎</td>
+                    <td>2025-12-10</td>
+                    <td>2025-12-12</td>
+                    <td>205号室</td>
+                    <td><span class="ota-badge">Booking.com</span></td>
+                    <td><span class="status-badge status-checkedin">チェックイン済み</span></td>
+                    <td>
+                        <a href="reservation_detail.html" class="btn btn-outline">詳細</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RES-2025120901</td>
+                    <td>田中 次郎</td>
+                    <td>2025-12-09</td>
+                    <td>2025-12-11</td>
+                    <td>402号室</td>
+                    <td><span class="ota-badge">直接予約</span></td>
+                    <td><span class="status-badge status-cancelled">キャンセル</span></td>
+                    <td>
+                        <a href="reservation_detail.html" class="btn btn-outline">詳細</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RES-2025120902</td>
+                    <td>高橋 三郎</td>
+                    <td>2025-12-12</td>
+                    <td>2025-12-14</td>
+                    <td>501号室</td>
+                    <td><span class="ota-badge">Airbnb</span></td>
+                    <td><span class="status-badge status-confirmed">予約確定</span></td>
+                    <td>
+                        <a href="reservation_detail.html" class="btn btn-outline">詳細</a>
+                        <a href="room_assign.html" class="btn btn-success">アサイン</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </div>
+</body>
+</html>

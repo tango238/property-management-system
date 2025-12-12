@@ -1,0 +1,507 @@
+view:
+  # ========================================
+  # フロントスタッフ向け画面
+  # ========================================
+
+  # --- チェックイン案内メール管理 ---
+  - name: "案内メール送信画面"
+    actor: "フロントスタッフ"
+    purpose: "チェックイン前日の予約に対して案内メールを一括送信する"
+
+    display_fields:
+      - "送信対象件数"
+      - "予約一覧（予約番号、ゲスト名、メールアドレス、チェックイン日）"
+
+    filters:
+      - "チェックイン日"
+      - "送信ステータス（未送信/送信済み/エラー）"
+
+    actions:
+      - "対象を抽出"
+      - "一括送信"
+      - "個別送信"
+
+    related_models:
+      - "予約"
+      - "トークン"
+
+    integration:
+      - "メール配信システム（送信）"
+
+    related_usecases:
+      - "チェックイン案内メールの一括送信"
+
+  - name: "送信エラー一覧画面"
+    actor: "フロントスタッフ"
+    purpose: "メール送信失敗の詳細を確認し、対応方法を検討する"
+
+    display_fields:
+      - "エラー件数"
+      - "エラー一覧（予約番号、ゲスト名、メールアドレス、エラー理由、発生日時）"
+
+    filters:
+      - "発生日"
+      - "エラー種別"
+
+    actions:
+      - "再送信"
+      - "エラー詳細表示"
+      - "対応済みマーク"
+
+    related_models:
+      - "メール送信ログ"
+
+    related_usecases:
+      - "メール送信エラーの確認と対応"
+
+  # --- 宿泊者名簿管理 ---
+  - name: "到着予定一覧画面"
+    actor: "フロントスタッフ"
+    purpose: "本日チェックイン予定のゲストと宿泊者名簿記入状況を一覧で確認する"
+
+    display_fields:
+      - "本日到着予定件数"
+      - "記入済み件数"
+      - "未記入件数"
+      - "到着予定一覧（予約番号、ゲスト名、チェックイン時刻、部屋タイプ、名簿状態）"
+
+    filters:
+      - "名簿記入状態（未記入/記入依頼送信済み/記入完了/確認済み）"
+      - "チェックイン時刻"
+
+    actions:
+      - "名簿詳細表示"
+      - "チェックイン処理へ進む"
+      - "未記入者のみ表示"
+
+    related_models:
+      - "予約"
+      - "宿泊者名簿"
+
+    related_usecases:
+      - "本日到着ゲストの宿泊者名簿記入状況確認"
+
+  - name: "宿泊者名簿検索画面"
+    actor: "フロントスタッフ"
+    purpose: "過去の宿泊者名簿を検索し、詳細を確認する"
+
+    input_fields:
+      - field_name: "ゲスト氏名"
+        type: "text"
+        required: false
+        placeholder: "氏名を入力"
+      - field_name: "宿泊日（From）"
+        type: "date_picker"
+        required: false
+      - field_name: "宿泊日（To）"
+        type: "date_picker"
+        required: false
+      - field_name: "予約番号"
+        type: "text"
+        required: false
+        placeholder: "予約番号を入力"
+
+    display_fields:
+      - "検索結果件数"
+      - "検索結果一覧（予約番号、ゲスト名、宿泊日、部屋番号、記入日）"
+
+    actions:
+      - "検索"
+      - "クリア"
+      - "詳細表示"
+      - "CSV出力"
+
+    related_models:
+      - "宿泊者名簿"
+
+    related_usecases:
+      - "宿泊者名簿の検索・閲覧"
+
+  - name: "宿泊者名簿詳細画面"
+    actor: "フロントスタッフ"
+    purpose: "宿泊者名簿の詳細情報を確認する"
+
+    display_fields:
+      - "予約番号"
+      - "ゲスト氏名（漢字）"
+      - "ゲスト氏名（フリガナ）"
+      - "住所"
+      - "電話番号"
+      - "メールアドレス"
+      - "国籍"
+      - "職業"
+      - "宿泊日"
+      - "部屋番号"
+      - "同伴者情報"
+      - "記入日時"
+      - "記入方法（オンライン/フロント）"
+
+    actions:
+      - "戻る"
+      - "印刷"
+      - "編集"
+
+    related_models:
+      - "宿泊者名簿"
+
+    related_usecases:
+      - "宿泊者名簿の検索・閲覧"
+
+  - name: "名簿保管管理画面"
+    actor: "フロントスタッフ"
+    purpose: "宿泊者名簿の保管状況を管理し、法定保管期間を遵守する"
+
+    display_fields:
+      - "保管中名簿件数"
+      - "保管期限切れ予定件数（3年経過）"
+      - "名簿一覧（予約番号、ゲスト名、宿泊日、保管開始日、保管期限）"
+
+    filters:
+      - "保管年度"
+      - "保管期限"
+
+    actions:
+      - "保管処理実行"
+      - "期限切れ名簿削除"
+      - "保管証明書発行"
+
+    validations:
+      - "旅館業法に基づき3年未満の名簿は削除不可"
+
+    related_models:
+      - "宿泊者名簿アーカイブ"
+
+    related_usecases:
+      - "宿泊者名簿の法定保管"
+
+  # --- チェックイン処理 ---
+  - name: "チェックイン処理画面"
+    actor: "フロントスタッフ"
+    purpose: "ゲストのチェックイン処理を行い、部屋をアサインする"
+
+    input_fields:
+      - field_name: "予約検索"
+        type: "text"
+        required: true
+        placeholder: "予約番号またはゲスト名を入力"
+      - field_name: "アサイン部屋番号"
+        type: "select"
+        required: true
+        description: "利用可能な部屋から選択"
+
+    display_fields:
+      - "予約情報（予約番号、ゲスト名、宿泊日数、部屋タイプ）"
+      - "宿泊者名簿記入状態"
+      - "宿泊者名簿内容サマリー"
+      - "特記事項・要望"
+      - "利用可能部屋一覧"
+
+    tabs:
+      - "予約情報"
+      - "宿泊者名簿"
+      - "部屋アサイン"
+
+    actions:
+      - "予約検索"
+      - "名簿確認"
+      - "部屋確定"
+      - "チェックイン完了"
+      - "フロント記入モードへ"
+
+    validations:
+      - "宿泊者名簿が未記入の場合はフロント記入を促す"
+      - "部屋が清掃完了（Clean）状態でないとアサイン不可"
+
+    related_models:
+      - "予約"
+      - "宿泊者名簿"
+      - "部屋"
+
+    related_usecases:
+      - "事前記入済みゲストのチェックイン処理"
+      - "宿泊者名簿未記入ゲストのチェックイン処理"
+
+  - name: "フロント宿泊者名簿入力画面"
+    actor: "フロントスタッフ"
+    purpose: "未記入ゲストの宿泊者名簿をフロントで入力する"
+
+    input_fields:
+      - field_name: "氏名（漢字）"
+        type: "text"
+        required: true
+        placeholder: "山田 太郎"
+      - field_name: "氏名（フリガナ）"
+        type: "text"
+        required: true
+        placeholder: "ヤマダ タロウ"
+      - field_name: "郵便番号"
+        type: "text"
+        required: true
+        placeholder: "123-4567"
+        validation: "半角数字とハイフンのみ"
+      - field_name: "住所"
+        type: "textarea"
+        required: true
+        placeholder: "都道府県から入力"
+      - field_name: "電話番号"
+        type: "text"
+        required: true
+        placeholder: "090-1234-5678"
+        validation: "半角数字とハイフンのみ"
+      - field_name: "メールアドレス"
+        type: "text"
+        required: false
+        placeholder: "example@email.com"
+        validation: "メールアドレス形式"
+      - field_name: "国籍"
+        type: "select"
+        required: true
+        options: ["日本", "その他"]
+      - field_name: "職業"
+        type: "text"
+        required: false
+        placeholder: "会社員"
+      - field_name: "同伴者"
+        type: "repeater"
+        required: false
+        fields:
+          - field_name: "同伴者氏名"
+            type: "text"
+            required: true
+          - field_name: "同伴者住所"
+            type: "text"
+            required: false
+            description: "代表者と同じ場合は省略可"
+
+    actions:
+      - "保存"
+      - "キャンセル"
+      - "署名入力"
+
+    validations:
+      - "必須項目が全て入力されていること"
+      - "旅館業法で定められた項目が含まれていること"
+
+    related_models:
+      - "宿泊者名簿"
+
+    related_usecases:
+      - "宿泊者名簿未記入ゲストのチェックイン処理"
+
+  # --- チェックアウト処理 ---
+  - name: "チェックアウト処理画面"
+    actor: "フロントスタッフ"
+    purpose: "ゲストのチェックアウト処理と精算を行う"
+
+    input_fields:
+      - field_name: "予約検索"
+        type: "text"
+        required: true
+        placeholder: "予約番号または部屋番号を入力"
+      - field_name: "支払方法"
+        type: "select"
+        required: true
+        options: ["現金", "クレジットカード", "電子マネー", "請求書払い"]
+
+    display_fields:
+      - "予約情報（予約番号、ゲスト名、部屋番号、滞在日数）"
+      - "基本宿泊料金"
+      - "追加料金一覧（項目、金額、発生日）"
+      - "合計金額"
+      - "税額内訳"
+
+    tabs:
+      - "精算内容"
+      - "追加料金明細"
+
+    actions:
+      - "予約検索"
+      - "精算実行"
+      - "チェックアウト完了"
+      - "領収書発行"
+      - "明細印刷"
+
+    validations:
+      - "精算完了後のみチェックアウト可能"
+
+    related_models:
+      - "予約"
+      - "精算明細"
+      - "部屋"
+
+    integration:
+      - "決済システム（精算）"
+
+    related_usecases:
+      - "通常チェックアウト処理"
+      - "追加料金発生時のチェックアウト処理"
+
+  # ========================================
+  # ゲスト向け画面
+  # ========================================
+
+  - name: "宿泊者名簿入力画面"
+    actor: "ゲスト"
+    purpose: "トークン認証後に宿泊者名簿を事前に記入する"
+
+    input_fields:
+      - field_name: "氏名（漢字）"
+        type: "text"
+        required: true
+        placeholder: "山田 太郎"
+      - field_name: "氏名（フリガナ）"
+        type: "text"
+        required: true
+        placeholder: "ヤマダ タロウ"
+      - field_name: "郵便番号"
+        type: "text"
+        required: true
+        placeholder: "123-4567"
+        validation: "半角数字とハイフンのみ"
+      - field_name: "住所"
+        type: "textarea"
+        required: true
+        placeholder: "都道府県から入力"
+      - field_name: "電話番号"
+        type: "text"
+        required: true
+        placeholder: "090-1234-5678"
+        validation: "半角数字とハイフンのみ"
+      - field_name: "メールアドレス"
+        type: "text"
+        required: false
+        placeholder: "example@email.com"
+        validation: "メールアドレス形式"
+      - field_name: "国籍"
+        type: "select"
+        required: true
+        options: ["日本", "その他"]
+      - field_name: "職業"
+        type: "text"
+        required: false
+        placeholder: "会社員"
+      - field_name: "同伴者"
+        type: "repeater"
+        required: false
+        fields:
+          - field_name: "同伴者氏名"
+            type: "text"
+            required: true
+          - field_name: "同伴者住所"
+            type: "text"
+            required: false
+            description: "代表者と同じ場合は省略可"
+
+    display_fields:
+      - "予約情報（チェックイン日、チェックアウト日、部屋タイプ）"
+      - "施設名"
+
+    actions:
+      - "入力内容を確認"
+      - "送信"
+
+    validations:
+      - "トークンが有効期限内であること"
+      - "必須項目が全て入力されていること"
+
+    related_models:
+      - "宿泊者名簿"
+      - "トークン"
+
+    related_usecases:
+      - "ゲストによる事前宿泊者名簿記入"
+
+  - name: "宿泊者名簿入力確認画面"
+    actor: "ゲスト"
+    purpose: "入力内容を確認してから送信する"
+
+    display_fields:
+      - "入力済み宿泊者情報（全項目）"
+      - "予約情報"
+
+    actions:
+      - "戻って修正"
+      - "送信"
+
+    related_models:
+      - "宿泊者名簿"
+
+    related_usecases:
+      - "ゲストによる事前宿泊者名簿記入"
+
+  - name: "宿泊者名簿入力完了画面"
+    actor: "ゲスト"
+    purpose: "宿泊者名簿の記入完了を通知する"
+
+    display_fields:
+      - "完了メッセージ"
+      - "チェックイン日時"
+      - "施設住所"
+      - "注意事項"
+
+    actions:
+      - "閉じる"
+
+    related_usecases:
+      - "ゲストによる事前宿泊者名簿記入"
+
+  - name: "トークン期限切れ画面"
+    actor: "ゲスト"
+    purpose: "トークン期限切れを通知し、フロントでの対応を案内する"
+
+    display_fields:
+      - "期限切れメッセージ"
+      - "フロントデスク連絡先"
+      - "チェックイン時の対応案内"
+
+    actions:
+      - "閉じる"
+
+    related_usecases:
+      - "トークン期限切れ時の案内表示"
+
+# ========================================
+# 共通コンポーネント
+# ========================================
+common_components:
+  - component_name: "予約検索コンポーネント"
+    description: "予約番号またはゲスト名で予約を検索するコンポーネント"
+    used_in:
+      - "チェックイン処理画面"
+      - "チェックアウト処理画面"
+      - "到着予定一覧画面"
+
+  - component_name: "宿泊者名簿入力フォーム"
+    description: "宿泊者名簿の入力項目をまとめたフォームコンポーネント"
+    used_in:
+      - "宿泊者名簿入力画面"
+      - "フロント宿泊者名簿入力画面"
+
+  - component_name: "名簿記入状態バッジ"
+    description: "宿泊者名簿の記入状態を色分けして表示するバッジ"
+    used_in:
+      - "到着予定一覧画面"
+      - "チェックイン処理画面"
+      - "案内メール送信画面"
+
+  - component_name: "精算明細テーブル"
+    description: "宿泊料金と追加料金の内訳を表示するテーブル"
+    used_in:
+      - "チェックアウト処理画面"
+
+# ========================================
+# バリデーションルール
+# ========================================
+validations:
+  - field: "トークン"
+    rule: "発行から24時間以内のみ有効"
+  - field: "宿泊者名簿"
+    rule: "チェックイン完了後は編集不可"
+  - field: "宿泊者名簿"
+    rule: "旅館業法に基づき3年間保管必須"
+  - field: "部屋アサイン"
+    rule: "清掃完了（Clean）状態の部屋のみ選択可能"
+  - field: "チェックアウト"
+    rule: "精算完了後のみチェックアウト処理が可能"
+  - field: "部屋状態"
+    rule: "チェックアウト完了時に自動的にDirtyに変更"

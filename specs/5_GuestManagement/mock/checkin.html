@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チェックイン処理画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .search-box { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
+        .search-box input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+        .tabs { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+        .tab { padding: 12px 25px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab.active { border-bottom-color: #007bff; color: #007bff; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .info-card { background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
+        .info-row { display: flex; margin-bottom: 10px; }
+        .info-label { width: 150px; font-weight: bold; color: #666; }
+        .info-value { flex: 1; }
+        .status-badge { padding: 4px 12px; border-radius: 3px; font-size: 14px; }
+        .status-done { background: #28a745; color: white; }
+        .status-pending { background: #ffc107; color: #333; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-lg { padding: 15px 30px; font-size: 16px; }
+        .room-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
+        .room-card { padding: 15px; border: 2px solid #ddd; border-radius: 4px; text-align: center; cursor: pointer; }
+        .room-card:hover { border-color: #007bff; background: #e7f3ff; }
+        .room-card.selected { border-color: #28a745; background: #d4edda; }
+        .room-card .room-number { font-size: 20px; font-weight: bold; }
+        .room-card .room-type { font-size: 12px; color: #666; }
+        .actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; }
+        .alert-box { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="arrival_list.html">← 到着予定一覧に戻る</a> |
+            <a href="index.html">画面一覧</a>
+        </div>
+        <h1>チェックイン処理画面</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="予約番号またはゲスト名を入力" value="RSV-2024-0001">
+            <button class="btn btn-primary">予約検索</button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('reservation')">予約情報</div>
+            <div class="tab" onclick="switchTab('registry')">宿泊者名簿</div>
+            <div class="tab" onclick="switchTab('room')">部屋アサイン</div>
+        </div>
+
+        <div id="reservation" class="tab-content active">
+            <div class="info-card">
+                <div class="info-row">
+                    <div class="info-label">予約番号</div>
+                    <div class="info-value">RSV-2024-0001</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">ゲスト名</div>
+                    <div class="info-value">山田 太郎 様</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">宿泊日数</div>
+                    <div class="info-value">2泊 (2024/12/11 〜 2024/12/13)</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">部屋タイプ</div>
+                    <div class="info-value">ツイン</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">名簿記入状態</div>
+                    <div class="info-value"><span class="status-badge status-done">記入完了</span></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">特記事項・要望</div>
+                    <div class="info-value">高層階希望、禁煙ルーム</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="registry" class="tab-content">
+            <div class="info-card">
+                <h3 style="margin-top: 0;">宿泊者名簿サマリー</h3>
+                <div class="info-row">
+                    <div class="info-label">氏名</div>
+                    <div class="info-value">山田 太郎（ヤマダ タロウ）</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">住所</div>
+                    <div class="info-value">東京都千代田区千代田1-1-1</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">電話番号</div>
+                    <div class="info-value">090-1234-5678</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">同伴者</div>
+                    <div class="info-value">山田 花子（1名）</div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-secondary" onclick="location.href='registry_detail.html'">名簿詳細を確認</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="room" class="tab-content">
+            <div class="alert-box">
+                <strong>注意:</strong> 清掃完了（Clean）状態の部屋のみ選択可能です。
+            </div>
+            <h3>利用可能な部屋</h3>
+            <div>
+                <label>フィルター:</label>
+                <select style="padding: 8px; margin-left: 10px;">
+                    <option>ツイン</option>
+                    <option>シングル</option>
+                    <option>ダブル</option>
+                    <option>スイート</option>
+                </select>
+            </div>
+            <div class="room-list">
+                <div class="room-card selected">
+                    <div class="room-number">301</div>
+                    <div class="room-type">ツイン・高層階</div>
+                </div>
+                <div class="room-card">
+                    <div class="room-number">302</div>
+                    <div class="room-type">ツイン・高層階</div>
+                </div>
+                <div class="room-card">
+                    <div class="room-number">305</div>
+                    <div class="room-type">ツイン・高層階</div>
+                </div>
+                <div class="room-card">
+                    <div class="room-number">201</div>
+                    <div class="room-type">ツイン</div>
+                </div>
+                <div class="room-card">
+                    <div class="room-number">205</div>
+                    <div class="room-type">ツイン</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-primary">部屋確定</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-warning btn-lg" onclick="location.href='front_registry_form.html'">フロント記入モードへ</button>
+            <button class="btn btn-success btn-lg" onclick="location.href='arrival_list.html'">チェックイン完了</button>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>

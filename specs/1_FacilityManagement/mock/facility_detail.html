@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設詳細画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .detail-section { margin-bottom: 30px; }
+        .detail-section h2 { font-size: 18px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #007bff; color: #007bff; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .detail-item { padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .detail-item label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; }
+        .detail-item span { font-size: 14px; font-weight: bold; }
+        .detail-item.full-width { grid-column: 1 / -1; }
+        .amenity-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .amenity-tag { background: #e7f3ff; color: #007bff; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .actions { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .actions-left { display: flex; gap: 10px; }
+        .actions-right { margin-left: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; <a href="facility_list.html">施設検索</a> &gt; 施設詳細
+        </div>
+        <h1>施設詳細画面</h1>
+
+        <div class="detail-section">
+            <h2>基本情報</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>施設ID</label>
+                    <span>FAC-001</span>
+                </div>
+                <div class="detail-item">
+                    <label>施設名</label>
+                    <span>グランドホテル東京</span>
+                </div>
+                <div class="detail-item">
+                    <label>郵便番号</label>
+                    <span>100-0001</span>
+                </div>
+                <div class="detail-item">
+                    <label>電話番号</label>
+                    <span>03-1234-5678</span>
+                </div>
+                <div class="detail-item full-width">
+                    <label>住所</label>
+                    <span>東京都千代田区丸の内1-1-1</span>
+                </div>
+                <div class="detail-item">
+                    <label>メールアドレス</label>
+                    <span>info@grandhotel-tokyo.example.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>チェックイン・チェックアウト</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>チェックイン時刻</label>
+                    <span>15:00</span>
+                </div>
+                <div class="detail-item">
+                    <label>チェックアウト時刻</label>
+                    <span>10:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>アメニティ</h2>
+            <div class="amenity-tags">
+                <span class="amenity-tag">Wi-Fi</span>
+                <span class="amenity-tag">駐車場</span>
+                <span class="amenity-tag">レストラン</span>
+                <span class="amenity-tag">大浴場</span>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>施設説明</h2>
+            <div class="detail-item full-width">
+                <span>東京駅から徒歩5分の好立地。ビジネスにも観光にも最適なホテルです。</span>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>統計情報</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>部屋タイプ数</label>
+                    <span>5 タイプ</span>
+                </div>
+                <div class="detail-item">
+                    <label>総部屋数</label>
+                    <span>120 室</span>
+                </div>
+                <div class="detail-item">
+                    <label>登録日時</label>
+                    <span>2024-01-15 10:30</span>
+                </div>
+                <div class="detail-item">
+                    <label>最終更新日時</label>
+                    <span>2024-03-20 15:45</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <div class="actions-left">
+                <button class="btn btn-primary" onclick="location.href='facility_edit.html'">編集</button>
+                <button class="btn btn-danger" onclick="confirm('この施設を削除しますか？')">削除</button>
+            </div>
+            <div class="actions-right">
+                <button class="btn btn-success" onclick="location.href='room_type_list.html'">部屋タイプ管理</button>
+                <button class="btn btn-success" onclick="location.href='room_list.html'">部屋管理</button>
+                <button class="btn btn-secondary" onclick="location.href='facility_list.html'">戻る</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

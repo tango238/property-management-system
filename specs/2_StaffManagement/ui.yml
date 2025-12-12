@@ -1,0 +1,403 @@
+view:
+  # スタッフ管理
+  - name: "スタッフ一覧画面"
+    actor: "人事担当者"
+    purpose: "スタッフの検索・一覧表示・各種操作への導線を提供する"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "電話番号"
+      - "権限ロール"
+      - "ステータス"
+      - "登録日"
+
+    filters:
+      - "名前"
+      - "メールアドレス"
+      - "権限ロール"
+      - "ステータス"
+
+    actions:
+      - "新規登録"
+      - "編集"
+      - "削除"
+      - "パスワードリセット"
+      - "権限変更"
+
+    related_models:
+      - "Staff"
+      - "Role"
+
+    related_usecases:
+      - "スタッフ一覧からの検索・選択"
+
+  - name: "スタッフ登録画面"
+    actor: "人事担当者"
+    purpose: "新規スタッフの情報を登録し、アカウントを発行する"
+
+    input_fields:
+      - field_name: "名前"
+        type: "text"
+        required: true
+        description: "スタッフのフルネーム"
+        validation: "必須、100文字以内"
+        placeholder: "山田 太郎"
+
+      - field_name: "メールアドレス"
+        type: "text"
+        required: true
+        description: "ログインIDおよび通知先として使用"
+        validation: "必須、メール形式、重複不可"
+        placeholder: "yamada@example.com"
+
+      - field_name: "電話番号"
+        type: "text"
+        required: false
+        description: "緊急連絡先"
+        validation: "電話番号形式"
+        placeholder: "090-1234-5678"
+
+      - field_name: "権限ロール"
+        type: "select"
+        required: true
+        options:
+          - "Admin"
+          - "Reservation Manager"
+          - "Front Desk"
+          - "Housekeeping"
+          - "Accounting"
+          - "Owner View Only"
+        description: "スタッフの業務に応じた権限を選択"
+
+    actions:
+      - "登録"
+      - "キャンセル"
+
+    validations:
+      - field: "メールアドレス"
+        rule: "システム内で一意であること"
+
+    related_models:
+      - "Staff"
+      - "Account"
+      - "Role"
+
+    integration:
+      - "メール配信サービス（初期パスワード通知）"
+
+    related_usecases:
+      - "新規スタッフの登録とアカウント発行"
+      - "新入社員受け入れの一連フロー"
+
+  - name: "スタッフ更新画面"
+    actor: "人事担当者"
+    purpose: "既存スタッフの情報を変更する"
+
+    display_fields:
+      - "スタッフID"
+      - "現在の権限ロール"
+      - "登録日"
+      - "最終更新日"
+
+    input_fields:
+      - field_name: "名前"
+        type: "text"
+        required: true
+        description: "スタッフのフルネーム"
+        validation: "必須、100文字以内"
+
+      - field_name: "メールアドレス"
+        type: "text"
+        required: true
+        description: "ログインIDおよび通知先"
+        validation: "必須、メール形式、重複不可"
+
+      - field_name: "電話番号"
+        type: "text"
+        required: false
+        description: "緊急連絡先"
+        validation: "電話番号形式"
+
+    actions:
+      - "更新"
+      - "キャンセル"
+
+    validations:
+      - field: "メールアドレス"
+        rule: "変更時は他スタッフと重複しないこと"
+
+    related_models:
+      - "Staff"
+
+    related_usecases:
+      - "スタッフ情報の更新"
+
+  - name: "スタッフ削除確認画面"
+    actor: "人事担当者"
+    purpose: "退職スタッフの情報削除とアカウント無効化を確認・実行する"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "権限ロール"
+      - "登録日"
+
+    input_fields:
+      - field_name: "削除理由"
+        type: "select"
+        required: true
+        options:
+          - "退職"
+          - "契約終了"
+          - "その他"
+        description: "削除理由を選択"
+
+      - field_name: "削除理由詳細"
+        type: "textarea"
+        required: false
+        description: "削除理由の詳細（任意）"
+        placeholder: "詳細な理由があれば入力"
+
+    actions:
+      - "削除実行"
+      - "キャンセル"
+
+    validations:
+      - field: "削除確認"
+        rule: "削除実行前に確認ダイアログを表示"
+
+    related_models:
+      - "Staff"
+      - "Account"
+
+    related_usecases:
+      - "退職スタッフの削除とアカウント無効化"
+
+  # パスワード管理
+  - name: "パスワードリセット画面"
+    actor: "人事担当者"
+    purpose: "スタッフのパスワードをリセットし、仮パスワードを発行する"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "権限ロール"
+      - "最終ログイン日時"
+
+    input_fields:
+      - field_name: "対象スタッフ"
+        type: "text"
+        required: true
+        description: "スタッフ名またはメールアドレスで検索"
+        placeholder: "名前またはメールアドレスを入力"
+
+      - field_name: "リセット種別"
+        type: "radio_group"
+        required: true
+        options:
+          - "通常リセット（パスワード忘れ）"
+          - "強制リセット（セキュリティインシデント）"
+        description: "リセットの理由を選択"
+
+      - field_name: "本人確認方法"
+        type: "select"
+        required: true
+        options:
+          - "電話確認"
+          - "対面確認"
+          - "上長承認"
+        description: "本人確認の方法を選択"
+
+      - field_name: "リセット理由"
+        type: "textarea"
+        required: true
+        description: "リセット理由を記録"
+        placeholder: "リセットが必要な理由を入力"
+
+    actions:
+      - "パスワードリセット実行"
+      - "キャンセル"
+
+    validations:
+      - field: "本人確認"
+        rule: "本人確認方法の選択が必須"
+      - field: "リセット理由"
+        rule: "セキュリティインシデント時は詳細な理由を必須"
+
+    related_models:
+      - "Account"
+      - "Staff"
+
+    integration:
+      - "メール配信サービス（仮パスワード通知）"
+
+    related_usecases:
+      - "パスワード忘れ時のリセット対応"
+      - "セキュリティインシデント時の強制パスワードリセット"
+
+  # 権限管理
+  - name: "権限割り当て画面"
+    actor: "人事担当者"
+    purpose: "新規スタッフに権限ロールを割り当てる"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "現在の権限ロール"
+
+    input_fields:
+      - field_name: "対象スタッフ"
+        type: "text"
+        required: true
+        description: "スタッフ名またはメールアドレスで検索"
+        placeholder: "名前またはメールアドレスを入力"
+
+      - field_name: "権限ロール"
+        type: "select"
+        required: true
+        options:
+          - "Admin"
+          - "Reservation Manager"
+          - "Front Desk"
+          - "Housekeeping"
+          - "Accounting"
+          - "Owner View Only"
+        description: "割り当てる権限ロールを選択"
+
+    actions:
+      - "権限割り当て"
+      - "キャンセル"
+
+    related_models:
+      - "Staff"
+      - "Role"
+
+    related_usecases:
+      - "新規スタッフへの権限ロール割り当て"
+
+  - name: "権限変更画面"
+    actor: "人事担当者"
+    purpose: "スタッフの権限ロールを変更する"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "現在の権限ロール"
+      - "権限変更履歴"
+
+    input_fields:
+      - field_name: "対象スタッフ"
+        type: "text"
+        required: true
+        description: "スタッフ名またはメールアドレスで検索"
+        placeholder: "名前またはメールアドレスを入力"
+
+      - field_name: "新しい権限ロール"
+        type: "select"
+        required: true
+        options:
+          - "Admin"
+          - "Reservation Manager"
+          - "Front Desk"
+          - "Housekeeping"
+          - "Accounting"
+          - "Owner View Only"
+        description: "変更後の権限ロールを選択"
+
+      - field_name: "変更理由"
+        type: "textarea"
+        required: true
+        description: "権限変更の理由を記録（監査ログ用）"
+        placeholder: "異動、昇進、業務変更など"
+
+    actions:
+      - "権限変更実行"
+      - "キャンセル"
+
+    validations:
+      - field: "変更理由"
+        rule: "必須入力、監査ログに記録される"
+
+    related_models:
+      - "Staff"
+      - "Role"
+      - "AuditLog"
+
+    related_usecases:
+      - "異動に伴う権限ロール変更"
+      - "権限変更の監査ログ自動記録"
+
+  - name: "権限検索画面"
+    actor: "人事担当者"
+    purpose: "スタッフの権限設定状況を検索・確認する"
+
+    display_fields:
+      - "スタッフID"
+      - "名前"
+      - "メールアドレス"
+      - "権限ロール"
+      - "最終ログイン日時"
+      - "権限設定日"
+
+    filters:
+      - "権限ロール"
+      - "部署"
+      - "ステータス"
+
+    actions:
+      - "検索"
+      - "権限変更画面へ"
+      - "CSVエクスポート"
+
+    related_models:
+      - "Staff"
+      - "Role"
+
+    related_usecases:
+      - "全スタッフの権限設定状況確認"
+      - "権限ロールや部署での絞り込み検索"
+
+common_components:
+  - component_name: "スタッフ検索コンポーネント"
+    description: "スタッフ名またはメールアドレスで検索し、候補を表示する共通コンポーネント"
+    used_in:
+      - "スタッフ一覧画面"
+      - "パスワードリセット画面"
+      - "権限割り当て画面"
+      - "権限変更画面"
+
+  - component_name: "権限ロール選択コンポーネント"
+    description: "6種類の権限ロールから選択するドロップダウンコンポーネント"
+    used_in:
+      - "スタッフ登録画面"
+      - "権限割り当て画面"
+      - "権限変更画面"
+
+  - component_name: "確認ダイアログ"
+    description: "削除やリセットなどの重要な操作前に確認を求めるダイアログ"
+    used_in:
+      - "スタッフ削除確認画面"
+      - "パスワードリセット画面"
+      - "権限変更画面"
+
+validations:
+  - field: "メールアドレス"
+    rule: "システム全体で一意であること"
+
+  - field: "権限ロール"
+    rule: "Admin、Reservation Manager、Front Desk、Housekeeping、Accounting、Owner View Onlyのいずれか"
+
+  - field: "パスワードリセット"
+    rule: "本人確認と理由の記録が必須"
+
+  - field: "権限変更"
+    rule: "変更理由の記録が必須、監査ログに自動記録される"
+
+  - field: "スタッフ削除"
+    rule: "削除理由の選択が必須、アカウントは自動的に無効化される"

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設管理 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>施設管理 - モック画面一覧</h1>
+        <p class="subtitle">宿泊施設の基本情報、部屋タイプ、部屋の登録・更新・削除・参照を行う機能のモック画面です。</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>
+                <strong>施設管理者:</strong> 施設検索 → 施設登録/詳細 → 部屋タイプ管理 → 部屋管理<br>
+                <strong>フロントスタッフ:</strong> 空き部屋検索 → チェックイン → チェックアウト → 部屋状態変更<br>
+                <strong>清掃スタッフ:</strong> 清掃対象一覧 → 清掃開始 → 清掃完了報告
+            </p>
+        </div>
+
+        <div class="category">
+            <h2>施設管理者 - 施設管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="facility_list.html">
+                        <div class="title">施設検索画面</div>
+                        <div class="description">登録済み施設を検索・一覧表示する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="facility_form.html">
+                        <div class="title">施設登録画面</div>
+                        <div class="description">新規施設の基本情報を登録する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="facility_detail.html">
+                        <div class="title">施設詳細画面</div>
+                        <div class="description">施設の詳細情報を参照する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="facility_edit.html">
+                        <div class="title">施設更新画面</div>
+                        <div class="description">既存施設の情報を変更する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>施設管理者 - 部屋タイプ管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="room_type_list.html">
+                        <div class="title">部屋タイプ検索画面</div>
+                        <div class="description">部屋タイプを検索・一覧表示する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_type_form.html">
+                        <div class="title">部屋タイプ登録画面</div>
+                        <div class="description">新規部屋タイプを登録する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_type_edit.html">
+                        <div class="title">部屋タイプ更新画面</div>
+                        <div class="description">部屋タイプ情報を変更する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>施設管理者 - 部屋管理</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="room_list.html">
+                        <div class="title">部屋検索画面（管理者）</div>
+                        <div class="description">全体の部屋状況を把握する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_form.html">
+                        <div class="title">部屋登録画面</div>
+                        <div class="description">新規部屋を登録する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_edit.html">
+                        <div class="title">部屋更新画面</div>
+                        <div class="description">部屋情報を変更する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>予約管理担当者</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="facility_detail_reservation.html">
+                        <div class="title">施設詳細画面（予約担当者）</div>
+                        <div class="description">顧客対応のため施設の詳細情報を参照する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_type_compare.html">
+                        <div class="title">部屋タイプ比較画面</div>
+                        <div class="description">顧客に最適な部屋タイプを案内する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>フロントスタッフ</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="vacant_room_search.html">
+                        <div class="title">空き部屋検索画面</div>
+                        <div class="description">ウォークイン客に対応するため空き部屋を検索する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="checkin.html">
+                        <div class="title">チェックイン画面</div>
+                        <div class="description">顧客のチェックイン処理を行う</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="checkout.html">
+                        <div class="title">チェックアウト画面</div>
+                        <div class="description">顧客のチェックアウト処理を行う</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="room_status_change.html">
+                        <div class="title">部屋状態変更画面</div>
+                        <div class="description">検査合格した部屋を予約可能にする</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>清掃スタッフ</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="cleaning_target_list.html">
+                        <div class="title">清掃対象部屋一覧画面</div>
+                        <div class="description">清掃対象の部屋を確認し業務計画を立てる</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="cleaning_start.html">
+                        <div class="title">清掃開始画面</div>
+                        <div class="description">清掃開始を記録する</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="cleaning_complete.html">
+                        <div class="title">清掃完了報告画面</div>
+                        <div class="description">清掃完了を報告する</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

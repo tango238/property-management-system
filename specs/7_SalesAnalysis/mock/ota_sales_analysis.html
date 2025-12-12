@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTA別売上分析画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .section h2 { font-size: 18px; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .form-row { display: flex; gap: 20px; margin-bottom: 15px; align-items: flex-end; }
+        .form-group { flex: 1; }
+        .form-group label { display: block; font-size: 14px; color: #666; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #1e7e34; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-info:hover { background: #138496; }
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: bold; color: #333; text-align: center; }
+        td:first-child { text-align: left; }
+        .chart-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-placeholder { background: #e9ecef; height: 250px; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: #666; }
+        .highlight-best { background: #d4edda; }
+        .highlight-worst { background: #f8d7da; }
+        .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .summary-card { background: #f8f9fa; padding: 15px; border-radius: 4px; text-align: center; }
+        .summary-card .label { font-size: 12px; color: #666; margin-bottom: 5px; }
+        .summary-card .value { font-size: 20px; font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+        </div>
+
+        <h1>OTA別売上分析画面</h1>
+
+        <div class="section">
+            <h2>分析条件設定</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>対象期間開始日</label>
+                    <input type="date" value="2024-11-01" />
+                </div>
+                <div class="form-group">
+                    <label>対象期間終了日</label>
+                    <input type="date" value="2024-11-30" />
+                </div>
+                <div class="form-group">
+                    <label>OTA種別</label>
+                    <select>
+                        <option value="">すべて</option>
+                        <option value="rakuten">楽天トラベル</option>
+                        <option value="jalan">じゃらん</option>
+                        <option value="booking">Booking.com</option>
+                        <option value="airbnb">Airbnb</option>
+                        <option value="direct">直接予約</option>
+                    </select>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary">集計実行</button>
+                <button class="btn btn-secondary">収益性比較</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>サマリー</h2>
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="label">総売上金額</div>
+                    <div class="value">¥9,850,000</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">総手数料額</div>
+                    <div class="value">¥950,000</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">純利益合計</div>
+                    <div class="value">¥8,900,000</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">平均手数料率</div>
+                    <div class="value">9.6%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>OTA別売上一覧</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>OTA名</th>
+                        <th>売上金額</th>
+                        <th>予約件数</th>
+                        <th>構成比</th>
+                        <th>手数料率</th>
+                        <th>手数料額</th>
+                        <th>純利益</th>
+                        <th>純利益率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>楽天トラベル</td>
+                        <td>¥2,850,000</td>
+                        <td>95件</td>
+                        <td>28.9%</td>
+                        <td>10%</td>
+                        <td>¥285,000</td>
+                        <td>¥2,565,000</td>
+                        <td>90.0%</td>
+                    </tr>
+                    <tr>
+                        <td>じゃらん</td>
+                        <td>¥2,450,000</td>
+                        <td>82件</td>
+                        <td>24.9%</td>
+                        <td>10%</td>
+                        <td>¥245,000</td>
+                        <td>¥2,205,000</td>
+                        <td>90.0%</td>
+                    </tr>
+                    <tr class="highlight-worst">
+                        <td>Booking.com</td>
+                        <td>¥1,850,000</td>
+                        <td>58件</td>
+                        <td>18.8%</td>
+                        <td>15%</td>
+                        <td>¥277,500</td>
+                        <td>¥1,572,500</td>
+                        <td>85.0%</td>
+                    </tr>
+                    <tr class="highlight-worst">
+                        <td>Airbnb</td>
+                        <td>¥950,000</td>
+                        <td>32件</td>
+                        <td>9.6%</td>
+                        <td>15%</td>
+                        <td>¥142,500</td>
+                        <td>¥807,500</td>
+                        <td>85.0%</td>
+                    </tr>
+                    <tr class="highlight-best">
+                        <td>直接予約</td>
+                        <td>¥1,750,000</td>
+                        <td>45件</td>
+                        <td>17.8%</td>
+                        <td>0%</td>
+                        <td>¥0</td>
+                        <td>¥1,750,000</td>
+                        <td>100.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 12px; color: #666;">※ 緑: 収益性が最も高い / 赤: 手数料率が高い</p>
+        </div>
+
+        <div class="section">
+            <h2>グラフ表示</h2>
+            <div class="chart-container">
+                <div>
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 10px;">売上構成比（円グラフ）</h3>
+                    <div class="chart-placeholder">[OTA別売上構成比の円グラフ表示エリア]</div>
+                </div>
+                <div>
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 10px;">収益性比較（棒グラフ）</h3>
+                    <div class="chart-placeholder">[OTA別純利益率の棒グラフ表示エリア]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-success">レポート出力</button>
+            <button class="btn btn-info" onclick="location.href='direct_booking_analysis.html'">直接予約分析へ</button>
+            <button class="btn btn-secondary" onclick="location.href='dashboard.html'">戻る</button>
+        </div>
+    </div>
+</body>
+</html>

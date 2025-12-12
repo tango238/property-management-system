@@ -1,0 +1,52 @@
+{
+    "feature_name": "4_ReservationManagement",
+    "created_at": "2025-12-10T04:43:49Z",
+    "updated_at": "2025-12-10T05:10:00Z",
+    "language": "Japanese",
+    "last_execution": "generate-mock",
+    "readme": {
+        "checksum": "718771508cc66c0338577ae70202727e",
+        "last_modified": "2025-11-20T16:52:29"
+    },
+    "steps": [
+        {
+            "feature": {
+                "version": 1,
+                "checksum": "5f93717f1414e93ea7ed21b3f18a702b",
+                "last_modified": "2025-12-10T13:43:36"
+            }
+        },
+        {
+            "story": {
+                "version": 1,
+                "checksum": "2170f9cb4b42b311b58139eccf5e929c",
+                "last_modified": "2025-12-10T04:45:50Z"
+            }
+        },
+        {
+            "usecase": {
+                "version": 1,
+                "checksum": "6686899eb079251cce579b4b5171d863",
+                "last_modified": "2025-12-10T04:48:10Z"
+            }
+        },
+        {
+            "ui": {
+                "version": 1,
+                "checksum": "71da07258b06bab9ba2c72875fe09d5c",
+                "last_modified": "2025-12-10T04:50:27Z"
+            }
+        },
+        {
+            "screenflow": {
+                "version": 1,
+                "checksum": "052a0d13d3999b152f2659c487e85095",
+                "last_modified": "2025-12-10T04:52:47Z"
+            }
+        }
+    ],
+    "mock": {
+        "version": 1,
+        "last_modified": "2025-12-10T05:10:00Z"
+    }
+}

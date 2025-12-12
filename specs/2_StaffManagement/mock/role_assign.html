@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>権限割り当て画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .info-box { background: #e7f3ff; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #007bff; }
+        .info-box p { margin: 0; font-size: 14px; color: #333; }
+        .display-fields { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .display-fields .field { display: flex; margin-bottom: 10px; }
+        .display-fields .field:last-child { margin-bottom: 0; }
+        .display-fields .label { width: 180px; font-weight: bold; color: #666; }
+        .display-fields .value { color: #333; }
+        .display-fields .value.unset { color: #999; font-style: italic; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group .required { color: #dc3545; margin-left: 3px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group .note { font-size: 12px; color: #666; margin-top: 5px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-cancel { background: #6c757d; color: white; }
+        .actions { margin-top: 30px; }
+        .role-description { background: #fff3cd; padding: 15px; border-radius: 4px; margin-top: 20px; }
+        .role-description h4 { margin: 0 0 10px 0; font-size: 14px; }
+        .role-description ul { margin: 0; padding-left: 20px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">モック一覧</a> &gt; <a href="staff_list.html">スタッフ一覧</a> &gt; 権限割り当て画面
+        </div>
+        <h1>権限割り当て画面</h1>
+
+        <div class="info-box">
+            <p>新規スタッフに権限ロールを割り当てます。権限ロールによって利用可能な機能が異なります。</p>
+        </div>
+
+        <div class="form-group">
+            <label>対象スタッフ<span class="required">*</span></label>
+            <input type="text" placeholder="名前またはメールアドレスを入力" value="田中 次郎">
+        </div>
+
+        <div class="display-fields">
+            <div class="field">
+                <span class="label">スタッフID:</span>
+                <span class="value">STF-004</span>
+            </div>
+            <div class="field">
+                <span class="label">名前:</span>
+                <span class="value">田中 次郎</span>
+            </div>
+            <div class="field">
+                <span class="label">メールアドレス:</span>
+                <span class="value">tanaka@example.com</span>
+            </div>
+            <div class="field">
+                <span class="label">現在の権限ロール:</span>
+                <span class="value unset">（未設定）</span>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label>権限ロール<span class="required">*</span></label>
+                <select id="roleSelect" onchange="updateRoleDescription()">
+                    <option value="">選択してください</option>
+                    <option value="admin">Admin</option>
+                    <option value="reservation">Reservation Manager</option>
+                    <option value="frontdesk">Front Desk</option>
+                    <option value="housekeeping">Housekeeping</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="owner">Owner View Only</option>
+                </select>
+                <span class="note">割り当てる権限ロールを選択してください</span>
+            </div>
+
+            <div class="role-description" id="roleDescription" style="display: none;">
+                <h4>選択中の権限ロールの説明</h4>
+                <ul id="roleDescriptionList"></ul>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-primary" onclick="location.href='staff_list.html'">権限割り当て</button>
+                <button type="button" class="btn btn-cancel" onclick="location.href='staff_list.html'">キャンセル</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const roleDescriptions = {
+            admin: ['全機能へのアクセス権限', 'スタッフ管理、予約管理、経理機能など全てを利用可能'],
+            reservation: ['予約管理機能へのアクセス権限', '予約の作成・編集・キャンセルが可能'],
+            frontdesk: ['フロント業務機能へのアクセス権限', 'チェックイン・チェックアウト処理が可能'],
+            housekeeping: ['清掃管理機能へのアクセス権限', '清掃スケジュールの確認・更新が可能'],
+            accounting: ['経理・売上分析機能へのアクセス権限', '売上レポート・請求管理が可能'],
+            owner: ['閲覧のみの権限', 'データの閲覧のみ可能、編集は不可']
+        };
+
+        function updateRoleDescription() {
+            const select = document.getElementById('roleSelect');
+            const descDiv = document.getElementById('roleDescription');
+            const descList = document.getElementById('roleDescriptionList');
+
+            if (select.value && roleDescriptions[select.value]) {
+                descList.innerHTML = roleDescriptions[select.value].map(d => '<li>' + d + '</li>').join('');
+                descDiv.style.display = 'block';
+            } else {
+                descDiv.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

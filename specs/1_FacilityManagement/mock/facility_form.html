@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設登録画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        .form-group label .required { color: #dc3545; margin-left: 4px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group textarea { height: 100px; resize: vertical; }
+        .form-group .hint { font-size: 12px; color: #666; margin-top: 4px; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-group label { font-weight: normal; display: flex; align-items: center; gap: 5px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; <a href="facility_list.html">施設検索</a> &gt; 施設登録
+        </div>
+        <h1>施設登録画面</h1>
+
+        <form>
+            <div class="form-group">
+                <label>施設名<span class="required">*</span></label>
+                <input type="text" placeholder="例：グランドホテル東京">
+                <div class="hint">100文字以内</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>郵便番号<span class="required">*</span></label>
+                    <input type="text" placeholder="1000001">
+                    <div class="hint">半角数字7桁（ハイフンなし）</div>
+                </div>
+                <div class="form-group">
+                    <label>電話番号<span class="required">*</span></label>
+                    <input type="text" placeholder="03-1234-5678">
+                    <div class="hint">半角数字とハイフンのみ</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>住所<span class="required">*</span></label>
+                <input type="text" placeholder="例：東京都千代田区...">
+                <div class="hint">200文字以内</div>
+            </div>
+
+            <div class="form-group">
+                <label>メールアドレス</label>
+                <input type="email" placeholder="info@example.com">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>チェックイン時刻<span class="required">*</span></label>
+                    <input type="time" value="15:00">
+                </div>
+                <div class="form-group">
+                    <label>チェックアウト時刻<span class="required">*</span></label>
+                    <input type="time" value="10:00">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>アメニティ</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox"> Wi-Fi</label>
+                    <label><input type="checkbox"> 駐車場</label>
+                    <label><input type="checkbox"> レストラン</label>
+                    <label><input type="checkbox"> 大浴場</label>
+                    <label><input type="checkbox"> フィットネス</label>
+                    <label><input type="checkbox"> コインランドリー</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>施設説明</label>
+                <textarea placeholder="施設の詳細説明を入力してください"></textarea>
+                <div class="hint">1000文字以内</div>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" onclick="location.href='facility_list.html'">キャンセル</button>
+                <button type="submit" class="btn btn-primary">登録</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

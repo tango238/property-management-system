@@ -1,0 +1,461 @@
+usecases:
+  # 清掃対象部屋の抽出と優先順位表示
+  - usecase:
+    name: 清掃対象部屋一覧の確認
+    stories:
+      - 清掃スタッフとして、効率的に清掃業務を開始するために、チェックアウト済みの部屋を優先順位付きで一覧表示したい
+      - 清掃スタッフとして、朝の清掃業務を開始するために、モバイルデバイスで清掃対象部屋一覧を確認したい
+    trackings:
+      - "story.yml:5 - チェックアウト済みの部屋を優先順位付きで一覧表示"
+      - "story.yml:10 - モバイルデバイスで清掃対象部屋一覧を確認"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 清掃スタッフがモバイルデバイスでログイン済み
+    after: 清掃対象部屋が優先順位付きで一覧表示される
+    boundary:
+      name: "清掃対象部屋一覧画面\n(モバイル)"
+      as: CleaningListUI
+    control:
+      name: "清掃対象抽出\nコントローラ"
+      as: CleaningListCtrl
+    entity:
+      name: "清掃タスク"
+      as: CleaningTask
+    steps:
+      - step: Housekeeper --> CleaningListUI
+        label: 1.清掃対象一覧画面を開く
+        note: モバイルデバイスからアクセス
+      - step: CleaningListUI --> CleaningListCtrl
+        label: 2.清掃対象部屋を要求
+      - step: CleaningListCtrl --> CleaningTask
+        label: 3.チェックアウト済み部屋を抽出
+      - step: CleaningTask --> CleaningListCtrl
+        label: 4.優先順位を算出
+      - step: CleaningListCtrl --> CleaningListUI
+        label: 5.優先順位付き一覧を返却
+      - step: CleaningListUI --> Housekeeper
+        label: 6.一覧を表示
+
+  - usecase:
+    name: 清掃優先順位の確認
+    stories:
+      - 清掃スタッフとして、チェックイン待ちのゲストを待たせないために、次のチェックイン時刻が近い部屋を優先的に確認したい
+      - 清掃スタッフとして、緊急度の高い部屋を特定するために、チェックイン時刻と優先順位を一目で把握したい
+    trackings:
+      - "story.yml:15 - 次のチェックイン時刻が近い部屋を優先的に確認"
+      - "story.yml:20 - チェックイン時刻と優先順位を一目で把握"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 清掃対象部屋が存在する
+    after: 緊急度の高い清掃対象が特定される
+    boundary:
+      name: "清掃優先順位表示画面\n(モバイル)"
+      as: PriorityUI
+    control:
+      name: "優先順位算出\nコントローラ"
+      as: PriorityCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: Housekeeper --> PriorityUI
+        label: 1.優先順位画面を開く
+      - step: PriorityUI --> PriorityCtrl
+        label: 2.優先順位情報を要求
+      - step: PriorityCtrl --> Room
+        label: 3.チェックイン時刻を取得
+      - step: Room --> PriorityCtrl
+        label: 4.優先度を計算
+      - step: PriorityCtrl --> PriorityUI
+        label: 5.優先順位付き一覧を返却
+      - step: PriorityUI --> Housekeeper
+        label: 6.高優先度部屋を強調表示
+
+  # 清掃状況の更新と部屋状態遷移
+  - usecase:
+    name: 清掃開始の記録
+    stories:
+      - 清掃スタッフとして、清掃作業の進捗を正確に記録するために、モバイルデバイスで清掃開始を記録したい
+    trackings:
+      - "story.yml:26 - モバイルデバイスで清掃開始を記録"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 清掃対象部屋がDirty状態である
+    after: 部屋状態がCleaningに変更され、清掃開始時刻が記録される
+    boundary:
+      name: "清掃開始記録画面\n(モバイル)"
+      as: StartCleaningUI
+    control:
+      name: "清掃状態更新\nコントローラ"
+      as: CleaningStatusCtrl
+    entity:
+      name: "清掃タスク"
+      as: CleaningTask
+    steps:
+      - step: Housekeeper --> StartCleaningUI
+        label: 1.清掃開始ボタンを押下
+      - step: StartCleaningUI --> CleaningStatusCtrl
+        label: 2.清掃開始を送信
+      - step: CleaningStatusCtrl --> CleaningTask
+        label: 3.開始時刻を記録
+      - step: CleaningTask --> CleaningStatusCtrl
+        label: 4.部屋状態をCleaningに変更
+      - step: CleaningStatusCtrl --> StartCleaningUI
+        label: 5.記録完了を返却
+      - step: StartCleaningUI --> Housekeeper
+        label: 6.開始記録完了を表示
+
+  - usecase:
+    name: 清掃完了の記録
+    stories:
+      - 清掃スタッフとして、清掃完了をフロントに伝えるために、モバイルデバイスで清掃完了を記録したい
+    trackings:
+      - "story.yml:31 - モバイルデバイスで清掃完了を記録"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 部屋がCleaning状態で清掃作業中である
+    after: 部屋状態がInspectedに変更され、清掃完了時刻が記録される
+    boundary:
+      name: "清掃完了記録画面\n(モバイル)"
+      as: CompleteCleaningUI
+    control:
+      name: "清掃状態更新\nコントローラ"
+      as: CleaningStatusCtrl
+    entity:
+      name: "清掃タスク"
+      as: CleaningTask
+    steps:
+      - step: Housekeeper --> CompleteCleaningUI
+        label: 1.清掃完了ボタンを押下
+      - step: CompleteCleaningUI --> CleaningStatusCtrl
+        label: 2.清掃完了を送信
+      - step: CleaningStatusCtrl --> CleaningTask
+        label: 3.完了時刻を記録
+      - step: CleaningTask --> CleaningStatusCtrl
+        label: 4.部屋状態をInspectedに変更
+      - step: CleaningStatusCtrl --> CompleteCleaningUI
+        label: 5.記録完了を返却
+      - step: CompleteCleaningUI --> Housekeeper
+        label: 6.完了記録を表示
+
+  - usecase:
+    name: 部屋のVacant状態への変更
+    stories:
+      - 清掃スタッフとして、部屋を次のゲストに提供できる状態にするために、点検後にVacant状態に変更したい
+    trackings:
+      - "story.yml:36 - 点検後にVacant状態に変更"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 部屋がInspected状態で点検完了している
+    after: 部屋がVacant状態になり次のゲストへのアサインが可能になる
+    boundary:
+      name: "部屋状態変更画面\n(モバイル)"
+      as: RoomStatusUI
+    control:
+      name: "部屋状態更新\nコントローラ"
+      as: RoomStatusCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: Housekeeper --> RoomStatusUI
+        label: 1.Vacant変更ボタンを押下
+      - step: RoomStatusUI --> RoomStatusCtrl
+        label: 2.状態変更を送信
+      - step: RoomStatusCtrl --> Room
+        label: 3.部屋状態をVacantに更新
+      - step: Room --> RoomStatusCtrl
+        label: 4.更新完了を返却
+      - step: RoomStatusCtrl --> RoomStatusUI
+        label: 5.変更完了を返却
+      - step: RoomStatusUI --> Housekeeper
+        label: 6.Vacant変更完了を表示
+
+  - usecase:
+    name: 清掃状況のリアルタイム確認（フロント）
+    stories:
+      - フロントスタッフとして、チェックイン対応を迅速に行うために、部屋の清掃状況をリアルタイムで確認したい
+      - フロントスタッフとして、部屋の利用可能状態を把握するために、Vacant状態になった部屋を確認したい
+    trackings:
+      - "story.yml:41 - 部屋の清掃状況をリアルタイムで確認"
+      - "story.yml:46 - Vacant状態になった部屋を確認"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: フロントスタッフがシステムにログイン済み
+    after: 最新の部屋清掃状況が把握できる
+    boundary:
+      name: "部屋状況一覧画面\n(フロント)"
+      as: RoomStatusListUI
+    control:
+      name: "部屋状況取得\nコントローラ"
+      as: RoomStatusListCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> RoomStatusListUI
+        label: 1.部屋状況一覧を開く
+      - step: RoomStatusListUI --> RoomStatusListCtrl
+        label: 2.最新状況を要求
+      - step: RoomStatusListCtrl --> Room
+        label: 3.全部屋の状態を取得
+      - step: Room --> RoomStatusListCtrl
+        label: 4.状態一覧を返却
+      - step: RoomStatusListCtrl --> RoomStatusListUI
+        label: 5.リアルタイム状況を返却
+      - step: RoomStatusListUI --> FrontStaff
+        label: 6.清掃状況を表示
+
+  # 清掃完了通知の送信
+  - usecase:
+    name: 清掃完了通知の送信
+    stories:
+      - 清掃スタッフとして、フロントスタッフに迅速に連絡するために、清掃完了時に自動通知を送信したい
+    trackings:
+      - "story.yml:52 - 清掃完了時に自動通知を送信"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 部屋がVacant状態に変更された
+    after: フロントスタッフにプッシュ通知が送信される
+    boundary:
+      name: "清掃完了通知画面\n(モバイル)"
+      as: NotifyUI
+    control:
+      name: "通知送信\nコントローラ"
+      as: NotifyCtrl
+    entity:
+      name: "プッシュ通知サービス"
+      as: PushService
+    steps:
+      - step: Housekeeper --> NotifyUI
+        label: 1.Vacant状態変更完了
+        note: 自動的に通知処理が開始
+      - step: NotifyUI --> NotifyCtrl
+        label: 2.通知送信を要求
+      - step: NotifyCtrl --> PushService
+        label: 3.プッシュ通知を送信
+      - step: PushService --> NotifyCtrl
+        label: 4.送信完了を返却
+      - step: NotifyCtrl --> NotifyUI
+        label: 5.通知完了を返却
+      - step: NotifyUI --> Housekeeper
+        label: 6.通知送信完了を表示
+
+  - usecase:
+    name: 清掃完了通知の受信と確認
+    stories:
+      - フロントスタッフとして、チェックイン待ちのゲストに素早く対応するために、清掃完了のプッシュ通知を受け取りたい
+      - フロントスタッフとして、ゲストの待ち時間を最小化するために、部屋の準備完了を即座に把握したい
+    trackings:
+      - "story.yml:57 - 清掃完了のプッシュ通知を受け取り"
+      - "story.yml:62 - 部屋の準備完了を即座に把握"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: 清掃完了通知が送信された
+    after: フロントスタッフが部屋の準備完了を把握し、チェックイン対応が可能になる
+    boundary:
+      name: "通知受信画面\n(フロント)"
+      as: NotificationUI
+    control:
+      name: "通知確認\nコントローラ"
+      as: NotificationCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: PushService --> NotificationUI
+        label: 1.プッシュ通知を受信
+      - step: NotificationUI --> FrontStaff
+        label: 2.通知を表示
+      - step: FrontStaff --> NotificationUI
+        label: 3.通知を確認
+      - step: NotificationUI --> NotificationCtrl
+        label: 4.部屋詳細を要求
+      - step: NotificationCtrl --> Room
+        label: 5.部屋情報を取得
+      - step: Room --> NotificationUI
+        label: 6.部屋情報を表示
+
+  # 備品不足の記録と補充依頼
+  - usecase:
+    name: 備品不足の記録
+    stories:
+      - 清掃スタッフとして、備品切れによるサービス低下を防ぐために、清掃中に発見した備品不足を記録したい
+      - 清掃スタッフとして、破損状況を正確に伝えるために、備品の破損写真を添付して報告したい
+    trackings:
+      - "story.yml:68 - 清掃中に発見した備品不足を記録"
+      - "story.yml:78 - 備品の破損写真を添付して報告"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 清掃スタッフが清掃作業中に備品不足を発見した
+    after: 備品不足が記録され、写真が添付される
+    boundary:
+      name: "備品不足記録画面\n(モバイル)"
+      as: SupplyShortageUI
+    control:
+      name: "備品不足記録\nコントローラ"
+      as: SupplyShortageCtrl
+    entity:
+      name: "備品"
+      as: Supply
+    steps:
+      - step: Housekeeper --> SupplyShortageUI
+        label: 1.備品不足記録画面を開く
+      - step: Housekeeper --> SupplyShortageUI
+        label: 2.不足備品の種類と数量を入力
+      - step: Housekeeper --> SupplyShortageUI
+        label: 3.破損写真を添付
+        note: 任意
+      - step: SupplyShortageUI --> SupplyShortageCtrl
+        label: 4.記録内容を送信
+      - step: SupplyShortageCtrl --> Supply
+        label: 5.備品不足を記録
+      - step: Supply --> SupplyShortageUI
+        label: 6.記録完了を表示
+
+  - usecase:
+    name: 備品補充依頼の送信
+    stories:
+      - 清掃スタッフとして、迅速な備品補充を依頼するために、モバイルデバイスで補充依頼を送信したい
+    trackings:
+      - "story.yml:73 - モバイルデバイスで補充依頼を送信"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 備品不足が記録されている
+    after: 補充依頼が担当部署に送信される
+    boundary:
+      name: "備品補充依頼画面\n(モバイル)"
+      as: SupplyRequestUI
+    control:
+      name: "補充依頼送信\nコントローラ"
+      as: SupplyRequestCtrl
+    entity:
+      name: "補充依頼"
+      as: SupplyRequest
+    steps:
+      - step: Housekeeper --> SupplyRequestUI
+        label: 1.補充依頼画面を開く
+      - step: SupplyRequestUI --> Housekeeper
+        label: 2.不足備品一覧を表示
+      - step: Housekeeper --> SupplyRequestUI
+        label: 3.補充依頼を確定
+      - step: SupplyRequestUI --> SupplyRequestCtrl
+        label: 4.補充依頼を送信
+      - step: SupplyRequestCtrl --> SupplyRequest
+        label: 5.依頼を登録
+      - step: SupplyRequest --> SupplyRequestUI
+        label: 6.送信完了を表示
+
+  - usecase:
+    name: 補充完了通知の受信
+    stories:
+      - 清掃スタッフとして、補充状況を把握するために、補充完了の通知を受け取りたい
+    trackings:
+      - "story.yml:83 - 補充完了の通知を受け取り"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: 補充依頼が送信され、担当部署が対応完了した
+    after: 清掃スタッフが補充完了を把握し、清掃作業を継続できる
+    boundary:
+      name: "補充完了通知画面\n(モバイル)"
+      as: SupplyCompleteUI
+    control:
+      name: "補充状況確認\nコントローラ"
+      as: SupplyCompleteCtrl
+    entity:
+      name: "補充依頼"
+      as: SupplyRequest
+    steps:
+      - step: PushService --> SupplyCompleteUI
+        label: 1.補充完了通知を受信
+      - step: SupplyCompleteUI --> Housekeeper
+        label: 2.通知を表示
+      - step: Housekeeper --> SupplyCompleteUI
+        label: 3.通知を確認
+      - step: SupplyCompleteUI --> SupplyCompleteCtrl
+        label: 4.補充詳細を要求
+      - step: SupplyCompleteCtrl --> SupplyRequest
+        label: 5.補充情報を取得
+      - step: SupplyRequest --> SupplyCompleteUI
+        label: 6.補充詳細を表示
+
+  # クロスファンクショナル
+  - usecase:
+    name: 清掃業務の一連フロー実行
+    stories:
+      - 清掃スタッフとして、一連の清掃業務を効率的に完了するために、清掃対象確認から完了報告までをモバイルデバイスで一貫して行いたい
+    trackings:
+      - "story.yml:89 - 清掃対象確認から完了報告までをモバイルデバイスで一貫して行う"
+    actor:
+      name: "清掃スタッフ"
+      as: Housekeeper
+    before: チェックアウトが完了し清掃対象部屋が存在する
+    after: 清掃が完了し部屋がVacant状態になる
+    boundary:
+      name: "清掃業務統合画面\n(モバイル)"
+      as: CleaningWorkflowUI
+    control:
+      name: "清掃ワークフロー\nコントローラ"
+      as: CleaningWorkflowCtrl
+    entity:
+      name: "清掃タスク"
+      as: CleaningTask
+    steps:
+      - step: Housekeeper --> CleaningWorkflowUI
+        label: 1.清掃対象一覧を確認
+      - step: Housekeeper --> CleaningWorkflowUI
+        label: 2.対象部屋を選択
+      - step: CleaningWorkflowUI --> CleaningWorkflowCtrl
+        label: 3.清掃開始を記録
+      - step: CleaningWorkflowCtrl --> CleaningTask
+        label: 4.状態をCleaningに更新
+      - step: Housekeeper --> CleaningWorkflowUI
+        label: 5.清掃完了を記録
+      - step: CleaningWorkflowCtrl --> CleaningTask
+        label: 6.状態をVacantに更新
+
+  - usecase:
+    name: チェックイン待ちゲストへの迅速対応
+    stories:
+      - フロントスタッフとして、ゲストの満足度を高めるために、清掃完了通知を受けて即座にチェックイン手続きを完了したい
+    trackings:
+      - "story.yml:94 - 清掃完了通知を受けて即座にチェックイン手続きを完了"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: ゲストがチェックイン待ちで、清掃が完了した
+    after: ゲストがチェックインを完了し、ルームキーを受け取る
+    boundary:
+      name: "チェックイン画面\n(フロント)"
+      as: CheckInUI
+    control:
+      name: "チェックイン\nコントローラ"
+      as: CheckInCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: PushService --> FrontStaff
+        label: 1.清掃完了通知を受信
+      - step: FrontStaff --> CheckInUI
+        label: 2.チェックイン画面を開く
+      - step: CheckInUI --> CheckInCtrl
+        label: 3.部屋割り当てを実行
+      - step: CheckInCtrl --> Room
+        label: 4.部屋をアサイン
+      - step: Room --> CheckInUI
+        label: 5.チェックイン完了
+      - step: FrontStaff --> Housekeeper
+        label: 6.ゲストを部屋に案内
+        note: ルームキーを渡す

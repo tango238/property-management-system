@@ -1,0 +1,424 @@
+# 生成日時: 2025-12-10
+
+sitemap:
+  name: ホテル施設管理システム（PMS Admin）
+  description: ホテル運営会社向けの総合施設管理システム。客室・設備の管理から、スタッフ配置、料金設定、予約管理、ゲスト対応、清掃管理、売上分析まで、ホテル運営に必要なすべての業務を一元的に管理・運用できる。
+
+  auth:
+    name: 認証
+    pages:
+      - id: login
+        file: login.html
+        title: ログイン
+        links:
+          - password_reset.html
+      - id: password-reset
+        file: password_reset.html
+        title: パスワードリセット
+        links:
+          - login.html
+
+  main:
+    dashboard:
+      name: ダッシュボード
+      pages:
+        - id: dashboard
+          file: dashboard.html
+          title: ダッシュボード
+          nav_level: 1
+
+    facility:
+      name: 施設管理
+      pages:
+        - id: facility-list
+          file: facility_list.html
+          title: 施設検索
+          mock: 1_FacilityManagement/mock/facility_list.html
+          nav_level: 1
+          links:
+            - facility_form.html
+            - facility_detail.html
+        - id: facility-form
+          file: facility_form.html
+          title: 施設登録・編集
+          mock: 1_FacilityManagement/mock/facility_form.html
+          nav_level: 2
+          parent: facility-list
+        - id: facility-detail
+          file: facility_detail.html
+          title: 施設詳細
+          mock: 1_FacilityManagement/mock/facility_detail.html
+          nav_level: 2
+          parent: facility-list
+        - id: room-type-list
+          file: room_type_list.html
+          title: 部屋タイプ管理
+          mock: 1_FacilityManagement/mock/room_type_list.html
+          nav_level: 1
+          links:
+            - room_type_form.html
+        - id: room-type-form
+          file: room_type_form.html
+          title: 部屋タイプ登録・編集
+          mock: 1_FacilityManagement/mock/room_type_form.html
+          nav_level: 2
+          parent: room-type-list
+        - id: room-list
+          file: room_list.html
+          title: 部屋管理
+          mock: 1_FacilityManagement/mock/room_list.html
+          nav_level: 1
+          links:
+            - room_form.html
+        - id: room-form
+          file: room_form.html
+          title: 部屋登録・編集
+          mock: 1_FacilityManagement/mock/room_form.html
+          nav_level: 2
+          parent: room-list
+
+    staff:
+      name: スタッフ管理
+      pages:
+        - id: staff-list
+          file: staff_list.html
+          title: スタッフ一覧
+          mock: 2_StaffManagement/mock/staff_list.html
+          nav_level: 1
+          links:
+            - staff_form.html
+            - staff_delete.html
+            - password_reset_staff.html
+        - id: staff-form
+          file: staff_form.html
+          title: スタッフ登録・編集
+          mock: 2_StaffManagement/mock/staff_form.html
+          nav_level: 2
+          parent: staff-list
+        - id: staff-delete
+          file: staff_delete.html
+          title: スタッフ削除確認
+          mock: 2_StaffManagement/mock/staff_delete.html
+          nav_level: 2
+          parent: staff-list
+        - id: password-reset-staff
+          file: password_reset_staff.html
+          title: パスワードリセット（スタッフ）
+          mock: 2_StaffManagement/mock/password_reset_staff.html
+          nav_level: 2
+          parent: staff-list
+        - id: permission-list
+          file: permission_list.html
+          title: 権限管理
+          mock: 2_StaffManagement/mock/permission_list.html
+          nav_level: 1
+          links:
+            - permission_assign.html
+            - permission_change.html
+        - id: permission-assign
+          file: permission_assign.html
+          title: 権限割り当て
+          mock: 2_StaffManagement/mock/permission_assign.html
+          nav_level: 2
+          parent: permission-list
+        - id: permission-change
+          file: permission_change.html
+          title: 権限変更
+          mock: 2_StaffManagement/mock/permission_change.html
+          nav_level: 2
+          parent: permission-list
+
+    pricing:
+      name: 料金管理
+      pages:
+        - id: season-list
+          file: season_list.html
+          title: シーズン管理
+          mock: 3_PricingManagement/mock/season_list.html
+          nav_level: 1
+          links:
+            - season_form.html
+            - season_delete.html
+        - id: season-form
+          file: season_form.html
+          title: シーズン登録・編集
+          mock: 3_PricingManagement/mock/season_form.html
+          nav_level: 2
+          parent: season-list
+        - id: season-delete
+          file: season_delete.html
+          title: シーズン削除確認
+          mock: 3_PricingManagement/mock/season_delete.html
+          nav_level: 2
+          parent: season-list
+        - id: rate-plan-list
+          file: rate_plan_list.html
+          title: レートプラン管理
+          mock: 3_PricingManagement/mock/rate_plan_list.html
+          nav_level: 1
+          links:
+            - rate_plan_form.html
+            - rate_plan_delete.html
+            - rate_plan_bulk.html
+        - id: rate-plan-form
+          file: rate_plan_form.html
+          title: レートプラン登録・編集
+          mock: 3_PricingManagement/mock/rate_plan_form.html
+          nav_level: 2
+          parent: rate-plan-list
+        - id: rate-plan-delete
+          file: rate_plan_delete.html
+          title: レートプラン削除確認
+          mock: 3_PricingManagement/mock/rate_plan_delete.html
+          nav_level: 2
+          parent: rate-plan-list
+        - id: rate-plan-bulk
+          file: rate_plan_bulk.html
+          title: レートプラン一括更新
+          mock: 3_PricingManagement/mock/rate_plan_bulk.html
+          nav_level: 2
+          parent: rate-plan-list
+        - id: sync-log
+          file: sync_log.html
+          title: 同期ログ
+          mock: 3_PricingManagement/mock/sync_log.html
+          nav_level: 1
+          links:
+            - sync_error_detail.html
+        - id: sync-error-detail
+          file: sync_error_detail.html
+          title: 同期エラー詳細
+          mock: 3_PricingManagement/mock/sync_error_detail.html
+          nav_level: 2
+          parent: sync-log
+
+    reservation:
+      name: 予約管理
+      pages:
+        - id: reservation-dashboard
+          file: reservation_dashboard.html
+          title: 予約ダッシュボード
+          mock: 4_ReservationManagement/mock/reservation_dashboard.html
+          nav_level: 1
+          links:
+            - reservation_list.html
+            - reservation_calendar.html
+            - double_booking.html
+        - id: reservation-list
+          file: reservation_list.html
+          title: 予約一覧
+          mock: 4_ReservationManagement/mock/reservation_list.html
+          nav_level: 1
+          links:
+            - reservation_detail.html
+            - reservation_cancel.html
+        - id: reservation-detail
+          file: reservation_detail.html
+          title: 予約詳細
+          mock: 4_ReservationManagement/mock/reservation_detail.html
+          nav_level: 2
+          parent: reservation-list
+        - id: reservation-cancel
+          file: reservation_cancel.html
+          title: 予約キャンセル
+          mock: 4_ReservationManagement/mock/reservation_cancel.html
+          nav_level: 2
+          parent: reservation-list
+        - id: reservation-calendar
+          file: reservation_calendar.html
+          title: 予約カレンダー
+          mock: 4_ReservationManagement/mock/reservation_calendar.html
+          nav_level: 1
+        - id: room-assign
+          file: room_assign.html
+          title: 部屋アサイン
+          mock: 4_ReservationManagement/mock/room_assign.html
+          nav_level: 1
+        - id: double-booking
+          file: double_booking.html
+          title: ダブルブッキング対応
+          mock: 4_ReservationManagement/mock/double_booking.html
+          nav_level: 1
+          links:
+            - double_booking_reassign.html
+        - id: double-booking-reassign
+          file: double_booking_reassign.html
+          title: ダブルブッキング再割り当て
+          mock: 4_ReservationManagement/mock/double_booking_reassign.html
+          nav_level: 2
+          parent: double-booking
+
+    guest:
+      name: 宿泊者管理
+      pages:
+        - id: arrival-list
+          file: arrival_list.html
+          title: 到着予定一覧
+          mock: 5_GuestManagement/mock/arrival_list.html
+          nav_level: 1
+          links:
+            - checkin.html
+        - id: checkin
+          file: checkin.html
+          title: チェックイン処理
+          mock: 5_GuestManagement/mock/checkin.html
+          nav_level: 1
+          links:
+            - guest_registry_input.html
+        - id: guest-registry-input
+          file: guest_registry_input.html
+          title: フロント宿泊者名簿入力
+          mock: 5_GuestManagement/mock/guest_registry_input.html
+          nav_level: 2
+          parent: checkin
+        - id: checkout
+          file: checkout.html
+          title: チェックアウト処理
+          mock: 5_GuestManagement/mock/checkout.html
+          nav_level: 1
+        - id: guest-registry
+          file: guest_registry.html
+          title: 宿泊者名簿検索
+          mock: 5_GuestManagement/mock/guest_registry.html
+          nav_level: 1
+          links:
+            - guest_registry_detail.html
+        - id: guest-registry-detail
+          file: guest_registry_detail.html
+          title: 宿泊者名簿詳細
+          mock: 5_GuestManagement/mock/guest_registry_detail.html
+          nav_level: 2
+          parent: guest-registry
+        - id: guide-mail
+          file: guide_mail.html
+          title: 案内メール送信
+          mock: 5_GuestManagement/mock/guide_mail.html
+          nav_level: 1
+          links:
+            - mail_error_list.html
+        - id: mail-error-list
+          file: mail_error_list.html
+          title: 送信エラー一覧
+          mock: 5_GuestManagement/mock/mail_error_list.html
+          nav_level: 2
+          parent: guide-mail
+
+    housekeeping:
+      name: 清掃管理
+      pages:
+        - id: housekeeping-dashboard
+          file: housekeeping_dashboard.html
+          title: 清掃ダッシュボード
+          mock: 6_HousekeepingManagement/mock/housekeeping_dashboard.html
+          nav_level: 1
+          links:
+            - cleaning_list.html
+        - id: cleaning-list
+          file: cleaning_list.html
+          title: 清掃対象一覧
+          mock: 6_HousekeepingManagement/mock/cleaning_list.html
+          nav_level: 1
+          links:
+            - cleaning_record.html
+            - supply_shortage.html
+        - id: cleaning-record
+          file: cleaning_record.html
+          title: 清掃作業記録
+          mock: 6_HousekeepingManagement/mock/cleaning_record.html
+          nav_level: 2
+          parent: cleaning-list
+        - id: supply-shortage
+          file: supply_shortage.html
+          title: 備品不足記録
+          mock: 6_HousekeepingManagement/mock/supply_shortage.html
+          nav_level: 2
+          parent: cleaning-list
+        - id: supply-request
+          file: supply_request.html
+          title: 備品補充依頼
+          mock: 6_HousekeepingManagement/mock/supply_request.html
+          nav_level: 2
+          parent: cleaning-list
+        - id: room-status
+          file: room_status.html
+          title: 部屋状況一覧
+          mock: 6_HousekeepingManagement/mock/room_status.html
+          nav_level: 1
+
+    sales:
+      name: 売上分析
+      pages:
+        - id: sales-dashboard
+          file: sales_dashboard.html
+          title: 売上ダッシュボード
+          mock: 7_SalesAnalysis/mock/sales_dashboard.html
+          nav_level: 1
+          links:
+            - sales_report.html
+            - kpi_analysis.html
+            - ota_analysis.html
+            - guest_analysis.html
+        - id: sales-report
+          file: sales_report.html
+          title: 売上集計
+          mock: 7_SalesAnalysis/mock/sales_report.html
+          nav_level: 1
+          links:
+            - sales_data_search.html
+        - id: sales-data-search
+          file: sales_data_search.html
+          title: 売上データ検索
+          mock: 7_SalesAnalysis/mock/sales_data_search.html
+          nav_level: 2
+          parent: sales-report
+        - id: kpi-analysis
+          file: kpi_analysis.html
+          title: 分析指標（KPI）
+          mock: 7_SalesAnalysis/mock/kpi_analysis.html
+          nav_level: 1
+          links:
+            - kpi_monthly.html
+        - id: kpi-monthly
+          file: kpi_monthly.html
+          title: 月次KPI分析
+          mock: 7_SalesAnalysis/mock/kpi_monthly.html
+          nav_level: 2
+          parent: kpi-analysis
+        - id: ota-analysis
+          file: ota_analysis.html
+          title: OTA別分析
+          mock: 7_SalesAnalysis/mock/ota_analysis.html
+          nav_level: 1
+          links:
+            - direct_booking_analysis.html
+        - id: direct-booking-analysis
+          file: direct_booking_analysis.html
+          title: 直接予約分析
+          mock: 7_SalesAnalysis/mock/direct_booking_analysis.html
+          nav_level: 2
+          parent: ota-analysis
+        - id: guest-analysis
+          file: guest_analysis.html
+          title: 宿泊者属性分析
+          mock: 7_SalesAnalysis/mock/guest_analysis.html
+          nav_level: 1
+          links:
+            - inbound_analysis.html
+            - purpose_analysis.html
+        - id: inbound-analysis
+          file: inbound_analysis.html
+          title: インバウンド分析
+          mock: 7_SalesAnalysis/mock/inbound_analysis.html
+          nav_level: 2
+          parent: guest-analysis
+        - id: purpose-analysis
+          file: purpose_analysis.html
+          title: 利用目的分析
+          mock: 7_SalesAnalysis/mock/purpose_analysis.html
+          nav_level: 2
+          parent: guest-analysis
+
+  statistics:
+    total_pages: 62
+    auth_pages: 2
+    main_pages: 60

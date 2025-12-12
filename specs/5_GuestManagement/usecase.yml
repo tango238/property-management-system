@@ -1,0 +1,427 @@
+usecases:
+  # チェックイン案内メール送信
+  - usecase:
+    name: チェックイン案内メールの一括送信
+    stories:
+      - フロントスタッフとして、ゲストに事前に宿泊者名簿を記入してもらうために、チェックイン前日に案内メールを一括送信したい
+      - ゲストとして、チェックイン当日をスムーズに過ごすために、事前に宿泊者名簿記入用のURLを受け取りたい
+    trackings:
+      - "story.yml:5 - チェックイン前日に案内メールを一括送信"
+      - "story.yml:13 - 事前に宿泊者名簿記入用のURLを受け取りたい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: 翌日チェックイン予定の予約が存在する
+    after: 対象ゲストに案内メールが送信され、トークンが発行済み状態になる
+    boundary:
+      name: "案内メール送信画面"
+      as: MailSendUI
+    control:
+      name: "案内メール送信\nコントローラ"
+      as: MailSendCtrl
+    entity:
+      name: "予約・トークン"
+      as: ReservationToken
+    steps:
+      - step: Staff1 --> MailSendUI
+        label: 1.送信対象一覧を表示
+      - step: MailSendUI --> MailSendCtrl
+        label: 2.一括送信を実行
+      - step: MailSendCtrl --> ReservationToken
+        label: 3.トークンを発行・保存
+      - step: MailSendCtrl --> MailSendUI
+        label: 4.メール配信システムへ送信
+      - step: MailSendUI --> Staff1
+        label: 5.送信結果を表示
+
+  - usecase:
+    name: メール送信エラーの確認と対応
+    stories:
+      - フロントスタッフとして、メール送信失敗を把握して対応するために、送信エラー情報を確認したい
+    trackings:
+      - "story.yml:9 - 送信エラー情報を確認したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: 案内メール送信処理が実行され、一部送信失敗が発生している
+    after: 送信失敗が把握され、対応方法が検討された状態
+    boundary:
+      name: "送信エラー一覧画面"
+      as: ErrorListUI
+    control:
+      name: "エラー情報取得\nコントローラ"
+      as: ErrorCtrl
+    entity:
+      name: "メール送信ログ"
+      as: MailLog
+    steps:
+      - step: Staff1 --> ErrorListUI
+        label: 1.エラー一覧を表示
+      - step: ErrorListUI --> ErrorCtrl
+        label: 2.エラー詳細を取得
+      - step: ErrorCtrl --> MailLog
+        label: 3.エラー情報を参照
+      - step: ErrorListUI --> Staff1
+        label: 4.対応方法を検討
+
+  # 宿泊者名簿記入（ゲスト向け）
+  - usecase:
+    name: ゲストによる事前宿泊者名簿記入
+    stories:
+      - ゲストとして、チェックイン時の待ち時間を短縮するために、事前にオンラインで宿泊者名簿を記入したい
+      - ゲストとして、安全に個人情報を入力するために、トークン認証された一時URLから宿泊者名簿を記入したい
+    trackings:
+      - "story.yml:19 - 事前にオンラインで宿泊者名簿を記入したい"
+      - "story.yml:23 - トークン認証された一時URLから宿泊者名簿を記入したい"
+    actor:
+      name: "ゲスト"
+      as: Guest1
+    before: ゲストが案内メールを受信し、トークンが有効期限内である
+    after: 宿泊者名簿が記入完了状態になり、トークンが使用済みになる
+    boundary:
+      name: "宿泊者名簿入力画面"
+      as: RegistrationFormUI
+    control:
+      name: "トークン検証・\n名簿保存コントローラ"
+      as: RegistrationCtrl
+    entity:
+      name: "宿泊者名簿"
+      as: GuestRegistry
+    steps:
+      - step: Guest1 --> RegistrationFormUI
+        label: 1.案内メールのURLをクリック
+      - step: RegistrationFormUI --> RegistrationCtrl
+        label: 2.トークンを検証
+      - step: RegistrationCtrl --> GuestRegistry
+        label: 3.予約情報を取得
+      - step: RegistrationFormUI --> Guest1
+        label: 4.入力フォームを表示
+      - step: Guest1 --> RegistrationFormUI
+        label: 5.氏名・住所等を入力
+      - step: RegistrationFormUI --> RegistrationCtrl
+        label: 6.入力内容を送信
+      - step: RegistrationCtrl --> GuestRegistry
+        label: 7.宿泊者名簿を保存
+      - step: RegistrationFormUI --> Guest1
+        label: 8.完了メッセージを表示
+
+  - usecase:
+    name: トークン期限切れ時の案内表示
+    stories:
+      - ゲストとして、トークン期限切れ時に次の対応を知るために、フロントでの記入案内を受けたい
+    trackings:
+      - "story.yml:27 - フロントでの記入案内を受けたい"
+    actor:
+      name: "ゲスト"
+      as: Guest1
+    before: ゲストが案内メール内のURLにアクセスしたが、24時間を超過している
+    after: ゲストがフロントでの記入が必要であることを認識する
+    boundary:
+      name: "トークン検証画面"
+      as: TokenValidationUI
+    control:
+      name: "トークン検証\nコントローラ"
+      as: TokenCtrl
+    entity:
+      name: "トークン"
+      as: Token
+    steps:
+      - step: Guest1 --> TokenValidationUI
+        label: 1.案内メールのURLをクリック
+      - step: TokenValidationUI --> TokenCtrl
+        label: 2.トークンを検証
+      - step: TokenCtrl --> Token
+        label: 3.有効期限を確認
+      - step: TokenValidationUI --> Guest1
+        label: 4.期限切れメッセージを表示
+        note: フロントへの連絡を促す
+
+  # 宿泊者名簿管理（フロントスタッフ向け）
+  - usecase:
+    name: 本日到着ゲストの宿泊者名簿記入状況確認
+    stories:
+      - フロントスタッフとして、チェックイン対応を準備するために、本日到着予定ゲストの宿泊者名簿記入状況を確認したい
+      - フロントスタッフとして、未記入ゲストへの対応を準備するために、宿泊者名簿未記入者を一覧で把握したい
+    trackings:
+      - "story.yml:33 - 本日到着予定ゲストの宿泊者名簿記入状況を確認したい"
+      - "story.yml:37 - 宿泊者名簿未記入者を一覧で把握したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: 本日チェックイン予定の予約が存在する
+    after: 未記入者が把握され、チェックイン時の対応準備が完了している
+    boundary:
+      name: "到着予定一覧画面"
+      as: ArrivalListUI
+    control:
+      name: "記入状況確認\nコントローラ"
+      as: StatusCheckCtrl
+    entity:
+      name: "予約・宿泊者名簿"
+      as: ReservationRegistry
+    steps:
+      - step: Staff1 --> ArrivalListUI
+        label: 1.本日到着予定一覧を表示
+      - step: ArrivalListUI --> StatusCheckCtrl
+        label: 2.記入状況を取得
+      - step: StatusCheckCtrl --> ReservationRegistry
+        label: 3.各予約の名簿状態を参照
+      - step: ArrivalListUI --> Staff1
+        label: 4.未記入者をハイライト表示
+
+  - usecase:
+    name: 宿泊者名簿の検索・閲覧
+    stories:
+      - フロントスタッフとして、過去の宿泊者情報を確認するために、氏名や宿泊日で宿泊者名簿を検索したい
+    trackings:
+      - "story.yml:41 - 氏名や宿泊日で宿泊者名簿を検索したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: フロントスタッフがログイン済みで、検索対象の情報を把握している
+    after: 目的の宿泊者名簿が表示され、内容を確認できる
+    boundary:
+      name: "宿泊者名簿検索画面"
+      as: RegistrySearchUI
+    control:
+      name: "名簿検索\nコントローラ"
+      as: SearchCtrl
+    entity:
+      name: "宿泊者名簿"
+      as: GuestRegistry
+    steps:
+      - step: Staff1 --> RegistrySearchUI
+        label: 1.検索条件を入力
+        note: 氏名・宿泊日・予約番号など
+      - step: RegistrySearchUI --> SearchCtrl
+        label: 2.検索を実行
+      - step: SearchCtrl --> GuestRegistry
+        label: 3.該当名簿を取得
+      - step: RegistrySearchUI --> Staff1
+        label: 4.検索結果を表示
+      - step: Staff1 --> RegistrySearchUI
+        label: 5.詳細を選択・閲覧
+
+  - usecase:
+    name: 宿泊者名簿の法定保管
+    stories:
+      - フロントスタッフとして、旅館業法を遵守するために、宿泊者名簿を3年間適切に保管したい
+    trackings:
+      - "story.yml:45 - 宿泊者名簿を3年間適切に保管したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: 宿泊者名簿が記入完了している
+    after: 宿泊者名簿が3年間の保管対象として登録される
+    boundary:
+      name: "名簿保管管理画面"
+      as: ArchiveUI
+    control:
+      name: "保管管理\nコントローラ"
+      as: ArchiveCtrl
+    entity:
+      name: "宿泊者名簿\nアーカイブ"
+      as: RegistryArchive
+    steps:
+      - step: Staff1 --> ArchiveUI
+        label: 1.保管対象名簿を確認
+      - step: ArchiveUI --> ArchiveCtrl
+        label: 2.保管処理を実行
+      - step: ArchiveCtrl --> RegistryArchive
+        label: 3.3年保管設定を適用
+      - step: ArchiveUI --> Staff1
+        label: 4.保管完了を表示
+
+  # チェックイン処理
+  - usecase:
+    name: 事前記入済みゲストのチェックイン処理
+    stories:
+      - フロントスタッフとして、ゲストを迅速に案内するために、事前記入済みの宿泊者名簿を確認してチェックイン処理を完了したい
+      - フロントスタッフとして、ゲストの希望に応じた部屋を提供するために、チェックイン時に最終的な部屋番号を確定したい
+      - ゲストとして、スムーズに部屋に向かうために、事前記入した情報で迅速にチェックインを完了したい
+    trackings:
+      - "story.yml:51 - 事前記入済みの宿泊者名簿を確認してチェックイン処理を完了したい"
+      - "story.yml:59 - チェックイン時に最終的な部屋番号を確定したい"
+      - "story.yml:63 - 事前記入した情報で迅速にチェックインを完了したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: ゲストが到着し、宿泊者名簿が事前に記入済みである
+    after: チェックインが完了し、ゲストが部屋に向かえる状態になる
+    boundary:
+      name: "チェックイン処理画面"
+      as: CheckinUI
+    control:
+      name: "チェックイン\nコントローラ"
+      as: CheckinCtrl
+    entity:
+      name: "予約・部屋"
+      as: ReservationRoom
+    steps:
+      - step: Staff1 --> CheckinUI
+        label: 1.予約を検索
+      - step: CheckinUI --> CheckinCtrl
+        label: 2.名簿記入状況を確認
+      - step: CheckinCtrl --> ReservationRoom
+        label: 3.記入済み名簿を取得
+      - step: CheckinUI --> Staff1
+        label: 4.名簿内容を表示
+      - step: Staff1 --> CheckinUI
+        label: 5.部屋番号を確定
+      - step: CheckinUI --> CheckinCtrl
+        label: 6.チェックイン完了を記録
+      - step: CheckinCtrl --> ReservationRoom
+        label: 7.部屋状態を使用中に更新
+      - step: CheckinUI --> Staff1
+        label: 8.鍵を渡す準備完了
+
+  - usecase:
+    name: 宿泊者名簿未記入ゲストのチェックイン処理
+    stories:
+      - フロントスタッフとして、宿泊者名簿未記入のゲストに対応するために、フロントでの記入を促してシステムに登録したい
+    trackings:
+      - "story.yml:55 - フロントでの記入を促してシステムに登録したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: ゲストが到着したが、宿泊者名簿が未記入である
+    after: 宿泊者名簿が記入され、チェックインが完了する
+    boundary:
+      name: "チェックイン処理画面"
+      as: CheckinUI
+    control:
+      name: "チェックイン\nコントローラ"
+      as: CheckinCtrl
+    entity:
+      name: "宿泊者名簿・部屋"
+      as: RegistryRoom
+    steps:
+      - step: Staff1 --> CheckinUI
+        label: 1.予約を検索
+      - step: CheckinUI --> CheckinCtrl
+        label: 2.名簿未記入を確認
+      - step: CheckinUI --> Staff1
+        label: 3.フロント記入を促す
+        note: 紙またはタブレットで記入
+      - step: Staff1 --> CheckinUI
+        label: 4.記入内容を入力
+      - step: CheckinUI --> CheckinCtrl
+        label: 5.名簿を登録
+      - step: CheckinCtrl --> RegistryRoom
+        label: 6.名簿保存・部屋確定
+      - step: CheckinUI --> Staff1
+        label: 7.チェックイン完了
+
+  # チェックアウト処理
+  - usecase:
+    name: 通常チェックアウト処理
+    stories:
+      - フロントスタッフとして、ゲストに正確な請求を行うために、精算内容（宿泊料金・追加料金）を表示して確認したい
+      - フロントスタッフとして、次のゲスト受入準備を開始するために、チェックアウト完了後に部屋状態をDirtyに変更したい
+      - ゲストとして、請求内容を理解した上で支払うために、精算内容の詳細を確認したい
+    trackings:
+      - "story.yml:69 - 精算内容（宿泊料金・追加料金）を表示して確認したい"
+      - "story.yml:73 - チェックアウト完了後に部屋状態をDirtyに変更したい"
+      - "story.yml:81 - 精算内容の詳細を確認したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: ゲストがチェックアウト時刻に退出を希望している
+    after: チェックアウトが完了し、部屋が清掃待ち状態になる
+    boundary:
+      name: "チェックアウト処理画面"
+      as: CheckoutUI
+    control:
+      name: "チェックアウト\nコントローラ"
+      as: CheckoutCtrl
+    entity:
+      name: "予約・部屋"
+      as: ReservationRoom
+    steps:
+      - step: Staff1 --> CheckoutUI
+        label: 1.予約を検索
+      - step: CheckoutUI --> CheckoutCtrl
+        label: 2.精算内容を取得
+      - step: CheckoutCtrl --> ReservationRoom
+        label: 3.料金情報を参照
+      - step: CheckoutUI --> Staff1
+        label: 4.精算内容を表示
+      - step: Staff1 --> CheckoutUI
+        label: 5.精算処理を実行
+      - step: CheckoutUI --> CheckoutCtrl
+        label: 6.チェックアウト完了を記録
+      - step: CheckoutCtrl --> ReservationRoom
+        label: 7.部屋状態をDirtyに変更
+      - step: CheckoutUI --> Staff1
+        label: 8.清掃チームへ通知
+
+  - usecase:
+    name: 追加料金発生時のチェックアウト処理
+    stories:
+      - フロントスタッフとして、追加料金が発生したゲストに説明するために、ミニバーやルームサービスの内訳を表示したい
+    trackings:
+      - "story.yml:77 - ミニバーやルームサービスの内訳を表示したい"
+    actor:
+      name: "フロントスタッフ"
+      as: Staff1
+    before: ゲストの滞在中に追加料金（ミニバー、ルームサービス等）が発生している
+    after: 追加料金を含む精算が完了し、チェックアウトが記録される
+    boundary:
+      name: "チェックアウト処理画面"
+      as: CheckoutUI
+    control:
+      name: "精算明細\nコントローラ"
+      as: BillingCtrl
+    entity:
+      name: "精算明細"
+      as: BillingDetail
+    steps:
+      - step: Staff1 --> CheckoutUI
+        label: 1.予約を検索
+      - step: CheckoutUI --> BillingCtrl
+        label: 2.精算明細を取得
+      - step: BillingCtrl --> BillingDetail
+        label: 3.追加料金内訳を参照
+      - step: CheckoutUI --> Staff1
+        label: 4.基本料金と追加料金を表示
+      - step: Staff1 --> CheckoutUI
+        label: 5.ゲストに説明・了承を得る
+      - step: CheckoutUI --> BillingCtrl
+        label: 6.合計金額を精算
+      - step: CheckoutUI --> Staff1
+        label: 7.チェックアウト完了
+
+  # 横断的ユースケース
+  - usecase:
+    name: 宿泊者管理の一貫したサービス提供
+    stories:
+      - ゲストとして、チェックインからチェックアウトまでスムーズに滞在するために、事前案内から精算まで一貫したサービスを受けたい
+    trackings:
+      - "story.yml:87 - 事前案内から精算まで一貫したサービスを受けたい"
+    actor:
+      name: "ゲスト"
+      as: Guest1
+    before: ゲストが宿泊予約を完了している
+    after: チェックアウトまで一貫したサービスを受けられる
+    boundary:
+      name: "ゲスト向け\nサービス画面群"
+      as: GuestServiceUI
+    control:
+      name: "宿泊者管理\n統合コントローラ"
+      as: GuestMgmtCtrl
+    entity:
+      name: "予約・名簿・部屋"
+      as: GuestData
+    steps:
+      - step: Guest1 --> GuestServiceUI
+        label: 1.案内メールを受信
+      - step: GuestServiceUI --> GuestMgmtCtrl
+        label: 2.事前名簿記入
+      - step: GuestMgmtCtrl --> GuestData
+        label: 3.名簿情報を保存
+      - step: Guest1 --> GuestServiceUI
+        label: 4.スムーズにチェックイン
+      - step: GuestServiceUI --> GuestMgmtCtrl
+        label: 5.滞在中サービス利用
+      - step: Guest1 --> GuestServiceUI
+        label: 6.精算・チェックアウト

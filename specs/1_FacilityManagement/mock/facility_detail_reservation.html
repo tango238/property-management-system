@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設詳細画面（予約担当者）</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .role-badge { display: inline-block; padding: 4px 12px; background: #17a2b8; color: white; border-radius: 20px; font-size: 12px; margin-bottom: 20px; }
+        .detail-section { margin-bottom: 30px; }
+        .detail-section h2 { font-size: 18px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #17a2b8; color: #17a2b8; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .detail-item { padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .detail-item label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; }
+        .detail-item span { font-size: 14px; font-weight: bold; }
+        .detail-item.full-width { grid-column: 1 / -1; }
+        .amenity-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .amenity-tag { background: #e0f7fa; color: #00796b; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #17a2b8; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .actions { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; 施設詳細（予約担当者）
+        </div>
+        <span class="role-badge">予約管理担当者</span>
+        <h1>施設詳細画面</h1>
+
+        <div class="detail-section">
+            <h2>基本情報</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>施設名</label>
+                    <span>グランドホテル東京</span>
+                </div>
+                <div class="detail-item">
+                    <label>電話番号</label>
+                    <span>03-1234-5678</span>
+                </div>
+                <div class="detail-item full-width">
+                    <label>住所</label>
+                    <span>東京都千代田区丸の内1-1-1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>チェックイン・チェックアウト</h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>チェックイン時刻</label>
+                    <span>15:00</span>
+                </div>
+                <div class="detail-item">
+                    <label>チェックアウト時刻</label>
+                    <span>10:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>アメニティ</h2>
+            <div class="amenity-tags">
+                <span class="amenity-tag">Wi-Fi</span>
+                <span class="amenity-tag">駐車場</span>
+                <span class="amenity-tag">レストラン</span>
+                <span class="amenity-tag">大浴場</span>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>施設説明</h2>
+            <div class="detail-item full-width">
+                <span>東京駅から徒歩5分の好立地。ビジネスにも観光にも最適なホテルです。全室Wi-Fi完備、レストラン・大浴場あり。</span>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="history.back()">戻る</button>
+            <button class="btn btn-primary" onclick="location.href='room_type_compare.html'">部屋タイプ一覧表示</button>
+        </div>
+    </div>
+</body>
+</html>

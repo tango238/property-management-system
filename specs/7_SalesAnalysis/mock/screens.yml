@@ -1,0 +1,27 @@
+screens:
+  # ダッシュボード
+  - [x] dashboard
+
+  # 売上レポート作成
+  - [x] sales_summary
+  - [x] sales_data_search
+
+  # 分析指標
+  - [x] analysis_metrics
+  - [x] monthly_kpi_analysis
+
+  # 売上推移分析
+  - [x] sales_trend_analysis
+  - [x] sales_decline_analysis
+
+  # OTA別分析
+  - [x] ota_sales_analysis
+  - [x] direct_booking_analysis
+
+  # 宿泊者属性別分析
+  - [x] guest_attribute_analysis
+  - [x] inbound_analysis
+  - [x] purpose_analysis
+
+  # 総合分析
+  - [x] comprehensive_analysis

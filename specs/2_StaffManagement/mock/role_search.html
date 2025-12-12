@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>権限検索画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #666; }
+        .filter-group select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 150px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .actions { display: flex; gap: 10px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        tr:hover { background: #f5f5f5; }
+        .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .role-admin { background: #dc3545; color: white; }
+        .role-reservation { background: #007bff; color: white; }
+        .role-frontdesk { background: #28a745; color: white; }
+        .role-housekeeping { background: #17a2b8; color: white; }
+        .role-accounting { background: #ffc107; color: #333; }
+        .role-owner { background: #6c757d; color: white; }
+        .action-buttons { display: flex; gap: 5px; }
+        .action-buttons .btn { padding: 5px 10px; font-size: 12px; }
+        .summary { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 30px; }
+        .summary-item { text-align: center; }
+        .summary-item .count { font-size: 24px; font-weight: bold; color: #007bff; }
+        .summary-item .label { font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">モック一覧</a> &gt; 権限検索画面
+        </div>
+        <h1>権限検索画面</h1>
+
+        <div class="summary">
+            <div class="summary-item">
+                <div class="count">15</div>
+                <div class="label">総スタッフ数</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">2</div>
+                <div class="label">Admin</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">3</div>
+                <div class="label">Reservation Manager</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">4</div>
+                <div class="label">Front Desk</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">3</div>
+                <div class="label">Housekeeping</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">2</div>
+                <div class="label">Accounting</div>
+            </div>
+            <div class="summary-item">
+                <div class="count">1</div>
+                <div class="label">Owner View Only</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>権限ロール</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="admin">Admin</option>
+                    <option value="reservation">Reservation Manager</option>
+                    <option value="frontdesk">Front Desk</option>
+                    <option value="housekeeping">Housekeeping</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="owner">Owner View Only</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>部署</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="management">管理部門</option>
+                    <option value="front">フロント</option>
+                    <option value="housekeeping">清掃</option>
+                    <option value="accounting">経理</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ステータス</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="active">有効</option>
+                    <option value="inactive">無効</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary">検索</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-success">CSVエクスポート</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>スタッフID</th>
+                    <th>名前</th>
+                    <th>メールアドレス</th>
+                    <th>権限ロール</th>
+                    <th>最終ログイン日時</th>
+                    <th>権限設定日</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>STF-001</td>
+                    <td>山田 太郎</td>
+                    <td>yamada@example.com</td>
+                    <td><span class="role-badge role-admin">Admin</span></td>
+                    <td>2024-03-26 09:15</td>
+                    <td>2024-01-15</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-002</td>
+                    <td>佐藤 花子</td>
+                    <td>sato@example.com</td>
+                    <td><span class="role-badge role-frontdesk">Front Desk</span></td>
+                    <td>2024-03-25 14:30</td>
+                    <td>2024-02-20</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-003</td>
+                    <td>鈴木 一郎</td>
+                    <td>suzuki@example.com</td>
+                    <td><span class="role-badge role-housekeeping">Housekeeping</span></td>
+                    <td>2024-03-20 08:00</td>
+                    <td>2023-11-10</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-004</td>
+                    <td>高橋 美咲</td>
+                    <td>takahashi@example.com</td>
+                    <td><span class="role-badge role-reservation">Reservation Manager</span></td>
+                    <td>2024-03-26 10:45</td>
+                    <td>2024-01-20</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-005</td>
+                    <td>伊藤 健太</td>
+                    <td>ito@example.com</td>
+                    <td><span class="role-badge role-accounting">Accounting</span></td>
+                    <td>2024-03-25 17:00</td>
+                    <td>2024-02-01</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>STF-006</td>
+                    <td>渡辺 オーナー</td>
+                    <td>watanabe@example.com</td>
+                    <td><span class="role-badge role-owner">Owner View Only</span></td>
+                    <td>2024-03-24 11:30</td>
+                    <td>2023-10-01</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-primary" onclick="location.href='role_change.html'">権限変更</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

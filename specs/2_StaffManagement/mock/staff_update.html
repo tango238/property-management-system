@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スタッフ更新画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .display-fields { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .display-fields .field { display: flex; margin-bottom: 10px; }
+        .display-fields .field:last-child { margin-bottom: 0; }
+        .display-fields .label { width: 150px; font-weight: bold; color: #666; }
+        .display-fields .value { color: #333; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group .required { color: #dc3545; margin-left: 3px; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group .note { font-size: 12px; color: #666; margin-top: 5px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-cancel { background: #6c757d; color: white; }
+        .actions { margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">モック一覧</a> &gt; <a href="staff_list.html">スタッフ一覧</a> &gt; スタッフ更新画面
+        </div>
+        <h1>スタッフ更新画面</h1>
+
+        <div class="display-fields">
+            <div class="field">
+                <span class="label">スタッフID:</span>
+                <span class="value">STF-001</span>
+            </div>
+            <div class="field">
+                <span class="label">現在の権限ロール:</span>
+                <span class="value">Admin</span>
+            </div>
+            <div class="field">
+                <span class="label">登録日:</span>
+                <span class="value">2024-01-15</span>
+            </div>
+            <div class="field">
+                <span class="label">最終更新日:</span>
+                <span class="value">2024-03-20</span>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label>名前<span class="required">*</span></label>
+                <input type="text" value="山田 太郎" maxlength="100">
+                <span class="note">100文字以内で入力してください</span>
+            </div>
+
+            <div class="form-group">
+                <label>メールアドレス<span class="required">*</span></label>
+                <input type="email" value="yamada@example.com">
+                <span class="note">変更時は他スタッフと重複しないようにしてください</span>
+            </div>
+
+            <div class="form-group">
+                <label>電話番号</label>
+                <input type="tel" value="090-1234-5678">
+                <span class="note">緊急連絡先（任意）</span>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-primary" onclick="location.href='staff_list.html'">更新</button>
+                <button type="button" class="btn btn-cancel" onclick="location.href='staff_list.html'">キャンセル</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

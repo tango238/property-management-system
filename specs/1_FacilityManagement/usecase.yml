@@ -1,0 +1,693 @@
+usecases:
+  # 施設情報の登録
+  - usecase:
+    name: 新規施設の登録
+    stories:
+      - 施設管理者として、新規施設の運営を開始するために、施設の基本情報（名称、住所、チェックイン/チェックアウト時刻など）を登録したい
+    trackings:
+      - "story.yml:5 - 新規施設の基本情報を登録"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済みで、新規施設の基本情報が確定している
+    after: 施設が登録され、部屋タイプや部屋の登録が可能になる
+    boundary:
+      name: "施設登録画面"
+      as: FacilityRegisterUI
+    control:
+      name: "施設登録\nコントローラ"
+      as: FacilityRegisterCtrl
+    entity:
+      name: "施設"
+      as: Facility
+    steps:
+      - step: FacilityAdmin --> FacilityRegisterUI
+        label: 1.施設登録画面を開く
+      - step: FacilityAdmin --> FacilityRegisterUI
+        label: 2.施設名・住所・連絡先を入力
+      - step: FacilityAdmin --> FacilityRegisterUI
+        label: 3.チェックイン/アウト時刻を設定
+      - step: FacilityAdmin --> FacilityRegisterUI
+        label: 4.詳細情報を入力
+      - step: FacilityRegisterUI --> FacilityRegisterCtrl
+        label: 5.入力内容を送信
+      - step: FacilityRegisterCtrl --> Facility
+        label: 6.施設を登録
+
+  # 施設情報の更新
+  - usecase:
+    name: 施設情報の更新
+    stories:
+      - 施設管理者として、施設情報を最新に保つために、既存施設の営業時間や連絡先などを変更したい
+    trackings:
+      - "story.yml:9 - 既存施設の情報を変更"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 対象施設が登録済みで、変更内容が確定している
+    after: 施設情報が更新され、関連する予約や表示に反映される
+    boundary:
+      name: "施設更新画面"
+      as: FacilityEditUI
+    control:
+      name: "施設更新\nコントローラ"
+      as: FacilityEditCtrl
+    entity:
+      name: "施設"
+      as: Facility
+    steps:
+      - step: FacilityAdmin --> FacilityEditUI
+        label: 1.施設検索画面で対象施設を検索
+      - step: FacilityAdmin --> FacilityEditUI
+        label: 2.施設詳細から更新画面を開く
+      - step: FacilityAdmin --> FacilityEditUI
+        label: 3.変更項目を修正
+      - step: FacilityEditUI --> FacilityEditCtrl
+        label: 4.変更内容を送信
+      - step: FacilityEditCtrl --> Facility
+        label: 5.施設情報を更新
+
+  # 施設情報の削除
+  - usecase:
+    name: 施設情報の削除
+    stories:
+      - 施設管理者として、閉鎖した施設を管理対象から外すために、不要な施設情報を削除したい
+    trackings:
+      - "story.yml:13 - 不要な施設情報を削除"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 削除対象の施設が登録済みで、関連する予約がない
+    after: 施設情報が削除され、管理対象から除外される
+    boundary:
+      name: "施設削除画面"
+      as: FacilityDeleteUI
+    control:
+      name: "施設削除\nコントローラ"
+      as: FacilityDeleteCtrl
+    entity:
+      name: "施設"
+      as: Facility
+    steps:
+      - step: FacilityAdmin --> FacilityDeleteUI
+        label: 1.削除対象の施設を検索
+      - step: FacilityAdmin --> FacilityDeleteUI
+        label: 2.削除確認画面を表示
+      - step: FacilityDeleteUI --> FacilityDeleteCtrl
+        label: 3.削除リクエストを送信
+      - step: FacilityDeleteCtrl --> Facility
+        label: 4.施設を削除
+
+  # 施設情報の検索・参照（施設管理者）
+  - usecase:
+    name: 施設一覧の検索・確認
+    stories:
+      - 施設管理者として、複数施設の状況を把握するために、施設一覧を検索・確認したい
+    trackings:
+      - "story.yml:19 - 施設一覧を検索・確認"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済み
+    after: 施設情報が確認でき、必要な業務判断が行える
+    boundary:
+      name: "施設検索画面"
+      as: FacilitySearchUI
+    control:
+      name: "施設検索\nコントローラ"
+      as: FacilitySearchCtrl
+    entity:
+      name: "施設"
+      as: Facility
+    steps:
+      - step: FacilityAdmin --> FacilitySearchUI
+        label: 1.施設検索画面を開く
+      - step: FacilityAdmin --> FacilitySearchUI
+        label: 2.検索条件を入力
+      - step: FacilitySearchUI --> FacilitySearchCtrl
+        label: 3.検索リクエストを送信
+      - step: FacilitySearchCtrl --> Facility
+        label: 4.施設一覧を取得
+      - step: FacilitySearchCtrl --> FacilitySearchUI
+        label: 5.検索結果を表示
+
+  # 施設情報の検索・参照（予約管理担当者）
+  - usecase:
+    name: 施設詳細情報の参照
+    stories:
+      - 予約管理担当者として、顧客の予約に対応するために、施設の詳細情報を参照したい
+    trackings:
+      - "story.yml:23 - 施設の詳細情報を参照"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationStaff
+    before: 予約管理担当者がログイン済み
+    after: 施設の詳細情報が確認でき、顧客対応ができる
+    boundary:
+      name: "施設詳細画面"
+      as: FacilityDetailUI
+    control:
+      name: "施設参照\nコントローラ"
+      as: FacilityViewCtrl
+    entity:
+      name: "施設"
+      as: Facility
+    steps:
+      - step: ReservationStaff --> FacilityDetailUI
+        label: 1.施設を検索・選択
+      - step: FacilityDetailUI --> FacilityViewCtrl
+        label: 2.詳細情報リクエストを送信
+      - step: FacilityViewCtrl --> Facility
+        label: 3.施設詳細を取得
+      - step: FacilityViewCtrl --> FacilityDetailUI
+        label: 4.詳細情報を表示
+
+  # 部屋タイプの登録
+  - usecase:
+    name: 新規部屋タイプの登録
+    stories:
+      - 施設管理者として、多様な宿泊ニーズに対応するために、新しい部屋タイプ（収容人数、喫煙可否、ベッド構成など）を登録したい
+    trackings:
+      - "story.yml:29 - 新しい部屋タイプを登録"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済みで、対象施設が登録済み
+    after: 部屋タイプが登録され、このタイプの部屋を登録可能になる
+    boundary:
+      name: "部屋タイプ登録画面"
+      as: RoomTypeRegisterUI
+    control:
+      name: "部屋タイプ登録\nコントローラ"
+      as: RoomTypeRegisterCtrl
+    entity:
+      name: "部屋タイプ"
+      as: RoomType
+    steps:
+      - step: FacilityAdmin --> RoomTypeRegisterUI
+        label: 1.部屋タイプ登録画面を開く
+      - step: FacilityAdmin --> RoomTypeRegisterUI
+        label: 2.対象施設を選択
+      - step: FacilityAdmin --> RoomTypeRegisterUI
+        label: 3.部屋タイプ名を入力
+      - step: FacilityAdmin --> RoomTypeRegisterUI
+        label: 4.収容人数・喫煙可否・ベッド構成を設定
+      - step: FacilityAdmin --> RoomTypeRegisterUI
+        label: 5.標準料金を設定
+      - step: RoomTypeRegisterUI --> RoomTypeRegisterCtrl
+        label: 6.登録リクエストを送信
+      - step: RoomTypeRegisterCtrl --> RoomType
+        label: 7.部屋タイプを登録
+
+  # 部屋タイプの料金改定
+  - usecase:
+    name: 部屋タイプの料金改定
+    stories:
+      - 施設管理者として、料金体系を見直すために、部屋タイプの標準料金を変更したい
+    trackings:
+      - "story.yml:33 - 部屋タイプの標準料金を変更"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 対象部屋タイプが登録済みで、新料金が決定している
+    after: 部屋タイプの料金が更新され、以降の予約に反映される
+    boundary:
+      name: "部屋タイプ更新画面"
+      as: RoomTypeEditUI
+    control:
+      name: "部屋タイプ更新\nコントローラ"
+      as: RoomTypeEditCtrl
+    entity:
+      name: "部屋タイプ"
+      as: RoomType
+    steps:
+      - step: FacilityAdmin --> RoomTypeEditUI
+        label: 1.部屋タイプを検索
+      - step: FacilityAdmin --> RoomTypeEditUI
+        label: 2.更新画面を開く
+      - step: FacilityAdmin --> RoomTypeEditUI
+        label: 3.標準料金を変更
+      - step: RoomTypeEditUI --> RoomTypeEditCtrl
+        label: 4.変更内容を送信
+      - step: RoomTypeEditCtrl --> RoomType
+        label: 5.料金を更新
+
+  # 部屋タイプの削除
+  - usecase:
+    name: 部屋タイプの削除
+    stories:
+      - 施設管理者として、不要になった部屋タイプを整理するために、部屋タイプを削除したい
+    trackings:
+      - "story.yml:37 - 部屋タイプを削除"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 削除対象の部屋タイプに紐づく部屋がない
+    after: 部屋タイプが削除される
+    boundary:
+      name: "部屋タイプ削除画面"
+      as: RoomTypeDeleteUI
+    control:
+      name: "部屋タイプ削除\nコントローラ"
+      as: RoomTypeDeleteCtrl
+    entity:
+      name: "部屋タイプ"
+      as: RoomType
+    steps:
+      - step: FacilityAdmin --> RoomTypeDeleteUI
+        label: 1.削除対象の部屋タイプを検索
+      - step: FacilityAdmin --> RoomTypeDeleteUI
+        label: 2.削除確認画面を表示
+      - step: RoomTypeDeleteUI --> RoomTypeDeleteCtrl
+        label: 3.削除リクエストを送信
+      - step: RoomTypeDeleteCtrl --> RoomType
+        label: 4.部屋タイプを削除
+
+  # 部屋タイプの検索・参照（予約管理担当者）
+  - usecase:
+    name: 部屋タイプの比較確認
+    stories:
+      - 予約管理担当者として、顧客に最適な部屋を案内するために、部屋タイプの収容人数・料金・アメニティを比較確認したい
+    trackings:
+      - "story.yml:43 - 部屋タイプの比較確認"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationStaff
+    before: 予約管理担当者がログイン済みで、顧客から問い合わせを受けている
+    after: 適切な部屋タイプを選定し、顧客に案内できる
+    boundary:
+      name: "部屋タイプ検索画面"
+      as: RoomTypeSearchUI
+    control:
+      name: "部屋タイプ検索\nコントローラ"
+      as: RoomTypeSearchCtrl
+    entity:
+      name: "部屋タイプ"
+      as: RoomType
+    steps:
+      - step: ReservationStaff --> RoomTypeSearchUI
+        label: 1.部屋タイプ検索画面を開く
+      - step: ReservationStaff --> RoomTypeSearchUI
+        label: 2.対象施設を選択
+      - step: RoomTypeSearchUI --> RoomTypeSearchCtrl
+        label: 3.検索リクエストを送信
+      - step: RoomTypeSearchCtrl --> RoomType
+        label: 4.部屋タイプ一覧を取得
+      - step: RoomTypeSearchCtrl --> RoomTypeSearchUI
+        label: 5.比較情報を表示
+
+  # 部屋タイプの検索・参照（施設管理者）
+  - usecase:
+    name: 部屋タイプ一覧の検索・参照
+    stories:
+      - 施設管理者として、部屋タイプの設定状況を確認するために、部屋タイプ一覧を検索・参照したい
+    trackings:
+      - "story.yml:47 - 部屋タイプ一覧を検索・参照"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済み
+    after: 部屋タイプの設定状況が確認できる
+    boundary:
+      name: "部屋タイプ検索画面"
+      as: RoomTypeSearchUI
+    control:
+      name: "部屋タイプ検索\nコントローラ"
+      as: RoomTypeSearchCtrl
+    entity:
+      name: "部屋タイプ"
+      as: RoomType
+    steps:
+      - step: FacilityAdmin --> RoomTypeSearchUI
+        label: 1.部屋タイプ検索画面を開く
+      - step: FacilityAdmin --> RoomTypeSearchUI
+        label: 2.対象施設を選択
+      - step: RoomTypeSearchUI --> RoomTypeSearchCtrl
+        label: 3.検索リクエストを送信
+      - step: RoomTypeSearchCtrl --> RoomType
+        label: 4.部屋タイプ一覧を取得
+      - step: RoomTypeSearchCtrl --> RoomTypeSearchUI
+        label: 5.一覧を表示
+
+  # 部屋の登録
+  - usecase:
+    name: 新規部屋の登録
+    stories:
+      - 施設管理者として、新しい部屋を予約対象に追加するために、部屋番号と部屋タイプを紐づけて登録したい
+    trackings:
+      - "story.yml:53 - 部屋番号と部屋タイプを紐づけて登録"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済みで、施設と部屋タイプが登録済み
+    after: 部屋が登録され、予約対象として利用可能になる
+    boundary:
+      name: "部屋登録画面"
+      as: RoomRegisterUI
+    control:
+      name: "部屋登録\nコントローラ"
+      as: RoomRegisterCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FacilityAdmin --> RoomRegisterUI
+        label: 1.部屋登録画面を開く
+      - step: FacilityAdmin --> RoomRegisterUI
+        label: 2.対象施設を選択
+      - step: FacilityAdmin --> RoomRegisterUI
+        label: 3.部屋番号を入力
+      - step: FacilityAdmin --> RoomRegisterUI
+        label: 4.部屋タイプを選択
+      - step: FacilityAdmin --> RoomRegisterUI
+        label: 5.初期状態を設定
+      - step: RoomRegisterUI --> RoomRegisterCtrl
+        label: 6.登録リクエストを送信
+      - step: RoomRegisterCtrl --> Room
+        label: 7.部屋を登録
+
+  # 部屋のメンテナンス開始
+  - usecase:
+    name: 部屋のメンテナンス開始
+    stories:
+      - 施設管理者として、メンテナンスが必要な部屋を予約対象から除外するために、部屋状態をOut-of-orderに変更したい
+    trackings:
+      - "story.yml:57 - 部屋状態をOut-of-orderに変更"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 対象部屋に予約がない状態で、メンテナンスが必要と判断されている
+    after: 部屋がOut-of-order状態になり、予約対象から除外される
+    boundary:
+      name: "部屋更新画面"
+      as: RoomEditUI
+    control:
+      name: "部屋状態変更\nコントローラ"
+      as: RoomStatusCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FacilityAdmin --> RoomEditUI
+        label: 1.部屋を検索
+      - step: FacilityAdmin --> RoomEditUI
+        label: 2.更新画面を開く
+      - step: FacilityAdmin --> RoomEditUI
+        label: 3.状態をOut-of-orderに変更
+      - step: FacilityAdmin --> RoomEditUI
+        label: 4.メンテナンス理由を記録
+      - step: RoomEditUI --> RoomStatusCtrl
+        label: 5.変更リクエストを送信
+      - step: RoomStatusCtrl --> Room
+        label: 6.部屋状態を更新
+
+  # 部屋の削除
+  - usecase:
+    name: 部屋情報の削除
+    stories:
+      - 施設管理者として、使用しなくなった部屋を管理対象から外すために、部屋情報を削除したい
+    trackings:
+      - "story.yml:61 - 部屋情報を削除"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 削除対象の部屋に予約がなく、使用されていない
+    after: 部屋情報が削除され、管理対象から除外される
+    boundary:
+      name: "部屋削除画面"
+      as: RoomDeleteUI
+    control:
+      name: "部屋削除\nコントローラ"
+      as: RoomDeleteCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FacilityAdmin --> RoomDeleteUI
+        label: 1.削除対象の部屋を検索
+      - step: FacilityAdmin --> RoomDeleteUI
+        label: 2.削除確認画面を表示
+      - step: RoomDeleteUI --> RoomDeleteCtrl
+        label: 3.削除リクエストを送信
+      - step: RoomDeleteCtrl --> Room
+        label: 4.部屋を削除
+
+  # 空き部屋の検索（フロントスタッフ）
+  - usecase:
+    name: 空き部屋の検索・確認
+    stories:
+      - フロントスタッフとして、ウォークイン客に対応するために、現在の空き部屋を検索・確認したい
+    trackings:
+      - "story.yml:67 - 空き部屋を検索・確認"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: フロントスタッフがログイン済みで、ウォークイン客が来館している
+    after: 空き部屋が確認でき、顧客に案内可能な部屋を特定できる
+    boundary:
+      name: "部屋検索画面"
+      as: RoomSearchUI
+    control:
+      name: "部屋検索\nコントローラ"
+      as: RoomSearchCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> RoomSearchUI
+        label: 1.部屋検索画面を開く
+      - step: FrontStaff --> RoomSearchUI
+        label: 2.対象施設を選択
+      - step: FrontStaff --> RoomSearchUI
+        label: 3.状態Vacantで検索条件を指定
+      - step: RoomSearchUI --> RoomSearchCtrl
+        label: 4.検索リクエストを送信
+      - step: RoomSearchCtrl --> Room
+        label: 5.空き部屋一覧を取得
+      - step: RoomSearchCtrl --> RoomSearchUI
+        label: 6.検索結果を表示
+
+  # 清掃対象部屋の確認（清掃スタッフ）
+  - usecase:
+    name: 清掃対象部屋の確認
+    stories:
+      - 清掃スタッフとして、効率的に清掃業務を行うために、清掃対象の部屋一覧を確認したい
+    trackings:
+      - "story.yml:71 - 清掃対象の部屋一覧を確認"
+    actor:
+      name: "清掃スタッフ"
+      as: CleaningStaff
+    before: 清掃スタッフがログイン済みで、清掃業務を開始する
+    after: 清掃対象の部屋が把握でき、効率的な清掃業務が計画できる
+    boundary:
+      name: "部屋検索画面"
+      as: RoomSearchUI
+    control:
+      name: "部屋検索\nコントローラ"
+      as: RoomSearchCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: CleaningStaff --> RoomSearchUI
+        label: 1.部屋検索画面を開く
+      - step: CleaningStaff --> RoomSearchUI
+        label: 2.対象施設を選択
+      - step: CleaningStaff --> RoomSearchUI
+        label: 3.状態Dirty/Cleaningで検索条件を指定
+      - step: RoomSearchUI --> RoomSearchCtrl
+        label: 4.検索リクエストを送信
+      - step: RoomSearchCtrl --> Room
+        label: 5.清掃対象部屋一覧を取得
+      - step: RoomSearchCtrl --> RoomSearchUI
+        label: 6.検索結果を表示
+
+  # 部屋一覧の検索・参照（施設管理者）
+  - usecase:
+    name: 部屋一覧の検索・参照
+    stories:
+      - 施設管理者として、全体の部屋状況を把握するために、部屋一覧を検索・参照したい
+    trackings:
+      - "story.yml:75 - 部屋一覧を検索・参照"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済み
+    after: 全体の部屋状況が把握できる
+    boundary:
+      name: "部屋検索画面"
+      as: RoomSearchUI
+    control:
+      name: "部屋検索\nコントローラ"
+      as: RoomSearchCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FacilityAdmin --> RoomSearchUI
+        label: 1.部屋検索画面を開く
+      - step: FacilityAdmin --> RoomSearchUI
+        label: 2.対象施設を選択
+      - step: RoomSearchUI --> RoomSearchCtrl
+        label: 3.検索リクエストを送信
+      - step: RoomSearchCtrl --> Room
+        label: 4.部屋一覧を取得
+      - step: RoomSearchCtrl --> RoomSearchUI
+        label: 5.検索結果を表示
+
+  # チェックイン処理
+  - usecase:
+    name: チェックイン処理
+    stories:
+      - フロントスタッフとして、顧客のチェックインを完了するために、部屋状態をVacantからOccupiedに変更したい
+    trackings:
+      - "story.yml:81 - 部屋状態をVacantからOccupiedに変更"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: フロントスタッフがログイン済みで、予約済みの顧客が到着している
+    after: 部屋がOccupied状態になり、顧客が入室可能になる
+    boundary:
+      name: "チェックイン画面"
+      as: CheckInUI
+    control:
+      name: "チェックイン\nコントローラ"
+      as: CheckInCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> CheckInUI
+        label: 1.予約情報から割り当て部屋を確認
+      - step: FrontStaff --> CheckInUI
+        label: 2.部屋状態がVacantか確認
+      - step: FrontStaff --> CheckInUI
+        label: 3.チェックイン処理を実行
+      - step: CheckInUI --> CheckInCtrl
+        label: 4.状態変更リクエストを送信
+      - step: CheckInCtrl --> Room
+        label: 5.部屋状態をOccupiedに更新
+
+  # 清掃完了報告
+  - usecase:
+    name: 清掃完了報告
+    stories:
+      - 清掃スタッフとして、清掃完了を報告するために、部屋状態をInspectedに変更したい
+    trackings:
+      - "story.yml:85 - 部屋状態をInspectedに変更"
+    actor:
+      name: "清掃スタッフ"
+      as: CleaningStaff
+    before: 清掃スタッフがログイン済みで、部屋の清掃が完了している
+    after: 部屋がInspected状態になり、検査待ちになる
+    boundary:
+      name: "清掃報告画面"
+      as: CleaningReportUI
+    control:
+      name: "清掃状態変更\nコントローラ"
+      as: CleaningStatusCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: CleaningStaff --> CleaningReportUI
+        label: 1.清掃完了した部屋を選択
+      - step: CleaningStaff --> CleaningReportUI
+        label: 2.清掃完了を報告
+      - step: CleaningReportUI --> CleaningStatusCtrl
+        label: 3.状態変更リクエストを送信
+      - step: CleaningStatusCtrl --> Room
+        label: 4.部屋状態をInspectedに更新
+
+  # チェックアウト後の清掃依頼
+  - usecase:
+    name: チェックアウト後の清掃依頼
+    stories:
+      - フロントスタッフとして、チェックアウト後の清掃を依頼するために、部屋状態をDirtyに変更したい
+    trackings:
+      - "story.yml:89 - 部屋状態をDirtyに変更"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: 顧客がチェックアウト済み
+    after: 部屋がDirty状態になり、清掃対象リストに追加される
+    boundary:
+      name: "チェックアウト画面"
+      as: CheckOutUI
+    control:
+      name: "チェックアウト\nコントローラ"
+      as: CheckOutCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> CheckOutUI
+        label: 1.チェックアウト処理を実行
+      - step: CheckOutUI --> CheckOutCtrl
+        label: 2.状態変更リクエストを送信
+      - step: CheckOutCtrl --> Room
+        label: 3.部屋状態をDirtyに更新
+
+  # 清掃開始の記録
+  - usecase:
+    name: 清掃開始の記録
+    stories:
+      - 清掃スタッフとして、清掃開始を記録するために、部屋状態をCleaningに変更したい
+    trackings:
+      - "story.yml:93 - 部屋状態をCleaningに変更"
+    actor:
+      name: "清掃スタッフ"
+      as: CleaningStaff
+    before: 清掃スタッフがログイン済みで、清掃対象部屋がDirty状態
+    after: 部屋がCleaning状態になり、清掃中であることが記録される
+    boundary:
+      name: "清掃開始画面"
+      as: CleaningStartUI
+    control:
+      name: "清掃状態変更\nコントローラ"
+      as: CleaningStatusCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: CleaningStaff --> CleaningStartUI
+        label: 1.清掃対象部屋を選択
+      - step: CleaningStaff --> CleaningStartUI
+        label: 2.清掃開始を記録
+      - step: CleaningStartUI --> CleaningStatusCtrl
+        label: 3.状態変更リクエストを送信
+      - step: CleaningStatusCtrl --> Room
+        label: 4.部屋状態をCleaningに更新
+
+  # 検査合格後のVacant化
+  - usecase:
+    name: 検査合格後の部屋開放
+    stories:
+      - フロントスタッフとして、検査合格した部屋を予約可能にするために、部屋状態をVacantに変更したい
+    trackings:
+      - "story.yml:97 - 部屋状態をVacantに変更"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: 部屋がInspected状態で、検査に合格している
+    after: 部屋がVacant状態になり、次の予約に対応可能になる
+    boundary:
+      name: "部屋状態変更画面"
+      as: RoomStatusUI
+    control:
+      name: "部屋状態変更\nコントローラ"
+      as: RoomStatusCtrl
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> RoomStatusUI
+        label: 1.Inspected状態の部屋を確認
+      - step: FrontStaff --> RoomStatusUI
+        label: 2.検査合格を確認
+      - step: FrontStaff --> RoomStatusUI
+        label: 3.Vacant状態への変更を実行
+      - step: RoomStatusUI --> RoomStatusCtrl
+        label: 4.状態変更リクエストを送信
+      - step: RoomStatusCtrl --> Room
+        label: 5.部屋状態をVacantに更新

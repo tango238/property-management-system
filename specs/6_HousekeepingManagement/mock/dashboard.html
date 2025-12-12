@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清掃管理ダッシュボード</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card .value { font-size: 36px; font-weight: bold; color: #333; }
+        .stat-card .label { font-size: 14px; color: #666; margin-top: 5px; }
+        .stat-card.warning .value { color: #dc3545; }
+        .stat-card.success .value { color: #28a745; }
+        .stat-card.info .value { color: #007bff; }
+        .tabs { display: flex; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; }
+        .tabs button { padding: 10px 20px; border: none; background: none; cursor: pointer; font-size: 14px; color: #666; }
+        .tabs button.active { color: #007bff; border-bottom: 2px solid #007bff; margin-bottom: -2px; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧に戻る</a>
+        </div>
+
+        <h1>清掃管理ダッシュボード</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card info">
+                <div class="value">15</div>
+                <div class="label">本日の清掃対象</div>
+            </div>
+            <div class="stat-card success">
+                <div class="value">8</div>
+                <div class="label">清掃完了</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">3</div>
+                <div class="label">清掃中</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="value">4</div>
+                <div class="label">未着手</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="value">2</div>
+                <div class="label">高優先度</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">1</div>
+                <div class="label">備品不足報告</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="active">概要</button>
+            <button onclick="location.href='cleaning_list.html'">清掃対象一覧</button>
+            <button onclick="location.href='notification_list_staff.html'">通知</button>
+        </div>
+
+        <div class="actions">
+            <a href="cleaning_list.html" class="btn btn-primary">清掃対象一覧へ</a>
+            <a href="supply_shortage.html" class="btn btn-secondary">備品不足記録へ</a>
+            <button class="btn btn-secondary" onclick="alert('最新情報を取得しました')">更新</button>
+        </div>
+    </div>
+</body>
+</html>

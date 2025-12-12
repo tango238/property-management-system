@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約管理ダッシュボード</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-card .label { font-size: 14px; color: #666; margin-bottom: 8px; }
+        .stat-card .value { font-size: 32px; font-weight: bold; color: #333; }
+        .stat-card.warning .value { color: #dc3545; }
+        .stat-card.info .value { color: #007bff; }
+        .actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .action-btn { display: block; padding: 20px; background: white; border: 2px solid #dee2e6; border-radius: 8px; text-decoration: none; color: #333; transition: all 0.2s; text-align: center; }
+        .action-btn:hover { border-color: #007bff; background: #e7f3ff; }
+        .action-btn .icon { font-size: 24px; margin-bottom: 10px; }
+        .action-btn .title { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+        .action-btn .desc { font-size: 12px; color: #666; }
+        .action-btn.primary { background: #007bff; color: white; border-color: #007bff; }
+        .action-btn.primary:hover { background: #0056b3; }
+        .action-btn.primary .desc { color: #cce5ff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧に戻る</a>
+        </div>
+
+        <h1>予約管理ダッシュボード</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card info">
+                <div class="label">本日のチェックイン予約数</div>
+                <div class="value">12</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">本日のチェックアウト予約数</div>
+                <div class="value">8</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="label">未アサイン予約数</div>
+                <div class="value">3</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="label">ダブルブッキング件数</div>
+                <div class="value">1</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="label">取り込みエラー件数</div>
+                <div class="value">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">週間稼働率</div>
+                <div class="value">78%</div>
+            </div>
+        </div>
+
+        <div class="actions-grid">
+            <a href="import.html" class="action-btn primary">
+                <div class="icon">📥</div>
+                <div class="title">予約取り込み</div>
+                <div class="desc">サイトコントローラーから予約を取得</div>
+            </a>
+            <a href="reservation_list.html" class="action-btn">
+                <div class="icon">📋</div>
+                <div class="title">予約一覧へ</div>
+                <div class="desc">予約情報をリスト形式で確認</div>
+            </a>
+            <a href="reservation_calendar.html" class="action-btn">
+                <div class="icon">📅</div>
+                <div class="title">カレンダーへ</div>
+                <div class="desc">予約状況を視覚的に確認</div>
+            </a>
+            <a href="double_booking_list.html" class="action-btn">
+                <div class="icon">⚠️</div>
+                <div class="title">ダブルブッキング対応へ</div>
+                <div class="desc">重複予約の確認と再割り当て</div>
+            </a>
+            <a href="import_error_list.html" class="action-btn">
+                <div class="icon">❌</div>
+                <div class="title">エラー対応へ</div>
+                <div class="desc">取り込みエラーの確認と対応</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

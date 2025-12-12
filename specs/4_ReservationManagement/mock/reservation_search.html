@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約検索画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .search-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { font-size: 14px; font-weight: bold; color: #333; }
+        .form-group input, .form-group select { padding: 10px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 14px; }
+        .form-group .hint { font-size: 12px; color: #666; margin-top: 3px; }
+        .date-range { display: flex; gap: 10px; align-items: center; }
+        .date-range input { flex: 1; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; }
+        .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
+        .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; }
+        .actions { display: flex; gap: 10px; justify-content: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; }
+        .btn { padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .section-title { font-size: 16px; font-weight: bold; color: #333; margin-top: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #007bff; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+            <a href="reservation_list.html">予約一覧</a>
+        </div>
+
+        <h1>予約検索画面</h1>
+
+        <div class="search-form">
+            <div class="section-title">基本情報</div>
+
+            <div class="form-group">
+                <label>予約番号</label>
+                <input type="text" placeholder="例: RES-2025121001">
+            </div>
+
+            <div class="form-group">
+                <label>ゲスト名</label>
+                <input type="text" placeholder="例: 山田 太郎">
+                <div class="hint">姓名の一部でも検索可能</div>
+            </div>
+
+            <div class="form-group">
+                <label>電話番号</label>
+                <input type="tel" placeholder="例: 090-1234-5678">
+            </div>
+
+            <div class="form-group">
+                <label>メールアドレス</label>
+                <input type="email" placeholder="例: guest@example.com">
+            </div>
+
+            <div class="section-title">予約期間</div>
+
+            <div class="form-group">
+                <label>チェックイン日</label>
+                <div class="date-range">
+                    <input type="date" value="2025-12-01">
+                    <span>〜</span>
+                    <input type="date" value="2025-12-31">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>チェックアウト日</label>
+                <div class="date-range">
+                    <input type="date">
+                    <span>〜</span>
+                    <input type="date">
+                </div>
+            </div>
+
+            <div class="section-title">部屋・ステータス</div>
+
+            <div class="form-group">
+                <label>部屋タイプ</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>シングル</option>
+                    <option>ツイン</option>
+                    <option>ダブル</option>
+                    <option>スイート</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>部屋番号</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>201号室</option>
+                    <option>202号室</option>
+                    <option>301号室</option>
+                    <option>302号室</option>
+                    <option>401号室</option>
+                    <option>501号室</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>予約ステータス</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> 予約確定</label>
+                    <label><input type="checkbox" checked> 未アサイン</label>
+                    <label><input type="checkbox" checked> チェックイン済み</label>
+                    <label><input type="checkbox"> チェックアウト済み</label>
+                    <label><input type="checkbox"> キャンセル</label>
+                </div>
+            </div>
+
+            <div class="section-title">予約元</div>
+
+            <div class="form-group full-width">
+                <label>OTA種別</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> 楽天トラベル</label>
+                    <label><input type="checkbox" checked> じゃらん</label>
+                    <label><input type="checkbox" checked> Booking.com</label>
+                    <label><input type="checkbox" checked> Airbnb</label>
+                    <label><input type="checkbox" checked> 直接予約</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="location.href='reservation_list.html'">キャンセル</button>
+            <button class="btn btn-primary" onclick="location.href='reservation_list.html'">検索</button>
+        </div>
+    </div>
+</body>
+</html>

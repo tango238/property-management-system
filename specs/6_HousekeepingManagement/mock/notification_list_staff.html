@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知一覧画面（清掃スタッフ）</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filters select { padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; flex: 1; }
+        .notification-list { display: flex; flex-direction: column; gap: 10px; }
+        .notification-item { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.2s; }
+        .notification-item:hover { border-color: #007bff; background: #e7f3ff; }
+        .notification-item.unread { background: white; border-left: 4px solid #007bff; }
+        .notification-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .notification-type { font-size: 12px; padding: 2px 8px; border-radius: 4px; background: #e9ecef; color: #495057; }
+        .notification-type.supply { background: #d4edda; color: #155724; }
+        .notification-time { font-size: 12px; color: #666; }
+        .notification-content { font-size: 14px; color: #333; }
+        .notification-status { font-size: 12px; color: #666; margin-top: 5px; }
+        .empty-state { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+        </div>
+
+        <h1>通知一覧画面（清掃スタッフ）</h1>
+
+        <div class="filters">
+            <select>
+                <option value="">通知種別: すべて</option>
+                <option>補充完了</option>
+                <option>緊急連絡</option>
+                <option>その他</option>
+            </select>
+            <select>
+                <option value="">既読状態: すべて</option>
+                <option>未読</option>
+                <option>既読</option>
+            </select>
+        </div>
+
+        <div class="notification-list">
+            <div class="notification-item unread" onclick="alert('通知を確認しました')">
+                <div class="notification-header">
+                    <span class="notification-type supply">補充完了</span>
+                    <span class="notification-time">10:45</span>
+                </div>
+                <div class="notification-content">
+                    301号室のバスタオル補充が完了しました
+                </div>
+                <div class="notification-status">● 未読</div>
+            </div>
+
+            <div class="notification-item" onclick="alert('通知詳細を表示')">
+                <div class="notification-header">
+                    <span class="notification-type supply">補充完了</span>
+                    <span class="notification-time">09:30</span>
+                </div>
+                <div class="notification-content">
+                    205号室のアメニティ補充が完了しました
+                </div>
+                <div class="notification-status">既読</div>
+            </div>
+
+            <div class="notification-item" onclick="alert('通知詳細を表示')">
+                <div class="notification-header">
+                    <span class="notification-type">お知らせ</span>
+                    <span class="notification-time">昨日 15:00</span>
+                </div>
+                <div class="notification-content">
+                    本日の清掃スケジュールが更新されました
+                </div>
+                <div class="notification-status">既読</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

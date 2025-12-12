@@ -1,0 +1,395 @@
+usecases:
+  # シーズン登録
+  - usecase:
+    name: シーズンの新規登録
+    stories:
+      - 施設管理者として、繁閑に応じた価格設定を実現するために、年間のシーズン（繁忙期・閑散期・特別期間）を登録したい
+      - 施設管理者として、収益を最大化するために、各シーズンに料金倍率（例：繁忙期1.5倍、閑散期0.8倍）を設定したい
+    trackings:
+      - "story.yml:5 - 年間シーズンを登録したい"
+      - "story.yml:9 - 各シーズンに料金倍率を設定したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 施設管理者がログイン済みで、翌年度の営業計画が確定している
+    after: シーズンが登録され、予約時に自動適用される状態になる
+    boundary:
+      name: "シーズン登録画面"
+      as: SeasonRegisterUI
+    control:
+      name: "シーズン登録\nコントローラ"
+      as: SeasonRegisterCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: FacilityAdmin --> SeasonRegisterUI
+        label: 1.シーズン情報を入力
+        note: シーズン名、期間、シーズン区分、料金倍率を入力
+      - step: SeasonRegisterUI --> SeasonRegisterCtrl
+        label: 2.登録リクエストを送信
+      - step: SeasonRegisterCtrl --> Season
+        label: 3.シーズンデータを保存
+      - step: SeasonRegisterCtrl --> SeasonRegisterUI
+        label: 4.登録完了を通知
+
+  # シーズン更新
+  - usecase:
+    name: シーズンの期間・料金倍率更新
+    stories:
+      - 施設管理者として、営業計画の変更に対応するために、既存シーズンの期間や料金倍率を更新したい
+    trackings:
+      - "story.yml:13 - 既存シーズンの期間や料金倍率を更新したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 更新対象のシーズンが登録済みで、変更が必要になった
+    after: シーズン期間が更新され、関連するレートプランの料金が再計算される
+    boundary:
+      name: "シーズン更新画面"
+      as: SeasonEditUI
+    control:
+      name: "シーズン更新\nコントローラ"
+      as: SeasonEditCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: FacilityAdmin --> SeasonEditUI
+        label: 1.更新するシーズンを選択
+      - step: SeasonEditUI --> SeasonEditCtrl
+        label: 2.シーズン情報を取得
+      - step: SeasonEditCtrl --> Season
+        label: 3.現在のシーズン情報を読込
+      - step: FacilityAdmin --> SeasonEditUI
+        label: 4.期間・料金倍率を変更
+      - step: SeasonEditUI --> SeasonEditCtrl
+        label: 5.更新リクエストを送信
+      - step: SeasonEditCtrl --> Season
+        label: 6.シーズンデータを更新
+        note: レートプラン再計算ポリシーが発動
+
+  # シーズン削除
+  - usecase:
+    name: シーズンの削除
+    stories:
+      - 施設管理者として、不要なシーズン設定を整理するために、使用しなくなったシーズンを削除したい
+    trackings:
+      - "story.yml:17 - 使用しなくなったシーズンを削除したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 削除対象のシーズンが存在し、不要になった
+    after: シーズンが削除され、参照しているレートプランへの影響が確認される
+    boundary:
+      name: "シーズン削除画面"
+      as: SeasonDeleteUI
+    control:
+      name: "シーズン削除\nコントローラ"
+      as: SeasonDeleteCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: FacilityAdmin --> SeasonDeleteUI
+        label: 1.削除するシーズンを選択
+      - step: SeasonDeleteUI --> SeasonDeleteCtrl
+        label: 2.削除リクエストを送信
+      - step: SeasonDeleteCtrl --> Season
+        label: 3.参照レートプランを確認
+        note: 紐づくレートプランがある場合は警告
+      - step: SeasonDeleteCtrl --> Season
+        label: 4.シーズンデータを削除
+      - step: SeasonDeleteCtrl --> SeasonDeleteUI
+        label: 5.削除完了を通知
+
+  # シーズン検索（施設管理者）
+  - usecase:
+    name: シーズン情報の検索・参照（施設管理者）
+    stories:
+      - 施設管理者として、料金設定の確認や見直しのために、登録済みシーズンを期間やシーズン区分で検索したい
+    trackings:
+      - "story.yml:23 - 登録済みシーズンを期間やシーズン区分で検索したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: シーズンが登録済みで、確認が必要になった
+    after: 検索条件に合致するシーズン一覧が表示される
+    boundary:
+      name: "シーズン検索画面"
+      as: SeasonSearchUI
+    control:
+      name: "シーズン検索\nコントローラ"
+      as: SeasonSearchCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: FacilityAdmin --> SeasonSearchUI
+        label: 1.検索条件を入力
+        note: 期間、シーズン区分で絞り込み
+      - step: SeasonSearchUI --> SeasonSearchCtrl
+        label: 2.検索リクエストを送信
+      - step: SeasonSearchCtrl --> Season
+        label: 3.該当シーズンを検索
+      - step: SeasonSearchCtrl --> SeasonSearchUI
+        label: 4.検索結果を表示
+
+  # シーズン検索（予約管理担当者）
+  - usecase:
+    name: 顧客問い合わせ対応でのシーズン料金確認
+    stories:
+      - 予約管理担当者として、顧客からの料金問い合わせに対応するために、特定日程に適用されるシーズン料金を確認したい
+      - 予約管理担当者として、正確な見積もりを提供するために、シーズン倍率を適用した概算料金を素早く計算したい
+    trackings:
+      - "story.yml:27 - 特定日程に適用されるシーズン料金を確認したい"
+      - "story.yml:31 - シーズン倍率を適用した概算料金を素早く計算したい"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationStaff
+    before: 顧客から特定日程の料金問い合わせがあった
+    after: 顧客に正確なシーズン料金情報が提供される
+    boundary:
+      name: "シーズン料金確認画面"
+      as: SeasonRateCheckUI
+    control:
+      name: "シーズン料金計算\nコントローラ"
+      as: SeasonRateCalcCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: ReservationStaff --> SeasonRateCheckUI
+        label: 1.問い合わせ日程を入力
+      - step: SeasonRateCheckUI --> SeasonRateCalcCtrl
+        label: 2.シーズン検索リクエストを送信
+      - step: SeasonRateCalcCtrl --> Season
+        label: 3.該当日程のシーズンを特定
+      - step: SeasonRateCalcCtrl --> SeasonRateCheckUI
+        label: 4.シーズン区分と料金倍率を表示
+      - step: ReservationStaff --> SeasonRateCheckUI
+        label: 5.概算料金を確認
+        note: 標準料金×シーズン倍率
+
+  # レートプラン登録
+  - usecase:
+    name: レートプランの新規登録
+    stories:
+      - 施設管理者として、新規OTA販売を開始するために、OTA別・部屋タイプ別のレートプランを登録したい
+      - 施設管理者として、各OTAの手数料率を考慮した適切な価格を設定するために、OTA別に異なる料金を設定したい
+    trackings:
+      - "story.yml:37 - OTA別・部屋タイプ別のレートプランを登録したい"
+      - "story.yml:41 - OTA別に異なる料金を設定したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 新しいOTAとの契約が完了し、販売開始準備が整っている
+    after: 新規OTAでの販売が開始され、料金が正しく表示される
+    boundary:
+      name: "レートプラン登録画面"
+      as: RatePlanRegisterUI
+    control:
+      name: "レートプラン登録\nコントローラ"
+      as: RatePlanRegisterCtrl
+    entity:
+      name: "レートプラン"
+      as: RatePlan
+    steps:
+      - step: FacilityAdmin --> RatePlanRegisterUI
+        label: 1.OTA種別を選択
+      - step: FacilityAdmin --> RatePlanRegisterUI
+        label: 2.部屋タイプを選択
+      - step: FacilityAdmin --> RatePlanRegisterUI
+        label: 3.各シーズンの料金を設定
+        note: OTA手数料を考慮した料金
+      - step: FacilityAdmin --> RatePlanRegisterUI
+        label: 4.販売期間を設定
+      - step: RatePlanRegisterUI --> RatePlanRegisterCtrl
+        label: 5.登録リクエストを送信
+      - step: RatePlanRegisterCtrl --> RatePlan
+        label: 6.レートプランを保存
+      - step: RatePlanRegisterCtrl --> RatePlanRegisterUI
+        label: 7.登録完了・同期開始を通知
+
+  # レートプラン一斉更新
+  - usecase:
+    name: 全OTAレートプランの一斉料金改定
+    stories:
+      - 施設管理者として、コスト変動に対応するために、全OTAの料金を一斉に改定したい
+      - 施設管理者として、複数OTAでの収益を最適化するために、シーズン料金とOTA手数料を考慮した統合的な料金戦略を設定したい
+    trackings:
+      - "story.yml:45 - 全OTAの料金を一斉に改定したい"
+      - "story.yml:83 - シーズン料金とOTA手数料を考慮した統合的な料金戦略を設定したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 仕入れコスト上昇により全OTAの料金見直しが必要になった
+    after: 全OTAの料金が統一的に改定され、同期が完了する
+    boundary:
+      name: "レートプラン一覧画面"
+      as: RatePlanListUI
+    control:
+      name: "レートプラン一括更新\nコントローラ"
+      as: RatePlanBulkUpdateCtrl
+    entity:
+      name: "レートプラン"
+      as: RatePlan
+    steps:
+      - step: FacilityAdmin --> RatePlanListUI
+        label: 1.現在の料金設定を確認
+      - step: FacilityAdmin --> RatePlanListUI
+        label: 2.部屋タイプごとに新料金を計算
+      - step: FacilityAdmin --> RatePlanListUI
+        label: 3.各OTAのレートプランを更新
+      - step: RatePlanListUI --> RatePlanBulkUpdateCtrl
+        label: 4.一括更新リクエストを送信
+      - step: RatePlanBulkUpdateCtrl --> RatePlan
+        label: 5.全レートプランを更新
+      - step: RatePlanBulkUpdateCtrl --> RatePlanListUI
+        label: 6.更新完了・同期開始を通知
+
+  # レートプラン削除
+  - usecase:
+    name: レートプランの削除
+    stories:
+      - 施設管理者として、販売チャネルを整理するために、不要になったレートプランを削除したい
+    trackings:
+      - "story.yml:49 - 不要になったレートプランを削除したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: 削除対象のレートプランが存在し、不要になった
+    after: レートプランが削除され、該当OTAから販売停止指示が送信される
+    boundary:
+      name: "レートプラン削除画面"
+      as: RatePlanDeleteUI
+    control:
+      name: "レートプラン削除\nコントローラ"
+      as: RatePlanDeleteCtrl
+    entity:
+      name: "レートプラン"
+      as: RatePlan
+    steps:
+      - step: FacilityAdmin --> RatePlanDeleteUI
+        label: 1.削除するレートプランを選択
+      - step: RatePlanDeleteUI --> RatePlanDeleteCtrl
+        label: 2.削除リクエストを送信
+      - step: RatePlanDeleteCtrl --> RatePlan
+        label: 3.レートプランを削除
+      - step: RatePlanDeleteCtrl --> RatePlanDeleteUI
+        label: 4.削除完了・OTA同期を通知
+
+  # サイトコントローラー自動同期
+  - usecase:
+    name: レートプランのサイトコントローラー自動同期
+    stories:
+      - 施設管理者として、各OTAへの料金反映を効率化するために、レートプランをサイトコントローラー経由で自動同期したい
+      - 施設管理者として、料金設定ミスを防ぐために、同期結果（成功/失敗）をログで確認したい
+    trackings:
+      - "story.yml:55 - レートプランをサイトコントローラー経由で自動同期したい"
+      - "story.yml:59 - 同期結果（成功/失敗）をログで確認したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: レートプランが登録または更新され、同期が必要になった
+    after: 全ての対象OTAにレートプラン情報が反映される
+    boundary:
+      name: "同期ログ画面"
+      as: SyncLogUI
+    control:
+      name: "サイトコントローラー\n同期コントローラ"
+      as: SiteControllerSyncCtrl
+    entity:
+      name: "レートプラン"
+      as: RatePlan
+    steps:
+      - step: SiteControllerSyncCtrl --> RatePlan
+        label: 1.更新されたレートプランを検出
+      - step: SiteControllerSyncCtrl --> SiteControllerSyncCtrl
+        label: 2.サイトコントローラーAPIに送信
+        note: ねっぱん、Beds24、TL-Lincoln等
+      - step: SiteControllerSyncCtrl --> RatePlan
+        label: 3.同期結果をログに記録
+      - step: FacilityAdmin --> SyncLogUI
+        label: 4.同期ログを確認
+      - step: SyncLogUI --> SiteControllerSyncCtrl
+        label: 5.同期ステータスを取得
+      - step: SiteControllerSyncCtrl --> SyncLogUI
+        label: 6.同期結果を表示
+
+  # 同期エラー対応
+  - usecase:
+    name: 同期エラー発生時の対応と手動再同期
+    stories:
+      - 施設管理者として、同期エラー発生時に迅速に対応するために、失敗時のアラート通知を受け取りたい
+      - 施設管理者として、同期エラーを解消するために、手動で再同期を実行したい
+    trackings:
+      - "story.yml:63 - 失敗時のアラート通知を受け取りたい"
+      - "story.yml:67 - 手動で再同期を実行したい"
+    actor:
+      name: "施設管理者"
+      as: FacilityAdmin
+    before: サイトコントローラーとの同期でエラーが発生した
+    after: 同期エラーが解消され、OTAへの料金反映が完了する
+    boundary:
+      name: "同期エラー対応画面"
+      as: SyncErrorUI
+    control:
+      name: "同期リトライ\nコントローラ"
+      as: SyncRetryCtrl
+    entity:
+      name: "レートプラン"
+      as: RatePlan
+    steps:
+      - step: SyncRetryCtrl --> FacilityAdmin
+        label: 1.同期失敗アラートを送信
+        note: 3回リトライ失敗後に通知
+      - step: FacilityAdmin --> SyncErrorUI
+        label: 2.同期ログを確認
+      - step: SyncErrorUI --> SyncRetryCtrl
+        label: 3.エラー詳細を取得
+      - step: SyncRetryCtrl --> SyncErrorUI
+        label: 4.エラー原因を表示
+      - step: FacilityAdmin --> SyncErrorUI
+        label: 5.手動再同期を実行
+      - step: SyncErrorUI --> SyncRetryCtrl
+        label: 6.再同期リクエストを送信
+      - step: SyncRetryCtrl --> RatePlan
+        label: 7.再同期を実行・結果を記録
+
+  # シーズン料金自動適用
+  - usecase:
+    name: 予約時のシーズン料金自動適用
+    stories:
+      - 予約管理担当者として、正確な宿泊料金を提示するために、予約日に応じたシーズン料金を自動適用させたい
+      - 予約管理担当者として、顧客に透明性のある料金を提供するために、シーズン倍率適用後の料金を予約画面で確認したい
+    trackings:
+      - "story.yml:73 - 予約日に応じたシーズン料金を自動適用させたい"
+      - "story.yml:77 - シーズン倍率適用後の料金を予約画面で確認したい"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationStaff
+    before: シーズン設定が完了しており、顧客が予約を作成しようとしている
+    after: シーズン料金が適用された正確な宿泊料金で予約が作成される
+    boundary:
+      name: "予約作成画面"
+      as: ReservationUI
+    control:
+      name: "シーズン料金計算\nコントローラ"
+      as: SeasonPricingCtrl
+    entity:
+      name: "シーズン"
+      as: Season
+    steps:
+      - step: ReservationStaff --> ReservationUI
+        label: 1.宿泊日程を選択
+      - step: ReservationUI --> SeasonPricingCtrl
+        label: 2.料金計算リクエストを送信
+      - step: SeasonPricingCtrl --> Season
+        label: 3.該当シーズンを特定
+      - step: SeasonPricingCtrl --> SeasonPricingCtrl
+        label: 4.標準料金×シーズン倍率を計算
+      - step: SeasonPricingCtrl --> ReservationUI
+        label: 5.計算後の料金を表示
+      - step: ReservationStaff --> ReservationUI
+        label: 6.料金を確認し予約を確定

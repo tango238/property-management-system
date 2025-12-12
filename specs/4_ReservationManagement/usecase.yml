@@ -1,0 +1,558 @@
+usecases:
+  # サイトコントローラーからの予約自動取り込み
+  - usecase:
+    name: OTA予約の自動取り込みとダブルブッキング検出
+    stories:
+      - 予約管理担当者として、手作業によるミスを削減するために、サイトコントローラー経由でOTAからの予約を自動取得したい
+      - 予約管理担当者として、予約の重複を防止するために、取り込み時にダブルブッキングを自動検出したい
+      - 予約管理担当者として、OTA予約を確実に取り込むために、サイトコントローラーから定期的にポーリングして予約を登録したい
+    trackings:
+      - "story.yml:5 - サイトコントローラー経由でOTAからの予約を自動取得"
+      - "story.yml:10 - 取り込み時にダブルブッキングを自動検出"
+      - "story.yml:20 - サイトコントローラーから定期的にポーリングして予約を登録"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: サイトコントローラーとの連携が設定済みで、OTAに新規予約が存在する
+    after: 予約がシステムに取り込まれ、ダブルブッキングがある場合は警告が発生する
+    boundary:
+      name: "予約取り込み画面"
+      as: ImportUI
+    control:
+      name: "予約取り込み\nコントローラ"
+      as: ImportController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: ReservationManager --> ImportUI
+        label: 1.取り込み状況を確認
+      - step: ImportUI --> ImportController
+        label: 2.取り込み処理を実行
+      - step: ImportController --> Reservation
+        label: 3.予約データを登録
+      - step: ImportController --> Reservation
+        label: 4.重複チェックを実行
+        note: 同一部屋・同一日程の既存予約と照合
+
+  - usecase:
+    name: 予約取り込みエラーの確認と対応
+    stories:
+      - 予約管理担当者として、取り込み失敗に対応するために、エラー情報を記録して後で確認したい
+      - 予約管理担当者として、取り込みエラーを解消するために、エラー原因を確認して手動入力または再取り込みを実行したい
+    trackings:
+      - "story.yml:15 - エラー情報を記録して後で確認"
+      - "story.yml:25 - エラー原因を確認して手動入力または再取り込みを実行"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約取り込み処理でエラーが発生している
+    after: エラーが解消され、予約が正常に取り込まれる
+    boundary:
+      name: "取り込みエラー一覧画面"
+      as: ImportErrorUI
+    control:
+      name: "エラー対応\nコントローラ"
+      as: ErrorHandler
+    entity:
+      name: "取り込みエラーログ"
+      as: ImportErrorLog
+    steps:
+      - step: ReservationManager --> ImportErrorUI
+        label: 1.エラー一覧を確認
+      - step: ImportErrorUI --> ErrorHandler
+        label: 2.エラー詳細を取得
+      - step: ErrorHandler --> ImportErrorLog
+        label: 3.エラー内容を参照
+      - step: ReservationManager --> ImportErrorUI
+        label: 4.手動入力または再取り込みを選択
+      - step: ImportErrorUI --> ErrorHandler
+        label: 5.対応処理を実行
+      - step: ErrorHandler --> ImportErrorLog
+        label: 6.エラー解消を記録
+
+  # ダブルブッキングの検出・調整
+  - usecase:
+    name: ダブルブッキングの検出と緊急通知受信
+    stories:
+      - 予約管理担当者として、顧客満足度を維持するために、同一部屋・同一日程の重複予約を検出したい
+      - 予約管理担当者として、迅速に対応するために、ダブルブッキング検出時に緊急通知を受け取りたい
+    trackings:
+      - "story.yml:31 - 同一部屋・同一日程の重複予約を検出"
+      - "story.yml:36 - ダブルブッキング検出時に緊急通知を受け取り"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約取り込みまたは更新が行われた
+    after: ダブルブッキングが検出され、担当者に通知が送信される
+    boundary:
+      name: "ダブルブッキング通知"
+      as: DBAlertUI
+    control:
+      name: "重複検出\nコントローラ"
+      as: DuplicateDetector
+    entity:
+      name: "ダブルブッキング"
+      as: DoubleBooking
+    steps:
+      - step: DuplicateDetector --> DoubleBooking
+        label: 1.予約の重複をチェック
+        note: 同一部屋・同一日程で既存予約と照合
+      - step: DuplicateDetector --> DBAlertUI
+        label: 2.重複検出を通知
+      - step: DBAlertUI --> ReservationManager
+        label: 3.緊急通知を表示
+
+  - usecase:
+    name: ダブルブッキングの解消と部屋再割り当て
+    stories:
+      - 予約管理担当者として、ダブルブッキングを解消するために、重複予約の詳細を確認して別の部屋に再割り当てしたい
+      - 予約管理担当者として、ダブルブッキング発生時に迅速に対応するために、検出→通知→再割り当て→解消記録の一連フローを実行したい
+    trackings:
+      - "story.yml:41 - 重複予約の詳細を確認して別の部屋に再割り当て"
+      - "story.yml:136 - 機能横断: ダブルブッキング検出から解消までのフロー"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: ダブルブッキングが検出され、対応が必要な状態
+    after: ダブルブッキングが解消され、全予約に部屋が割り当てられる
+    boundary:
+      name: "重複予約一覧画面"
+      as: DBListUI
+    control:
+      name: "ダブルブッキング\n調整コントローラ"
+      as: DBAdjustController
+    entity:
+      name: "ダブルブッキング"
+      as: DoubleBooking
+    steps:
+      - step: ReservationManager --> DBListUI
+        label: 1.重複予約一覧を確認
+      - step: DBListUI --> DBAdjustController
+        label: 2.ダブルブッキング詳細を取得
+      - step: DBAdjustController --> DoubleBooking
+        label: 3.空き部屋を検索
+      - step: ReservationManager --> DBListUI
+        label: 4.再割り当て先の部屋を選択
+      - step: DBListUI --> DBAdjustController
+        label: 5.部屋再割り当てを実行
+      - step: DBAdjustController --> DoubleBooking
+        label: 6.調整完了を記録
+
+  # 予約の一覧・カレンダー・検索表示
+  - usecase:
+    name: 当日チェックイン予約の確認と受け入れ準備
+    stories:
+      - フロントスタッフとして、当日の受け入れ準備を整えるために、本日のチェックイン予約を一覧で確認したい
+    trackings:
+      - "story.yml:47 - 本日のチェックイン予約を一覧で確認"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: フロントスタッフがログイン済み、当日の予約データが存在する
+    after: 当日のチェックイン予約が把握され、受け入れ準備が整う
+    boundary:
+      name: "予約一覧画面"
+      as: ReservationListUI
+    control:
+      name: "予約一覧\nコントローラ"
+      as: ListController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: FrontStaff --> ReservationListUI
+        label: 1.予約一覧画面を開く
+      - step: FrontStaff --> ReservationListUI
+        label: 2.本日チェックインでフィルタ
+      - step: ReservationListUI --> ListController
+        label: 3.フィルタ条件を送信
+      - step: ListController --> Reservation
+        label: 4.該当予約を取得
+      - step: ReservationListUI --> FrontStaff
+        label: 5.到着予定時刻順で表示
+
+  - usecase:
+    name: 週間稼働状況のカレンダー確認
+    stories:
+      - 予約管理担当者として、経営判断の材料を得るために、週間の稼働状況をカレンダーで確認したい
+    trackings:
+      - "story.yml:52 - 週間の稼働状況をカレンダーで確認"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約管理担当者がログイン済み
+    after: 週間の稼働状況が把握され、経営判断の材料が得られる
+    boundary:
+      name: "予約カレンダー画面"
+      as: CalendarUI
+    control:
+      name: "カレンダー表示\nコントローラ"
+      as: CalendarController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: ReservationManager --> CalendarUI
+        label: 1.カレンダー画面を開く
+      - step: ReservationManager --> CalendarUI
+        label: 2.表示期間を今週に設定
+      - step: CalendarUI --> CalendarController
+        label: 3.期間指定を送信
+      - step: CalendarController --> Reservation
+        label: 4.予約データを取得
+      - step: CalendarUI --> ReservationManager
+        label: 5.空室状況を視覚的に表示
+
+  - usecase:
+    name: 複数施設の予約状況同時確認
+    stories:
+      - 予約管理担当者として、複数施設の予約状況を把握するために、施設を跨いで予約を同時表示したい
+    trackings:
+      - "story.yml:57 - 施設を跨いで予約を同時表示"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約管理担当者がログイン済みで、複数施設を管理している
+    after: 複数施設の予約状況が一画面で把握できる
+    boundary:
+      name: "予約カレンダー画面"
+      as: CalendarUI
+    control:
+      name: "カレンダー表示\nコントローラ"
+      as: CalendarController
+    entity:
+      name: "施設"
+      as: Property
+    steps:
+      - step: ReservationManager --> CalendarUI
+        label: 1.カレンダー画面を開く
+      - step: ReservationManager --> CalendarUI
+        label: 2.複数施設を選択
+      - step: CalendarUI --> CalendarController
+        label: 3.施設選択を送信
+      - step: CalendarController --> Property
+        label: 4.各施設の予約を取得
+      - step: CalendarUI --> ReservationManager
+        label: 5.施設別予約状況を表示
+
+  - usecase:
+    name: 予約の検索
+    stories:
+      - フロントスタッフとして、特定の予約を素早く見つけるために、予約番号やゲスト名で検索したい
+    trackings:
+      - "story.yml:62 - 予約番号やゲスト名で検索"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: フロントスタッフがログイン済み
+    after: 検索条件に合致する予約が表示される
+    boundary:
+      name: "予約検索画面"
+      as: SearchUI
+    control:
+      name: "予約検索\nコントローラ"
+      as: SearchController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: FrontStaff --> SearchUI
+        label: 1.検索画面を開く
+      - step: FrontStaff --> SearchUI
+        label: 2.予約番号またはゲスト名を入力
+      - step: SearchUI --> SearchController
+        label: 3.検索条件を送信
+      - step: SearchController --> Reservation
+        label: 4.該当予約を検索
+      - step: SearchUI --> FrontStaff
+        label: 5.検索結果を表示
+
+  - usecase:
+    name: 予約取り込みから部屋アサインまでの一連フロー
+    stories:
+      - 予約管理担当者として、新規予約から部屋アサインまでを効率的に行うために、予約取り込み→一覧確認→アサインの一連フローを実行したい
+    trackings:
+      - "story.yml:131 - 機能横断: 予約取り込みから部屋アサインまでのフロー"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: サイトコントローラーに新規予約が存在する
+    after: 予約が取り込まれ、部屋がアサインされる
+    boundary:
+      name: "予約管理ダッシュボード"
+      as: DashboardUI
+    control:
+      name: "予約管理\nコントローラ"
+      as: ReservationController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: ReservationManager --> DashboardUI
+        label: 1.ダッシュボードを開く
+      - step: DashboardUI --> ReservationController
+        label: 2.予約取り込みを実行
+      - step: ReservationController --> Reservation
+        label: 3.予約を登録
+      - step: ReservationManager --> DashboardUI
+        label: 4.取り込み済み予約一覧を確認
+      - step: ReservationManager --> DashboardUI
+        label: 5.部屋アサインを実行
+      - step: DashboardUI --> ReservationController
+        label: 6.アサインを保存
+
+  # 予約詳細の確認・更新
+  - usecase:
+    name: 予約日程・部屋タイプの変更
+    stories:
+      - 予約管理担当者として、ゲストの要望に応えるために、予約の日程や部屋タイプを変更したい
+      - 予約管理担当者として、予約変更時の問題を防ぐために、変更後の空室状況を自動チェックしたい
+      - フロントスタッフとして、ゲストの日程変更依頼に対応するために、予約を検索して日程と料金を更新したい
+    trackings:
+      - "story.yml:68 - 予約の日程や部屋タイプを変更"
+      - "story.yml:73 - 変更後の空室状況を自動チェック"
+      - "story.yml:78 - 予約を検索して日程と料金を更新"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: ゲストから日程変更の依頼があり、該当予約が予約確定状態
+    after: 予約日程が変更され、新しい日程で部屋が確保される
+    boundary:
+      name: "予約詳細画面"
+      as: DetailUI
+    control:
+      name: "予約更新\nコントローラ"
+      as: UpdateController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: FrontStaff --> DetailUI
+        label: 1.予約詳細画面を開く
+      - step: FrontStaff --> DetailUI
+        label: 2.新しい日程を入力
+      - step: DetailUI --> UpdateController
+        label: 3.変更内容を送信
+      - step: UpdateController --> Reservation
+        label: 4.空室状況をチェック
+        note: 変更後の日程・部屋タイプで空室があるか確認
+      - step: UpdateController --> Reservation
+        label: 5.予約を更新
+      - step: DetailUI --> FrontStaff
+        label: 6.料金差額を表示
+
+  - usecase:
+    name: ゲスト特別リクエストの記録
+    stories:
+      - フロントスタッフとして、ゲストの特別なリクエストに対応するために、到着時刻やアレルギー情報を記録したい
+    trackings:
+      - "story.yml:83 - 到着時刻やアレルギー情報を記録"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: ゲストから特別なリクエストの連絡があった
+    after: ゲスト要望が記録され、関連スタッフが確認できる
+    boundary:
+      name: "予約詳細画面"
+      as: DetailUI
+    control:
+      name: "ゲスト要望\nコントローラ"
+      as: RequestController
+    entity:
+      name: "ゲスト要望"
+      as: GuestRequest
+    steps:
+      - step: FrontStaff --> DetailUI
+        label: 1.予約詳細画面を開く
+      - step: FrontStaff --> DetailUI
+        label: 2.ゲスト要望セクションを開く
+      - step: FrontStaff --> DetailUI
+        label: 3.到着予定時刻を記録
+      - step: FrontStaff --> DetailUI
+        label: 4.アレルギー情報・部屋希望を記録
+      - step: DetailUI --> RequestController
+        label: 5.要望内容を送信
+      - step: RequestController --> GuestRequest
+        label: 6.ゲスト要望を保存
+
+  # 部屋のアサイン
+  - usecase:
+    name: 予約への部屋番号割り当て
+    stories:
+      - 予約管理担当者として、チェックインをスムーズにするために、予約に対して具体的な部屋番号を割り当てたい
+      - 予約管理担当者として、清掃済みの部屋を確実にアサインするために、部屋の清掃ステータスを確認したい
+    trackings:
+      - "story.yml:89 - 予約に対して具体的な部屋番号を割り当て"
+      - "story.yml:94 - 部屋の清掃ステータスを確認"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約が確定しており、部屋タイプが決まっている
+    after: 予約に具体的な部屋番号が割り当てられる
+    boundary:
+      name: "部屋アサイン画面"
+      as: AssignUI
+    control:
+      name: "部屋アサイン\nコントローラ"
+      as: AssignController
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: ReservationManager --> AssignUI
+        label: 1.部屋アサイン画面を開く
+      - step: AssignUI --> AssignController
+        label: 2.利用可能な部屋を取得
+      - step: AssignController --> Room
+        label: 3.清掃ステータスを確認
+        note: 未清掃の場合は警告を表示
+      - step: ReservationManager --> AssignUI
+        label: 4.部屋を選択
+      - step: AssignUI --> AssignController
+        label: 5.アサインを確定
+      - step: AssignController --> Room
+        label: 6.アサイン情報を保存
+
+  - usecase:
+    name: チェックイン前日の事前部屋アサイン
+    stories:
+      - 予約管理担当者として、翌日の準備を効率化するために、前日に予約への部屋アサインを完了したい
+    trackings:
+      - "story.yml:99 - 前日に予約への部屋アサインを完了"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 翌日のチェックイン予約が存在し、部屋の空き状況が確定している
+    after: 翌日の全予約に部屋がアサインされ、清掃準備が開始される
+    boundary:
+      name: "部屋アサイン画面"
+      as: AssignUI
+    control:
+      name: "事前アサイン\nコントローラ"
+      as: PreAssignController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: ReservationManager --> AssignUI
+        label: 1.翌日チェックイン予約を表示
+      - step: AssignUI --> PreAssignController
+        label: 2.予約一覧を取得
+      - step: PreAssignController --> Reservation
+        label: 3.部屋タイプ・要望を確認
+      - step: ReservationManager --> AssignUI
+        label: 4.各予約に部屋を割り当て
+        note: 連泊は同室継続、グループは隣接部屋
+      - step: AssignUI --> PreAssignController
+        label: 5.アサインを確定
+      - step: PreAssignController --> Reservation
+        label: 6.清掃部門に準備依頼
+
+  - usecase:
+    name: 当日の部屋アサイン変更
+    stories:
+      - フロントスタッフとして、当日の状況に応じて柔軟に対応するために、部屋のアサインを変更したい
+    trackings:
+      - "story.yml:104 - 部屋のアサインを変更"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: 予約に部屋がアサイン済みだが、変更が必要な状況
+    after: 部屋アサインが変更され、新しい部屋が割り当てられる
+    boundary:
+      name: "部屋アサイン画面"
+      as: AssignUI
+    control:
+      name: "アサイン変更\nコントローラ"
+      as: ReassignController
+    entity:
+      name: "部屋"
+      as: Room
+    steps:
+      - step: FrontStaff --> AssignUI
+        label: 1.アサイン画面を開く
+      - step: FrontStaff --> AssignUI
+        label: 2.変更対象の予約を選択
+      - step: AssignUI --> ReassignController
+        label: 3.利用可能な部屋を取得
+      - step: ReassignController --> Room
+        label: 4.空き部屋を検索
+      - step: FrontStaff --> AssignUI
+        label: 5.新しい部屋を選択
+      - step: AssignUI --> ReassignController
+        label: 6.アサイン変更を保存
+
+  # 予約のキャンセル処理
+  - usecase:
+    name: 予約キャンセルとキャンセル料判定
+    stories:
+      - 予約管理担当者として、ゲストからのキャンセル依頼に対応するために、予約を取り消してキャンセル料を判定したい
+      - フロントスタッフとして、ゲストからのキャンセル連絡に対応するために、予約を検索してキャンセル処理を実行したい
+    trackings:
+      - "story.yml:110 - 予約を取り消してキャンセル料を判定"
+      - "story.yml:125 - 予約を検索してキャンセル処理を実行"
+    actor:
+      name: "フロントスタッフ"
+      as: FrontStaff
+    before: ゲストからキャンセルの連絡があり、該当予約が予約確定状態
+    after: 予約がキャンセルされ、キャンセル料が判定される
+    boundary:
+      name: "予約キャンセル画面"
+      as: CancelUI
+    control:
+      name: "キャンセル処理\nコントローラ"
+      as: CancelController
+    entity:
+      name: "予約"
+      as: Reservation
+    steps:
+      - step: FrontStaff --> CancelUI
+        label: 1.キャンセル画面を開く
+      - step: FrontStaff --> CancelUI
+        label: 2.予約を検索・選択
+      - step: CancelUI --> CancelController
+        label: 3.キャンセル処理を開始
+      - step: CancelController --> Reservation
+        label: 4.キャンセルポリシーを確認
+      - step: CancelController --> Reservation
+        label: 5.キャンセル料を判定
+      - step: FrontStaff --> CancelUI
+        label: 6.キャンセル理由を入力
+      - step: CancelUI --> CancelController
+        label: 7.キャンセルを確定
+      - step: CancelController --> Reservation
+        label: 8.予約をキャンセル状態に更新
+
+  - usecase:
+    name: キャンセルによる在庫解放とOTA同期
+    stories:
+      - 予約管理担当者として、キャンセルされた部屋を再販売するために、在庫を自動的に解放したい
+      - 予約管理担当者として、OTA側の在庫と整合性を保つために、キャンセル情報をサイトコントローラーに同期したい
+    trackings:
+      - "story.yml:115 - 在庫を自動的に解放"
+      - "story.yml:120 - キャンセル情報をサイトコントローラーに同期"
+    actor:
+      name: "予約管理担当者"
+      as: ReservationManager
+    before: 予約がキャンセルされた
+    after: 部屋在庫が解放され、サイトコントローラーにキャンセル情報が同期される
+    boundary:
+      name: "サイトコントローラー連携"
+      as: SCIntegration
+    control:
+      name: "在庫同期\nコントローラ"
+      as: InventorySyncController
+    entity:
+      name: "部屋在庫"
+      as: RoomInventory
+    steps:
+      - step: CancelController --> InventorySyncController
+        label: 1.キャンセル通知を受信
+        note: 予約キャンセル処理から自動トリガー
+      - step: InventorySyncController --> RoomInventory
+        label: 2.部屋在庫を解放
+      - step: InventorySyncController --> SCIntegration
+        label: 3.サイトコントローラーに同期
+      - step: SCIntegration --> ReservationManager
+        label: 4.同期完了を通知

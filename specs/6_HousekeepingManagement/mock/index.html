@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清掃管理 - モック画面一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .category h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .screen-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .screen-list li a {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .screen-list li a:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        .screen-list li a .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .screen-list li a .description {
+            font-size: 13px;
+            color: #666;
+        }
+        .screen-list li a:hover .description {
+            color: #e0e0e0;
+        }
+        .flow-diagram {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-diagram h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .flow-diagram p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>清掃管理 - モック画面一覧</h1>
+        <p class="subtitle">宿泊施設の清掃業務を効率的に管理するシステム。清掃スタッフがモバイルで状況更新、フロントスタッフがリアルタイムで確認可能。</p>
+
+        <div class="flow-diagram">
+            <h3>メイン画面フロー</h3>
+            <p>
+                清掃スタッフ：ダッシュボード → 清掃対象一覧 → 清掃作業記録（開始→完了→Vacant変更）→ 通知送信<br>
+                フロントスタッフ：部屋状況一覧 ← 清掃完了通知受信 → チェックイン対応
+            </p>
+        </div>
+
+        <div class="category">
+            <h2>ダッシュボード</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="dashboard.html">
+                        <div class="title">清掃管理ダッシュボード</div>
+                        <div class="description">清掃業務の全体状況を把握し、効率的に業務を進める</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>清掃スタッフ向け画面</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="cleaning_list.html">
+                        <div class="title">清掃対象部屋一覧画面</div>
+                        <div class="description">チェックアウト済みの部屋を優先順位付きで一覧表示</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="cleaning_record.html">
+                        <div class="title">清掃作業記録画面</div>
+                        <div class="description">清掃の開始・完了を記録し、部屋状態を更新</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="supply_shortage.html">
+                        <div class="title">備品不足記録画面</div>
+                        <div class="description">清掃中に発見した備品不足や破損を記録</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="supply_request.html">
+                        <div class="title">備品補充依頼画面</div>
+                        <div class="description">記録した備品不足に対して補充依頼を送信</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="notification_list_staff.html">
+                        <div class="title">通知一覧画面（清掃スタッフ）</div>
+                        <div class="description">補充完了通知などを確認</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>フロントスタッフ向け画面</h2>
+            <ul class="screen-list">
+                <li>
+                    <a href="room_status_list.html">
+                        <div class="title">部屋状況一覧画面</div>
+                        <div class="description">全部屋の清掃状況をリアルタイムで確認</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="cleaning_complete_notification.html">
+                        <div class="title">清掃完了通知画面</div>
+                        <div class="description">清掃完了のプッシュ通知を受け取り、部屋の準備完了を把握</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

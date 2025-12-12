@@ -1,0 +1,31 @@
+screens:
+  # 施設管理者向け画面 - 施設管理
+  - [x] facility_list
+  - [x] facility_form
+  - [x] facility_edit
+  - [x] facility_detail
+
+  # 施設管理者向け画面 - 部屋タイプ管理
+  - [x] room_type_list
+  - [x] room_type_form
+  - [x] room_type_edit
+
+  # 施設管理者向け画面 - 部屋管理
+  - [x] room_list
+  - [x] room_form
+  - [x] room_edit
+
+  # 予約管理担当者向け画面
+  - [x] facility_detail_reservation
+  - [x] room_type_compare
+
+  # フロントスタッフ向け画面
+  - [x] vacant_room_search
+  - [x] checkin
+  - [x] checkout
+  - [x] room_status_change
+
+  # 清掃スタッフ向け画面
+  - [x] cleaning_target_list
+  - [x] cleaning_start
+  - [x] cleaning_complete

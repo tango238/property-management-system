@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チェックアウト画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .role-badge { display: inline-block; padding: 4px 12px; background: #28a745; color: white; border-radius: 20px; font-size: 12px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        .form-group label .required { color: #dc3545; margin-left: 4px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .room-info { background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
+        .room-info h3 { font-size: 16px; margin-bottom: 15px; color: #333; }
+        .room-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .room-info-item label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; }
+        .room-info-item span { font-size: 14px; font-weight: bold; }
+        .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .status-occupied { background: #dc3545; color: white; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #28a745; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .alert { padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; }
+        .alert-warning { background: #fff3cd; border: 1px solid #ffc107; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; チェックアウト
+        </div>
+        <span class="role-badge">フロントスタッフ</span>
+        <h1>チェックアウト画面</h1>
+
+        <div class="alert alert-warning">
+            チェックアウトを実行すると、部屋状態が「Dirty（要清掃）」に変更され、清掃スタッフに自動通知されます。
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label>部屋番号<span class="required">*</span></label>
+                <select id="roomSelect">
+                    <option value="">部屋を選択してください</option>
+                    <option value="102" selected>102 - シングル（1階）</option>
+                    <option value="203">203 - ダブル（2階）</option>
+                    <option value="304">304 - ツイン（3階）</option>
+                </select>
+                <div class="hint">Occupied（使用中）状態の部屋のみ選択可能</div>
+            </div>
+
+            <div class="room-info">
+                <h3>部屋情報</h3>
+                <div class="room-info-grid">
+                    <div class="room-info-item">
+                        <label>部屋状態</label>
+                        <span class="status-badge status-occupied">Occupied</span>
+                    </div>
+                    <div class="room-info-item">
+                        <label>チェックイン日時</label>
+                        <span>2024-03-19 16:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">キャンセル</button>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('チェックアウトを実行しますか？清掃スタッフに自動通知されます。')">チェックアウト実行</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

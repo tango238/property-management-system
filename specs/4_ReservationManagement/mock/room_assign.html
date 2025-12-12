@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部屋アサイン画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .info-card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+        .info-card h3 { font-size: 16px; margin-bottom: 15px; color: #333; }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .info-item { display: flex; flex-direction: column; gap: 3px; }
+        .info-item .label { font-size: 12px; color: #666; }
+        .info-item .value { font-size: 14px; font-weight: bold; }
+        .section-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 15px; }
+        .room-list { display: flex; flex-direction: column; gap: 10px; }
+        .room-option { display: flex; align-items: center; padding: 15px; border: 2px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .room-option:hover { border-color: #007bff; background: #f8f9fa; }
+        .room-option.selected { border-color: #007bff; background: #e7f3ff; }
+        .room-option.disabled { opacity: 0.5; cursor: not-allowed; background: #f8f9fa; }
+        .room-option input[type="radio"] { margin-right: 15px; width: 18px; height: 18px; }
+        .room-info { flex: 1; }
+        .room-info .room-name { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+        .room-info .room-details { font-size: 13px; color: #666; }
+        .room-status { padding: 4px 10px; border-radius: 4px; font-size: 12px; }
+        .room-status.available { background: #d4edda; color: #155724; }
+        .room-status.cleaning { background: #fff3cd; color: #856404; }
+        .room-status.occupied { background: #f8d7da; color: #721c24; }
+        .upgrade-badge { background: #007bff; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 10px; }
+        .filter-section { margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #666; }
+        .filter-group select { padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; }
+        .btn { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #545b62; }
+        .note { font-size: 12px; color: #666; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="reservation_list.html">予約一覧</a>
+            <a href="reservation_detail.html">予約詳細</a>
+        </div>
+
+        <h1>部屋アサイン画面</h1>
+
+        <div class="info-card">
+            <h3>対象予約情報</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">予約番号</div>
+                    <div class="value">RES-2025121002</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">ゲスト名</div>
+                    <div class="value">鈴木 花子</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">人数</div>
+                    <div class="value">大人2名</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">チェックイン</div>
+                    <div class="value">2025-12-15</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">チェックアウト</div>
+                    <div class="value">2025-12-18</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">希望部屋タイプ</div>
+                    <div class="value">ツイン</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label>部屋タイプで絞り込み</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option selected>ツイン</option>
+                    <option>ダブル</option>
+                    <option>スイート</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>フロア</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option>3F</option>
+                    <option>4F</option>
+                    <option>5F</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="section-title">空き部屋一覧（2025-12-15 〜 2025-12-18）</div>
+
+        <div class="room-list">
+            <label class="room-option">
+                <input type="radio" name="room" value="302">
+                <div class="room-info">
+                    <div class="room-name">302号室（ツイン）</div>
+                    <div class="room-details">3階 / 定員2名 / 禁煙 / バストイレ別</div>
+                </div>
+                <span class="room-status available">空室・清掃済み</span>
+            </label>
+
+            <label class="room-option selected">
+                <input type="radio" name="room" value="305" checked>
+                <div class="room-info">
+                    <div class="room-name">305号室（ツイン）</div>
+                    <div class="room-details">3階 / 定員2名 / 禁煙 / ユニットバス</div>
+                </div>
+                <span class="room-status available">空室・清掃済み</span>
+            </label>
+
+            <label class="room-option">
+                <input type="radio" name="room" value="401">
+                <div class="room-info">
+                    <div class="room-name">401号室（ツイン）</div>
+                    <div class="room-details">4階 / 定員2名 / 禁煙 / バストイレ別</div>
+                </div>
+                <span class="room-status cleaning">清掃中</span>
+            </label>
+
+            <label class="room-option">
+                <input type="radio" name="room" value="502">
+                <div class="room-info">
+                    <div class="room-name">502号室（デラックスツイン）<span class="upgrade-badge">アップグレード</span></div>
+                    <div class="room-details">5階 / 定員2名 / 禁煙 / バストイレ別 / 眺望良好</div>
+                </div>
+                <span class="room-status available">空室・清掃済み</span>
+            </label>
+
+            <label class="room-option disabled">
+                <input type="radio" name="room" value="303" disabled>
+                <div class="room-info">
+                    <div class="room-name">303号室（ツイン）</div>
+                    <div class="room-details">3階 / 定員2名 / 禁煙 / ユニットバス</div>
+                </div>
+                <span class="room-status occupied">予約済み</span>
+            </label>
+        </div>
+
+        <div class="note">※ 同じ部屋タイプを優先的にアサインしてください。アップグレードの場合は料金調整が必要な場合があります。</div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="location.href='reservation_detail.html'">キャンセル</button>
+            <button class="btn btn-primary" onclick="alert('305号室にアサインしました'); location.href='reservation_detail.html'">アサイン確定</button>
+        </div>
+    </div>
+</body>
+</html>

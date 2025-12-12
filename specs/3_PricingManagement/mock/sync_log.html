@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同期ログ画面 - 料金管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+    .header { background: #1e40af; color: #fff; padding: 16px 24px; }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .search-panel { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .search-panel h2 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #374151; }
+    .search-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 12px; font-weight: 500; color: #6b7280; }
+    .form-group input, .form-group select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .search-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-warning { background: #d97706; color: #fff; }
+    .btn-warning:hover { background: #b45309; }
+    .results-panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .results-header { padding: 16px 20px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+    .results-header h2 { font-size: 14px; font-weight: 600; color: #374151; }
+    .results-count { font-size: 13px; color: #6b7280; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f9fafb; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; }
+    td { font-size: 14px; }
+    tr:hover { background: #f9fafb; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-ota-rakuten { background: #fee2e2; color: #991b1b; }
+    .badge-ota-jalan { background: #fef3c7; color: #92400e; }
+    .badge-ota-booking { background: #dbeafe; color: #1e40af; }
+    .badge-ota-airbnb { background: #fce7f3; color: #9d174d; }
+    .badge-sync-success { background: #d1fae5; color: #065f46; }
+    .badge-sync-pending { background: #fef3c7; color: #92400e; }
+    .badge-sync-error { background: #fee2e2; color: #991b1b; }
+    .badge-sync-retry { background: #e0e7ff; color: #3730a3; }
+    .actions-cell { display: flex; gap: 8px; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+    .error-text { color: #dc2626; font-size: 13px; }
+    .nav-link { color: #2563eb; text-decoration: none; font-size: 13px; }
+    .nav-link:hover { text-decoration: underline; }
+    .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .summary-card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .summary-card .label { font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+    .summary-card .value { font-size: 24px; font-weight: 600; color: #1f2937; }
+    .summary-card.success .value { color: #059669; }
+    .summary-card.pending .value { color: #d97706; }
+    .summary-card.error .value { color: #dc2626; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <div class="breadcrumb"><a href="index.html">料金管理</a> &gt; 同期管理</div>
+        <h1>同期ログ画面</h1>
+      </div>
+      <a href="index.html" class="nav-link" style="color: #fff;">モック一覧に戻る</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="label">今日の同期数</div>
+        <div class="value">24</div>
+      </div>
+      <div class="summary-card success">
+        <div class="label">成功</div>
+        <div class="value">21</div>
+      </div>
+      <div class="summary-card pending">
+        <div class="label">同期中</div>
+        <div class="value">1</div>
+      </div>
+      <div class="summary-card error">
+        <div class="label">エラー</div>
+        <div class="value">2</div>
+      </div>
+    </div>
+
+    <div class="search-panel">
+      <h2>検索条件</h2>
+      <div class="search-form">
+        <div class="form-group">
+          <label>同期日時（開始）</label>
+          <input type="datetime-local" value="2025-01-20T00:00">
+        </div>
+        <div class="form-group">
+          <label>同期日時（終了）</label>
+          <input type="datetime-local" value="2025-01-20T23:59">
+        </div>
+        <div class="form-group">
+          <label>OTA種別</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="rakuten">楽天トラベル</option>
+            <option value="jalan">じゃらん</option>
+            <option value="booking">Booking.com</option>
+            <option value="airbnb">Airbnb</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>同期ステータス</label>
+          <select>
+            <option value="">すべて</option>
+            <option value="success">成功</option>
+            <option value="pending">同期中</option>
+            <option value="error">エラー</option>
+            <option value="retry">リトライ中</option>
+          </select>
+        </div>
+      </div>
+      <div class="search-actions">
+        <button class="btn btn-primary">検索</button>
+        <button class="btn btn-secondary">クリア</button>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="results-header">
+        <h2>同期ログ</h2>
+        <span class="results-count">24件</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>同期日時</th>
+            <th>OTA種別</th>
+            <th>レートプラン</th>
+            <th>同期ステータス</th>
+            <th>エラー内容</th>
+            <th>リトライ</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025/01/20 14:30:15</td>
+            <td><span class="badge badge-ota-rakuten">楽天トラベル</span></td>
+            <td>楽天トラベル_シングル_通常期</td>
+            <td><span class="badge badge-sync-success">成功</span></td>
+            <td>-</td>
+            <td>0回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025/01/20 14:25:42</td>
+            <td><span class="badge badge-ota-jalan">じゃらん</span></td>
+            <td>じゃらん_シングル_繁忙期</td>
+            <td><span class="badge badge-sync-error">エラー</span></td>
+            <td class="error-text">接続タイムアウト</td>
+            <td>3回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+              <button class="btn btn-warning btn-sm">再同期</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2025/01/20 14:20:08</td>
+            <td><span class="badge badge-ota-booking">Booking.com</span></td>
+            <td>Booking.com_ダブル_通常期</td>
+            <td><span class="badge badge-sync-pending">同期中</span></td>
+            <td>-</td>
+            <td>0回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025/01/20 14:15:33</td>
+            <td><span class="badge badge-ota-rakuten">楽天トラベル</span></td>
+            <td>楽天トラベル_ダブル_閑散期</td>
+            <td><span class="badge badge-sync-success">成功</span></td>
+            <td>-</td>
+            <td>0回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+            </td>
+          </tr>
+          <tr>
+            <td>2025/01/20 14:10:21</td>
+            <td><span class="badge badge-ota-airbnb">Airbnb</span></td>
+            <td>Airbnb_ツイン_繁忙期</td>
+            <td><span class="badge badge-sync-retry">リトライ中</span></td>
+            <td class="error-text">認証エラー</td>
+            <td>2回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+              <button class="btn btn-warning btn-sm">再同期</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2025/01/20 14:05:55</td>
+            <td><span class="badge badge-ota-jalan">じゃらん</span></td>
+            <td>じゃらん_シングル_通常期</td>
+            <td><span class="badge badge-sync-success">成功</span></td>
+            <td>-</td>
+            <td>1回</td>
+            <td class="actions-cell">
+              <a href="sync_error_detail.html" class="btn btn-secondary btn-sm">詳細</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

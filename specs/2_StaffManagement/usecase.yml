@@ -1,0 +1,426 @@
+usecases:
+  # スタッフ登録
+  - usecase:
+    name: 新規スタッフの登録とアカウント発行
+    stories:
+      - 人事担当者として、新入社員がすぐにシステムを利用できるようにするために、スタッフ情報を登録しアカウントを発行したい
+    trackings:
+      - "story.yml:5 - スタッフ情報を登録しアカウントを発行"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 新規スタッフの入社が決定している
+    after: スタッフが登録され、ログインアカウントが作成される
+    boundary:
+      name: "スタッフ登録画面"
+      as: StaffRegisterUI
+    control:
+      name: "スタッフ登録\nコントローラ"
+      as: StaffRegisterCtrl
+    entity:
+      name: "スタッフ"
+      as: Staff
+    steps:
+      - step: HRManager --> StaffRegisterUI
+        label: 1.スタッフ登録画面を開く
+      - step: HRManager --> StaffRegisterUI
+        label: 2.名前・メール・電話番号を入力
+      - step: HRManager --> StaffRegisterUI
+        label: 3.権限ロールを選択
+      - step: StaffRegisterUI --> StaffRegisterCtrl
+        label: 4.登録内容を送信
+      - step: StaffRegisterCtrl --> Staff
+        label: 5.スタッフ情報を保存
+      - step: StaffRegisterCtrl --> Staff
+        label: 6.初期パスワードを発行
+        note: メール配信サービス経由で通知
+
+  # スタッフ情報更新
+  - usecase:
+    name: スタッフ情報の更新
+    stories:
+      - 人事担当者として、スタッフの連絡先変更や部署異動に対応するために、既存スタッフの情報を更新したい
+    trackings:
+      - "story.yml:9 - 既存スタッフの情報を更新"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 変更対象のスタッフが存在する
+    after: スタッフ情報が更新される
+    boundary:
+      name: "スタッフ更新画面"
+      as: StaffUpdateUI
+    control:
+      name: "スタッフ更新\nコントローラ"
+      as: StaffUpdateCtrl
+    entity:
+      name: "スタッフ"
+      as: Staff
+    steps:
+      - step: HRManager --> StaffUpdateUI
+        label: 1.対象スタッフを検索・選択
+      - step: StaffUpdateUI --> StaffUpdateCtrl
+        label: 2.スタッフ情報を取得
+      - step: StaffUpdateCtrl --> Staff
+        label: 3.現在の情報を読み込み
+      - step: HRManager --> StaffUpdateUI
+        label: 4.変更項目を編集
+      - step: StaffUpdateUI --> StaffUpdateCtrl
+        label: 5.更新内容を送信
+      - step: StaffUpdateCtrl --> Staff
+        label: 6.スタッフ情報を更新
+
+  # スタッフ削除
+  - usecase:
+    name: 退職スタッフの削除とアカウント無効化
+    stories:
+      - 人事担当者として、退職者のセキュリティリスクを排除するために、スタッフ情報を削除しアカウントを無効化したい
+    trackings:
+      - "story.yml:13 - スタッフ情報を削除しアカウントを無効化"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: スタッフの退職が確定している
+    after: スタッフ情報が削除され、アカウントが無効化される
+    boundary:
+      name: "スタッフ削除画面"
+      as: StaffDeleteUI
+    control:
+      name: "スタッフ削除\nコントローラ"
+      as: StaffDeleteCtrl
+    entity:
+      name: "スタッフ"
+      as: Staff
+    steps:
+      - step: HRManager --> StaffDeleteUI
+        label: 1.退職予定スタッフを検索・選択
+      - step: StaffDeleteUI --> StaffDeleteCtrl
+        label: 2.スタッフ情報を取得
+      - step: HRManager --> StaffDeleteUI
+        label: 3.削除理由を確認
+      - step: HRManager --> StaffDeleteUI
+        label: 4.削除の最終確認
+      - step: StaffDeleteUI --> StaffDeleteCtrl
+        label: 5.削除を実行
+      - step: StaffDeleteCtrl --> Staff
+        label: 6.スタッフ情報を削除
+      - step: StaffDeleteCtrl --> Staff
+        label: 7.アカウントを無効化
+
+  # スタッフ検索
+  - usecase:
+    name: スタッフ一覧からの検索・選択
+    stories:
+      - 人事担当者として、スタッフ情報を効率的に管理するために、一覧画面からスタッフを検索・選択したい
+    trackings:
+      - "story.yml:17 - 一覧画面からスタッフを検索・選択"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 人事担当者がログイン済み
+    after: 目的のスタッフが特定される
+    boundary:
+      name: "スタッフ一覧画面"
+      as: StaffListUI
+    control:
+      name: "スタッフ検索\nコントローラ"
+      as: StaffSearchCtrl
+    entity:
+      name: "スタッフ"
+      as: Staff
+    steps:
+      - step: HRManager --> StaffListUI
+        label: 1.スタッフ一覧画面を開く
+      - step: HRManager --> StaffListUI
+        label: 2.検索条件を入力
+      - step: StaffListUI --> StaffSearchCtrl
+        label: 3.検索を実行
+      - step: StaffSearchCtrl --> Staff
+        label: 4.該当スタッフを取得
+      - step: StaffSearchCtrl --> StaffListUI
+        label: 5.検索結果を表示
+      - step: HRManager --> StaffListUI
+        label: 6.対象スタッフを選択
+
+  # パスワードリセット（通常）
+  - usecase:
+    name: パスワード忘れ時のリセット対応
+    stories:
+      - 人事担当者として、パスワードを忘れたスタッフが業務を再開できるようにするために、パスワードをリセットしたい
+    trackings:
+      - "story.yml:23 - パスワードを忘れたスタッフのパスワードをリセット"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: スタッフからパスワードリセットの依頼がある
+    after: パスワードがリセットされ、スタッフが新しい仮パスワードでログイン可能になる
+    boundary:
+      name: "パスワードリセット画面"
+      as: PasswordResetUI
+    control:
+      name: "パスワードリセット\nコントローラ"
+      as: PasswordResetCtrl
+    entity:
+      name: "アカウント"
+      as: Account
+    steps:
+      - step: HRManager --> PasswordResetUI
+        label: 1.パスワードリセット画面を開く
+      - step: HRManager --> PasswordResetUI
+        label: 2.対象スタッフを検索・選択
+      - step: HRManager --> PasswordResetUI
+        label: 3.本人確認・理由を記録
+      - step: PasswordResetUI --> PasswordResetCtrl
+        label: 4.リセットを実行
+      - step: PasswordResetCtrl --> Account
+        label: 5.仮パスワードを生成・保存
+      - step: PasswordResetCtrl --> Account
+        label: 6.メールで仮パスワードを通知
+        note: メール配信サービス経由
+
+  # パスワードリセット（強制）
+  - usecase:
+    name: セキュリティインシデント時の強制パスワードリセット
+    stories:
+      - 人事担当者として、セキュリティインシデント発生時に迅速に対応するために、強制的にパスワードをリセットしたい
+    trackings:
+      - "story.yml:27 - 強制的にパスワードをリセット"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: セキュリティインシデントが発生している
+    after: 対象スタッフのパスワードが強制リセットされる
+    boundary:
+      name: "パスワードリセット画面"
+      as: PasswordResetUI
+    control:
+      name: "パスワードリセット\nコントローラ"
+      as: PasswordResetCtrl
+    entity:
+      name: "アカウント"
+      as: Account
+    steps:
+      - step: HRManager --> PasswordResetUI
+        label: 1.パスワードリセット画面を開く
+      - step: HRManager --> PasswordResetUI
+        label: 2.対象スタッフを選択
+      - step: HRManager --> PasswordResetUI
+        label: 3.強制リセット理由を記録
+        note: セキュリティインシデント対応
+      - step: PasswordResetUI --> PasswordResetCtrl
+        label: 4.強制リセットを実行
+      - step: PasswordResetCtrl --> Account
+        label: 5.パスワードを無効化・再生成
+      - step: PasswordResetCtrl --> Account
+        label: 6.緊急通知を送信
+
+  # 権限割り当て
+  - usecase:
+    name: 新規スタッフへの権限ロール割り当て
+    stories:
+      - 人事担当者として、新規スタッフが担当業務に必要な機能を利用できるようにするために、適切な権限ロールを割り当てたい
+    trackings:
+      - "story.yml:33 - 適切な権限ロールを割り当て"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: スタッフが登録済みで権限未設定
+    after: スタッフに権限ロールが割り当てられ、対応する機能が利用可能になる
+    boundary:
+      name: "権限割り当て画面"
+      as: RoleAssignUI
+    control:
+      name: "権限管理\nコントローラ"
+      as: RoleCtrl
+    entity:
+      name: "権限ロール"
+      as: Role
+    steps:
+      - step: HRManager --> RoleAssignUI
+        label: 1.権限割り当て画面を開く
+      - step: HRManager --> RoleAssignUI
+        label: 2.対象スタッフを検索・選択
+      - step: RoleAssignUI --> RoleCtrl
+        label: 3.担当業務情報を取得
+      - step: HRManager --> RoleAssignUI
+        label: 4.権限ロールを選択
+        note: Admin/Reservation Manager/Front Desk/Housekeeping/Accounting/Owner View Only
+      - step: RoleAssignUI --> RoleCtrl
+        label: 5.割り当てを確定
+      - step: RoleCtrl --> Role
+        label: 6.権限ロールを保存
+
+  # 権限変更
+  - usecase:
+    name: 異動に伴う権限ロール変更
+    stories:
+      - 人事担当者として、異動したスタッフが新しい業務を遂行できるようにするために、権限ロールを変更したい
+    trackings:
+      - "story.yml:37 - 権限ロールを変更"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: スタッフの担当業務が変更される
+    after: スタッフの権限ロールが更新され、新しい業務に対応した機能が利用可能になる
+    boundary:
+      name: "権限変更画面"
+      as: RoleChangeUI
+    control:
+      name: "権限管理\nコントローラ"
+      as: RoleCtrl
+    entity:
+      name: "権限ロール"
+      as: Role
+    steps:
+      - step: HRManager --> RoleChangeUI
+        label: 1.権限変更画面を開く
+      - step: HRManager --> RoleChangeUI
+        label: 2.対象スタッフを検索・選択
+      - step: RoleChangeUI --> RoleCtrl
+        label: 3.現在の権限情報を取得
+      - step: HRManager --> RoleChangeUI
+        label: 4.新しい権限ロールを選択
+      - step: RoleChangeUI --> RoleCtrl
+        label: 5.変更を実行
+      - step: RoleCtrl --> Role
+        label: 6.権限ロールを更新
+      - step: RoleCtrl --> Role
+        label: 7.監査ログに記録
+
+  # 監査ログ自動記録
+  - usecase:
+    name: 権限変更の監査ログ自動記録
+    stories:
+      - 人事担当者として、権限変更の履歴を追跡できるようにするために、監査ログを自動記録したい
+    trackings:
+      - "story.yml:41 - 監査ログを自動記録"
+    actor:
+      name: "システム"
+      as: System
+    before: 権限ロールの変更が実行された
+    after: 権限変更の履歴が監査ログに記録される
+    boundary:
+      name: "権限変更画面"
+      as: RoleChangeUI
+    control:
+      name: "監査ログ\nコントローラ"
+      as: AuditLogCtrl
+    entity:
+      name: "監査ログ"
+      as: AuditLog
+    steps:
+      - step: RoleChangeUI --> AuditLogCtrl
+        label: 1.権限変更イベントを検知
+      - step: AuditLogCtrl --> AuditLog
+        label: 2.変更者情報を記録
+      - step: AuditLogCtrl --> AuditLog
+        label: 3.変更前後の権限を記録
+      - step: AuditLogCtrl --> AuditLog
+        label: 4.タイムスタンプを記録
+
+  # 権限一覧確認
+  - usecase:
+    name: 全スタッフの権限設定状況確認
+    stories:
+      - 人事担当者として、セキュリティ監査に備えるために、全スタッフの権限設定状況を一覧で確認したい
+    trackings:
+      - "story.yml:47 - 全スタッフの権限設定状況を一覧で確認"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 人事担当者がログイン済み
+    after: スタッフの権限設定状況が確認され、必要な是正措置が特定される
+    boundary:
+      name: "権限検索画面"
+      as: RoleSearchUI
+    control:
+      name: "権限検索\nコントローラ"
+      as: RoleSearchCtrl
+    entity:
+      name: "権限ロール"
+      as: Role
+    steps:
+      - step: HRManager --> RoleSearchUI
+        label: 1.権限検索画面を開く
+      - step: RoleSearchUI --> RoleSearchCtrl
+        label: 2.全スタッフの権限を取得
+      - step: RoleSearchCtrl --> Role
+        label: 3.権限設定一覧を読み込み
+      - step: RoleSearchCtrl --> RoleSearchUI
+        label: 4.一覧を表示
+      - step: HRManager --> RoleSearchUI
+        label: 5.不適切な設定をチェック
+
+  # 権限検索
+  - usecase:
+    name: 権限ロールや部署での絞り込み検索
+    stories:
+      - 人事担当者として、不適切な権限設定を発見するために、権限ロールや部署で絞り込んで検索したい
+    trackings:
+      - "story.yml:51 - 権限ロールや部署で絞り込んで検索"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 人事担当者がログイン済み
+    after: 検索条件に合致するスタッフの権限設定が表示される
+    boundary:
+      name: "権限検索画面"
+      as: RoleSearchUI
+    control:
+      name: "権限検索\nコントローラ"
+      as: RoleSearchCtrl
+    entity:
+      name: "権限ロール"
+      as: Role
+    steps:
+      - step: HRManager --> RoleSearchUI
+        label: 1.権限検索画面を開く
+      - step: HRManager --> RoleSearchUI
+        label: 2.権限ロールで絞り込み
+      - step: HRManager --> RoleSearchUI
+        label: 3.部署で絞り込み
+      - step: RoleSearchUI --> RoleSearchCtrl
+        label: 4.検索を実行
+      - step: RoleSearchCtrl --> Role
+        label: 5.該当スタッフを取得
+      - step: RoleSearchCtrl --> RoleSearchUI
+        label: 6.検索結果を表示
+
+  # 機能横断：新入社員受け入れフロー
+  - usecase:
+    name: 新入社員受け入れの一連フロー
+    stories:
+      - 人事担当者として、新入社員の受け入れ作業を効率化するために、スタッフ登録から権限割り当てまでを一連の流れで実施したい
+    trackings:
+      - "story.yml:57 - スタッフ登録から権限割り当てまでを一連の流れで実施"
+    actor:
+      name: "人事担当者"
+      as: HRManager
+    before: 新入社員の入社が決定している
+    after: スタッフ登録・アカウント発行・権限割り当てが完了し、新入社員がシステムを利用可能になる
+    boundary:
+      name: "スタッフ登録画面"
+      as: StaffRegisterUI
+    control:
+      name: "スタッフ管理\nコントローラ"
+      as: StaffMgmtCtrl
+    entity:
+      name: "スタッフ"
+      as: Staff
+    steps:
+      - step: HRManager --> StaffRegisterUI
+        label: 1.スタッフ登録画面を開く
+      - step: HRManager --> StaffRegisterUI
+        label: 2.基本情報を入力
+      - step: HRManager --> StaffRegisterUI
+        label: 3.権限ロールを選択
+      - step: StaffRegisterUI --> StaffMgmtCtrl
+        label: 4.登録を実行
+      - step: StaffMgmtCtrl --> Staff
+        label: 5.スタッフ情報を保存
+      - step: StaffMgmtCtrl --> Staff
+        label: 6.アカウントを作成
+      - step: StaffMgmtCtrl --> Staff
+        label: 7.権限ロールを割り当て
+      - step: StaffMgmtCtrl --> Staff
+        label: 8.初期パスワードをメール通知

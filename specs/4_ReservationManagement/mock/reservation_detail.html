@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約詳細画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #007bff; text-decoration: none; margin-right: 15px; }
+        .nav a:hover { text-decoration: underline; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #dee2e6; }
+        .reservation-id { font-size: 14px; color: #666; }
+        .status-badge { padding: 6px 12px; border-radius: 4px; font-size: 14px; font-weight: bold; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .section { margin-bottom: 30px; }
+        .section-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #007bff; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .info-item { display: flex; flex-direction: column; gap: 3px; }
+        .info-item .label { font-size: 12px; color: #666; }
+        .info-item .value { font-size: 14px; font-weight: bold; color: #333; }
+        .info-item.full-width { grid-column: 1 / -1; }
+        .ota-badge { font-size: 11px; padding: 2px 6px; border-radius: 3px; background: #e9ecef; color: #495057; }
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th, .history-table td { padding: 10px; text-align: left; border-bottom: 1px solid #dee2e6; font-size: 13px; }
+        .history-table th { background: #f8f9fa; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-warning:hover { background: #e0a800; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-outline { background: white; color: #007bff; border: 1px solid #007bff; }
+        .btn-outline:hover { background: #e7f3ff; }
+        .notes-area { width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; min-height: 80px; resize: vertical; font-family: inherit; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← モック画面一覧</a>
+            <a href="reservation_list.html">予約一覧</a>
+            <a href="dashboard.html">ダッシュボード</a>
+        </div>
+
+        <h1>予約詳細画面</h1>
+
+        <div class="status-header">
+            <div class="reservation-id">予約番号: RES-2025121001</div>
+            <span class="status-badge status-confirmed">予約確定</span>
+        </div>
+
+        <div class="section">
+            <div class="section-title">ゲスト情報</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">ゲスト名</div>
+                    <div class="value">山田 太郎</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">フリガナ</div>
+                    <div class="value">ヤマダ タロウ</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">電話番号</div>
+                    <div class="value">090-1234-5678</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">メールアドレス</div>
+                    <div class="value">yamada@example.com</div>
+                </div>
+                <div class="info-item full-width">
+                    <div class="label">住所</div>
+                    <div class="value">東京都渋谷区神宮前1-2-3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">宿泊情報</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">チェックイン日</div>
+                    <div class="value">2025-12-15（月）15:00</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">チェックアウト日</div>
+                    <div class="value">2025-12-17（水）10:00</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">宿泊数</div>
+                    <div class="value">2泊</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">人数</div>
+                    <div class="value">大人2名</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">部屋タイプ</div>
+                    <div class="value">ツイン</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">アサイン部屋</div>
+                    <div class="value">301号室</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">予約情報</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">予約元</div>
+                    <div class="value"><span class="ota-badge">じゃらん</span></div>
+                </div>
+                <div class="info-item">
+                    <div class="label">OTA予約番号</div>
+                    <div class="value">JR-20251210-12345</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">予約日時</div>
+                    <div class="value">2025-12-10 10:30:00</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">プラン名</div>
+                    <div class="value">スタンダードプラン（朝食付き）</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">宿泊料金</div>
+                    <div class="value">¥24,000</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">支払い状況</div>
+                    <div class="value">現地払い</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">特記事項・リクエスト</div>
+            <textarea class="notes-area" readonly>禁煙希望
+レイトチェックアウト希望（12:00まで）
+アレルギー：甲殻類</textarea>
+        </div>
+
+        <div class="section">
+            <div class="section-title">予約履歴</div>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>日時</th>
+                        <th>操作</th>
+                        <th>担当者</th>
+                        <th>詳細</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-12-10 13:45:30</td>
+                        <td>部屋アサイン</td>
+                        <td>管理者A</td>
+                        <td>301号室にアサイン</td>
+                    </tr>
+                    <tr>
+                        <td>2025-12-10 13:45:28</td>
+                        <td>予約取り込み</td>
+                        <td>システム</td>
+                        <td>じゃらんから自動取り込み</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
+            <a href="reservation_list.html" class="btn btn-outline">一覧に戻る</a>
+            <button class="btn btn-primary" onclick="alert('編集モードに切り替えます')">編集</button>
+            <a href="room_assign.html" class="btn btn-success">部屋再アサイン</a>
+            <a href="reservation_cancel.html" class="btn btn-danger">キャンセル</a>
+        </div>
+    </div>
+</body>
+</html>

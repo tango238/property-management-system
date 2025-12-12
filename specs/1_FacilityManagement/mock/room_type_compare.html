@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部屋タイプ比較画面</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #333; }
+        .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .role-badge { display: inline-block; padding: 4px 12px; background: #17a2b8; color: white; border-radius: 20px; font-size: 12px; margin-bottom: 20px; }
+        .filters { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: end; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 14px; font-weight: bold; }
+        .filter-group input, .filter-group select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 150px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #17a2b8; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        .compare-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .room-type-card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; }
+        .room-type-card h3 { font-size: 18px; margin-bottom: 15px; color: #333; }
+        .room-type-card .price { font-size: 24px; color: #17a2b8; font-weight: bold; margin-bottom: 15px; }
+        .room-type-card .price span { font-size: 14px; color: #666; font-weight: normal; }
+        .room-type-card .info-list { list-style: none; padding: 0; margin: 0 0 15px 0; }
+        .room-type-card .info-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; display: flex; justify-content: space-between; }
+        .room-type-card .info-list li:last-child { border-bottom: none; }
+        .room-type-card .info-list li label { color: #666; }
+        .amenity-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+        .amenity-tag { background: #e0f7fa; color: #00796b; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .smoking-badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .smoking-yes { background: #ffc107; color: #000; }
+        .smoking-no { background: #28a745; color: white; }
+        .availability { padding: 8px; background: #e8f5e9; border-radius: 4px; text-align: center; margin-top: 15px; }
+        .availability.low { background: #fff3e0; }
+        .availability.none { background: #ffebee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a> &gt; <a href="facility_detail_reservation.html">施設詳細</a> &gt; 部屋タイプ比較
+        </div>
+        <span class="role-badge">予約管理担当者</span>
+        <h1>部屋タイプ比較画面</h1>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>施設</label>
+                <select>
+                    <option value="1" selected>グランドホテル東京</option>
+                    <option value="2">シティホテル大阪</option>
+                    <option value="3">京都旅館 雅</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>収容人数</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="1">1名</option>
+                    <option value="2">2名</option>
+                    <option value="3">3名以上</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>喫煙可否</label>
+                <select>
+                    <option value="">すべて</option>
+                    <option value="yes">喫煙可</option>
+                    <option value="no">禁煙</option>
+                </select>
+            </div>
+            <button class="btn btn-primary">検索</button>
+            <button class="btn btn-secondary">クリア</button>
+        </div>
+
+        <div class="compare-grid">
+            <div class="room-type-card">
+                <h3>シングル</h3>
+                <div class="price">¥8,000 <span>/泊</span></div>
+                <ul class="info-list">
+                    <li><label>収容人数</label><span>1名</span></li>
+                    <li><label>喫煙可否</label><span class="smoking-badge smoking-no">禁煙</span></li>
+                    <li><label>ベッド構成</label><span>シングルベッド×1</span></li>
+                </ul>
+                <div class="amenity-tags">
+                    <span class="amenity-tag">エアコン</span>
+                    <span class="amenity-tag">テレビ</span>
+                    <span class="amenity-tag">冷蔵庫</span>
+                    <span class="amenity-tag">バス・トイレ</span>
+                </div>
+                <div class="availability">空き: 15室</div>
+            </div>
+
+            <div class="room-type-card">
+                <h3>ダブル</h3>
+                <div class="price">¥12,000 <span>/泊</span></div>
+                <ul class="info-list">
+                    <li><label>収容人数</label><span>2名</span></li>
+                    <li><label>喫煙可否</label><span class="smoking-badge smoking-no">禁煙</span></li>
+                    <li><label>ベッド構成</label><span>ダブルベッド×1</span></li>
+                </ul>
+                <div class="amenity-tags">
+                    <span class="amenity-tag">エアコン</span>
+                    <span class="amenity-tag">テレビ</span>
+                    <span class="amenity-tag">冷蔵庫</span>
+                    <span class="amenity-tag">バス・トイレ</span>
+                    <span class="amenity-tag">金庫</span>
+                </div>
+                <div class="availability low">空き: 5室</div>
+            </div>
+
+            <div class="room-type-card">
+                <h3>ツイン</h3>
+                <div class="price">¥14,000 <span>/泊</span></div>
+                <ul class="info-list">
+                    <li><label>収容人数</label><span>2名</span></li>
+                    <li><label>喫煙可否</label><span class="smoking-badge smoking-yes">喫煙可</span></li>
+                    <li><label>ベッド構成</label><span>シングルベッド×2</span></li>
+                </ul>
+                <div class="amenity-tags">
+                    <span class="amenity-tag">エアコン</span>
+                    <span class="amenity-tag">テレビ</span>
+                    <span class="amenity-tag">冷蔵庫</span>
+                    <span class="amenity-tag">バス・トイレ</span>
+                </div>
+                <div class="availability">空き: 10室</div>
+            </div>
+
+            <div class="room-type-card">
+                <h3>デラックスツイン</h3>
+                <div class="price">¥20,000 <span>/泊</span></div>
+                <ul class="info-list">
+                    <li><label>収容人数</label><span>3名</span></li>
+                    <li><label>喫煙可否</label><span class="smoking-badge smoking-no">禁煙</span></li>
+                    <li><label>ベッド構成</label><span>セミダブルベッド×2</span></li>
+                </ul>
+                <div class="amenity-tags">
+                    <span class="amenity-tag">エアコン</span>
+                    <span class="amenity-tag">テレビ</span>
+                    <span class="amenity-tag">冷蔵庫</span>
+                    <span class="amenity-tag">バス・トイレ</span>
+                    <span class="amenity-tag">金庫</span>
+                    <span class="amenity-tag">ドライヤー</span>
+                </div>
+                <div class="availability low">空き: 3室</div>
+            </div>
+
+            <div class="room-type-card">
+                <h3>スイート</h3>
+                <div class="price">¥50,000 <span>/泊</span></div>
+                <ul class="info-list">
+                    <li><label>収容人数</label><span>4名</span></li>
+                    <li><label>喫煙可否</label><span class="smoking-badge smoking-no">禁煙</span></li>
+                    <li><label>ベッド構成</label><span>キングベッド×1 + ソファベッド×1</span></li>
+                </ul>
+                <div class="amenity-tags">
+                    <span class="amenity-tag">エアコン</span>
+                    <span class="amenity-tag">テレビ</span>
+                    <span class="amenity-tag">冷蔵庫</span>
+                    <span class="amenity-tag">バス・トイレ</span>
+                    <span class="amenity-tag">金庫</span>
+                    <span class="amenity-tag">ドライヤー</span>
+                </div>
+                <div class="availability none">空き: 0室</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+    "feature_name": "7_SalesAnalysis",
+    "created_at": "2025-12-10T05:10:43Z",
+    "updated_at": "2025-12-10T05:28:52Z",
+    "language": "Japanese",
+    "last_execution": "generate-mock",
+    "readme": {
+        "checksum": "c6c092ff9d2bab10895feeab8c8f228d",
+        "last_modified": "2025-11-20T16:52:29"
+    },
+    "steps": [
+        {
+            "feature": {
+                "version": 1,
+                "checksum": "57e8fd816adb2cb38c8f4d8d2f2fedc9",
+                "last_modified": "2025-12-10T14:10:32"
+            }
+        },
+        {
+            "story": {
+                "version": 1,
+                "checksum": "0eb9493b45be4bd36297f73d0b5f216c",
+                "last_modified": "2025-12-10T05:13:11Z"
+            }
+        },
+        {
+            "usecase": {
+                "version": 1,
+                "checksum": "2723033b4bad3de61417f0aae77a4455",
+                "last_modified": "2025-12-10T05:15:41Z"
+            }
+        },
+        {
+            "ui": {
+                "version": 1,
+                "checksum": "f8b17c1ff6df07e1cee41de8137e9110",
+                "last_modified": "2025-12-10T05:18:07Z"
+            }
+        },
+        {
+            "screenflow": {
+                "version": 1,
+                "checksum": "ebbf96e372c02fe2794df661ffb08a6a",
+                "last_modified": "2025-12-10T14:19:47"
+            }
+        }
+    ],
+    "mock": {
+        "version": 1,
+        "last_modified": "2025-12-10T05:28:52Z"
+    }
+}
