@@ -1,0 +1,10 @@
+ビジネスパラメータ	説明
+部屋状態ステータス	部屋の状態を表すステータス。値：Vacant（待機）、Occupied（滞在中）、Dirty（清掃前）、Cleaning（清掃中）、Inspected（点検済）、Out-of-order（故障中）
+売上分析指標	売上を分析するための指標。値：ADR（Average Daily Rate）、OCC（Occupancy Rate：稼働率）、RevPAR（客室単価×稼働率）
+OTA種別	予約流入元のOTA種別。値：楽天トラベル、じゃらん、Booking.com、Airbnb、Expedia、直接予約など
+サイトコントローラー種別	使用するサイトコントローラーの種別。値：ねっぱん、Beds24、TL-Lincoln、手動連携など
+権限ロール	スタッフに割り当てる権限の種別。値：Admin（全権限）、Reservation Manager、Front Desk、Housekeeping、Accounting、Owner View Only
+予約ステータス	予約の状態を表すステータス。値：予約確定、チェックイン済、チェックアウト済、キャンセル、ノーショー
+清掃ステータス	清掃の進捗状態を表すステータス。値：未着手、清掃中、清掃完了、点検済
+レートプラン種別	料金プランの種別。値：通常料金、早割、直前割、連泊割、シーズン料金など
+宿泊者名簿記入ステータス	宿泊者名簿の記入状態。値：未送信、送信済、記入済、確認済
