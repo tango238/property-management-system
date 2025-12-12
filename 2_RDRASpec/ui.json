@@ -1,0 +1,1764 @@
+{
+  "businesses": [
+    {
+      "business_name": "スタッフ管理",
+      "BUCs": [
+        {
+          "buc_name": "スタッフを登録する",
+          "actors": [
+            {
+              "actor_name": "人事部担当者",
+              "screens": [
+                {
+                  "screen_name": "スタッフ登録画面",
+                  "fields": [
+                    {"項目名": "名前", "type": "string", "tooltip": "スタッフの氏名"},
+                    {"項目名": "メールアドレス", "type": "string", "tooltip": "ログインID兼連絡用メールアドレス"},
+                    {"項目名": "パスワード", "type": "string", "tooltip": "初期パスワード"},
+                    {"項目名": "連絡先", "type": "string", "tooltip": "連絡先電話番号"},
+                    {"項目名": "所属部門", "type": "string", "tooltip": "所属する部門名"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "権限設定画面",
+                  "fields": [
+                    {"項目名": "スタッフ名", "type": "string", "tooltip": "設定対象のスタッフ名"},
+                    {"項目名": "権限ロール", "type": "権限ロール", "tooltip": "割り当てる権限ロール"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [
+                    {"entity": "スタッフ", "CRUD": ["R", "U"]},
+                    {"entity": "権限", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "メール通知画面",
+                  "fields": [
+                    {"項目名": "宛先", "type": "string", "tooltip": "送信先メールアドレス"},
+                    {"項目名": "件名", "type": "string", "tooltip": "メール件名"},
+                    {"項目名": "本文", "type": "string", "tooltip": "メール本文"}
+                  ],
+                  "operations": ["送信", "キャンセル"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "スタッフ情報を変更する",
+          "actors": [
+            {
+              "actor_name": "人事部担当者",
+              "screens": [
+                {
+                  "screen_name": "スタッフ検索画面",
+                  "fields": [
+                    {"項目名": "スタッフ名", "type": "string", "tooltip": "検索するスタッフ名"},
+                    {"項目名": "メールアドレス", "type": "string", "tooltip": "検索するメールアドレス"},
+                    {"項目名": "所属部門", "type": "string", "tooltip": "検索する所属部門"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "スタッフ編集画面",
+                  "fields": [
+                    {"項目名": "名前", "type": "string", "tooltip": "スタッフの氏名"},
+                    {"項目名": "メールアドレス", "type": "string", "tooltip": "メールアドレス"},
+                    {"項目名": "連絡先", "type": "string", "tooltip": "連絡先電話番号"},
+                    {"項目名": "所属部門", "type": "string", "tooltip": "所属する部門名"},
+                    {"項目名": "パスワード", "type": "string", "tooltip": "パスワード変更時に入力"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "スタッフに権限を割り当てる",
+          "actors": [
+            {
+              "actor_name": "人事部担当者",
+              "screens": [
+                {
+                  "screen_name": "スタッフ選択画面",
+                  "fields": [
+                    {"項目名": "スタッフ一覧", "type": "string", "tooltip": "スタッフの一覧"}
+                  ],
+                  "operations": ["選択"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "権限割当画面",
+                  "fields": [
+                    {"項目名": "スタッフ名", "type": "string", "tooltip": "権限を割り当てるスタッフ"},
+                    {"項目名": "現在の権限", "type": "権限ロール", "tooltip": "現在割り当てられている権限"},
+                    {"項目名": "新しい権限", "type": "権限ロール", "tooltip": "新しく割り当てる権限"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [
+                    {"entity": "スタッフ", "CRUD": ["R", "U"]},
+                    {"entity": "権限", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "スタッフに施設を割り当てる",
+          "actors": [
+            {
+              "actor_name": "人事部担当者",
+              "screens": [
+                {
+                  "screen_name": "スタッフ選択画面",
+                  "fields": [
+                    {"項目名": "スタッフ一覧", "type": "string", "tooltip": "スタッフの一覧"}
+                  ],
+                  "operations": ["選択"],
+                  "data_access": [{"entity": "スタッフ", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "施設選択画面",
+                  "fields": [
+                    {"項目名": "施設一覧", "type": "string", "tooltip": "施設の一覧"},
+                    {"項目名": "選択済み施設", "type": "string", "tooltip": "現在選択されている施設"}
+                  ],
+                  "operations": ["選択", "キャンセル"],
+                  "data_access": [
+                    {"entity": "施設", "CRUD": ["R"]},
+                    {"entity": "スタッフ施設割当", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "施設割当確定画面",
+                  "fields": [
+                    {"項目名": "スタッフ名", "type": "string", "tooltip": "割当対象のスタッフ"},
+                    {"項目名": "割当施設", "type": "string", "tooltip": "割り当てる施設一覧"}
+                  ],
+                  "operations": ["確定", "キャンセル"],
+                  "data_access": [
+                    {"entity": "スタッフ", "CRUD": ["R"]},
+                    {"entity": "施設", "CRUD": ["R"]},
+                    {"entity": "スタッフ施設割当", "CRUD": ["C", "U", "D"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "施設管理",
+      "BUCs": [
+        {
+          "buc_name": "施設を登録する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "施設登録画面",
+                  "fields": [
+                    {"項目名": "施設名", "type": "string", "tooltip": "施設の名称"},
+                    {"項目名": "住所", "type": "string", "tooltip": "施設の住所"},
+                    {"項目名": "郵便番号", "type": "string", "tooltip": "施設の郵便番号"},
+                    {"項目名": "電話番号", "type": "string", "tooltip": "施設の電話番号"},
+                    {"項目名": "アクセス方法", "type": "string", "tooltip": "施設へのアクセス方法"},
+                    {"項目名": "施設説明", "type": "string", "tooltip": "施設の説明文"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "施設", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "営業時間設定画面",
+                  "fields": [
+                    {"項目名": "チェックイン時刻", "type": "string", "tooltip": "標準チェックイン時刻"},
+                    {"項目名": "チェックアウト時刻", "type": "string", "tooltip": "標準チェックアウト時刻"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "施設", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "施設情報を更新する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "施設検索画面",
+                  "fields": [
+                    {"項目名": "施設名", "type": "string", "tooltip": "検索する施設名"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "施設", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "施設編集画面",
+                  "fields": [
+                    {"項目名": "施設名", "type": "string", "tooltip": "施設の名称"},
+                    {"項目名": "住所", "type": "string", "tooltip": "施設の住所"},
+                    {"項目名": "郵便番号", "type": "string", "tooltip": "施設の郵便番号"},
+                    {"項目名": "電話番号", "type": "string", "tooltip": "施設の電話番号"},
+                    {"項目名": "アクセス方法", "type": "string", "tooltip": "施設へのアクセス方法"},
+                    {"項目名": "チェックイン時刻", "type": "string", "tooltip": "標準チェックイン時刻"},
+                    {"項目名": "チェックアウト時刻", "type": "string", "tooltip": "標準チェックアウト時刻"},
+                    {"項目名": "施設説明", "type": "string", "tooltip": "施設の説明文"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "施設", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "部屋タイプを登録する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "部屋タイプ登録画面",
+                  "fields": [
+                    {"項目名": "タイプ名", "type": "string", "tooltip": "部屋タイプの名称"},
+                    {"項目名": "施設", "type": "string", "tooltip": "所属する施設"},
+                    {"項目名": "収容可能人数", "type": "number", "tooltip": "最大収容人数"},
+                    {"項目名": "最小人数", "type": "number", "tooltip": "最小利用人数"},
+                    {"項目名": "喫煙可否", "type": "喫煙可否", "tooltip": "喫煙可否"},
+                    {"項目名": "ベッドタイプ", "type": "ベッドタイプ", "tooltip": "ベッドの種類"},
+                    {"項目名": "ベッド数", "type": "number", "tooltip": "ベッドの数"},
+                    {"項目名": "設備リスト", "type": "string", "tooltip": "設備の一覧"},
+                    {"項目名": "広さ", "type": "number", "tooltip": "部屋の広さ（平米）"},
+                    {"項目名": "説明", "type": "string", "tooltip": "部屋タイプの説明"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "部屋タイプ", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "料金設定画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "料金設定対象の部屋タイプ"},
+                    {"項目名": "基準料金", "type": "number", "tooltip": "部屋タイプの基準料金"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "部屋タイプ", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "部屋タイプ情報を更新する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "部屋タイプ検索画面",
+                  "fields": [
+                    {"項目名": "タイプ名", "type": "string", "tooltip": "検索する部屋タイプ名"},
+                    {"項目名": "施設", "type": "string", "tooltip": "検索対象の施設"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "部屋タイプ", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "部屋タイプ編集画面",
+                  "fields": [
+                    {"項目名": "タイプ名", "type": "string", "tooltip": "部屋タイプの名称"},
+                    {"項目名": "収容可能人数", "type": "number", "tooltip": "最大収容人数"},
+                    {"項目名": "最小人数", "type": "number", "tooltip": "最小利用人数"},
+                    {"項目名": "喫煙可否", "type": "喫煙可否", "tooltip": "喫煙可否"},
+                    {"項目名": "ベッドタイプ", "type": "ベッドタイプ", "tooltip": "ベッドの種類"},
+                    {"項目名": "ベッド数", "type": "number", "tooltip": "ベッドの数"},
+                    {"項目名": "設備リスト", "type": "string", "tooltip": "設備の一覧"},
+                    {"項目名": "広さ", "type": "number", "tooltip": "部屋の広さ"},
+                    {"項目名": "基準料金", "type": "number", "tooltip": "基準料金"},
+                    {"項目名": "説明", "type": "string", "tooltip": "部屋タイプの説明"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "部屋タイプ", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "部屋を登録する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "部屋登録画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "部屋番号"},
+                    {"項目名": "施設", "type": "string", "tooltip": "所属する施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "部屋タイプ"},
+                    {"項目名": "外部連携用ID", "type": "string", "tooltip": "外部システム連携用ID"},
+                    {"項目名": "フロア", "type": "string", "tooltip": "フロア"},
+                    {"項目名": "設備特記事項", "type": "string", "tooltip": "部屋固有の設備特記事項"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "部屋", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "部屋初期設定画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "設定対象の部屋番号"},
+                    {"項目名": "初期状態", "type": "部屋状態ステータス", "tooltip": "部屋の初期状態"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [
+                    {"entity": "部屋", "CRUD": ["R"]},
+                    {"entity": "部屋状態", "CRUD": ["C"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "部屋情報を更新する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "部屋検索画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "検索する部屋番号"},
+                    {"項目名": "施設", "type": "string", "tooltip": "検索対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "検索対象の部屋タイプ"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "部屋", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "部屋編集画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "部屋番号"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "部屋タイプ"},
+                    {"項目名": "外部連携用ID", "type": "string", "tooltip": "外部システム連携用ID"},
+                    {"項目名": "フロア", "type": "string", "tooltip": "フロア"},
+                    {"項目名": "設備特記事項", "type": "string", "tooltip": "部屋固有の設備特記事項"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "部屋", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "料金管理",
+      "BUCs": [
+        {
+          "buc_name": "シーズンを登録する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "シーズン登録画面",
+                  "fields": [
+                    {"項目名": "シーズン名", "type": "string", "tooltip": "シーズンの名称"},
+                    {"項目名": "施設", "type": "string", "tooltip": "対象の施設"},
+                    {"項目名": "開始日", "type": "string", "tooltip": "シーズン開始日"},
+                    {"項目名": "終了日", "type": "string", "tooltip": "シーズン終了日"},
+                    {"項目名": "料金倍率", "type": "number", "tooltip": "基準料金に対する倍率"},
+                    {"項目名": "シーズン区分", "type": "シーズン区分", "tooltip": "シーズン区分"},
+                    {"項目名": "説明", "type": "string", "tooltip": "シーズンの説明"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "シーズン", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "料金カレンダー画面",
+                  "fields": [
+                    {"項目名": "施設", "type": "string", "tooltip": "対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "対象の部屋タイプ"},
+                    {"項目名": "カレンダー表示", "type": "string", "tooltip": "カレンダー形式の料金表示"}
+                  ],
+                  "operations": ["照会", "編集"],
+                  "data_access": [
+                    {"entity": "シーズン", "CRUD": ["R"]},
+                    {"entity": "料金カレンダー", "CRUD": ["R", "C", "U"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "レートプランを登録する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "レートプラン登録画面",
+                  "fields": [
+                    {"項目名": "プラン名", "type": "string", "tooltip": "レートプランの名称"},
+                    {"項目名": "施設", "type": "string", "tooltip": "対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "対象の部屋タイプ"},
+                    {"項目名": "基準料金", "type": "number", "tooltip": "プランの基準料金"},
+                    {"項目名": "適用条件", "type": "string", "tooltip": "プラン適用条件"},
+                    {"項目名": "割引率", "type": "number", "tooltip": "割引率"},
+                    {"項目名": "レートプラン種別", "type": "レートプラン種別", "tooltip": "レートプラン種別"},
+                    {"項目名": "キャンセルポリシー種別", "type": "キャンセルポリシー種別", "tooltip": "キャンセルポリシー"},
+                    {"項目名": "最小泊数", "type": "number", "tooltip": "最小泊数制限"},
+                    {"項目名": "説明", "type": "string", "tooltip": "プランの説明"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "レートプラン", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "外部連携設定画面",
+                  "fields": [
+                    {"項目名": "サイトコントローラー種別", "type": "サイトコントローラー種別", "tooltip": "使用するサイトコントローラー"},
+                    {"項目名": "連携有効", "type": "number", "tooltip": "連携有効フラグ"}
+                  ],
+                  "operations": ["確認", "送信"],
+                  "data_access": [
+                    {"entity": "レートプラン", "CRUD": ["R"]},
+                    {"entity": "外部連携設定", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "レートプランを更新する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "レートプラン検索画面",
+                  "fields": [
+                    {"項目名": "プラン名", "type": "string", "tooltip": "検索するプラン名"},
+                    {"項目名": "施設", "type": "string", "tooltip": "検索対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "検索対象の部屋タイプ"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "レートプラン", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "レートプラン編集画面",
+                  "fields": [
+                    {"項目名": "プラン名", "type": "string", "tooltip": "レートプランの名称"},
+                    {"項目名": "基準料金", "type": "number", "tooltip": "プランの基準料金"},
+                    {"項目名": "適用条件", "type": "string", "tooltip": "プラン適用条件"},
+                    {"項目名": "割引率", "type": "number", "tooltip": "割引率"},
+                    {"項目名": "レートプラン種別", "type": "レートプラン種別", "tooltip": "レートプラン種別"},
+                    {"項目名": "キャンセルポリシー種別", "type": "キャンセルポリシー種別", "tooltip": "キャンセルポリシー"},
+                    {"項目名": "最小泊数", "type": "number", "tooltip": "最小泊数制限"},
+                    {"項目名": "説明", "type": "string", "tooltip": "プランの説明"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "レートプラン", "CRUD": ["R", "U"]}]
+                },
+                {
+                  "screen_name": "外部同期画面",
+                  "fields": [
+                    {"項目名": "同期対象", "type": "string", "tooltip": "同期対象のレートプラン"},
+                    {"項目名": "同期ステータス", "type": "外部連携ステータス", "tooltip": "現在の同期ステータス"}
+                  ],
+                  "operations": ["同期実行", "キャンセル"],
+                  "data_access": [
+                    {"entity": "レートプラン", "CRUD": ["R"]},
+                    {"entity": "外部連携設定", "CRUD": ["R", "U"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "料金カレンダーを設定する",
+          "actors": [
+            {
+              "actor_name": "施設管理者",
+              "screens": [
+                {
+                  "screen_name": "料金カレンダー画面",
+                  "fields": [
+                    {"項目名": "施設", "type": "string", "tooltip": "対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "対象の部屋タイプ"},
+                    {"項目名": "表示月", "type": "string", "tooltip": "表示する月"},
+                    {"項目名": "カレンダー", "type": "string", "tooltip": "カレンダー形式の料金表示"}
+                  ],
+                  "operations": ["照会", "日付選択"],
+                  "data_access": [{"entity": "料金カレンダー", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "料金設定画面",
+                  "fields": [
+                    {"項目名": "対象日", "type": "string", "tooltip": "料金を設定する日付"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "対象の部屋タイプ"},
+                    {"項目名": "レートプラン", "type": "string", "tooltip": "適用するレートプラン"},
+                    {"項目名": "料金", "type": "number", "tooltip": "設定する料金"},
+                    {"項目名": "曜日区分", "type": "曜日区分", "tooltip": "曜日区分"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "料金カレンダー", "CRUD": ["C", "U"]}]
+                },
+                {
+                  "screen_name": "外部同期画面",
+                  "fields": [
+                    {"項目名": "同期対象日", "type": "string", "tooltip": "同期対象の日付範囲"},
+                    {"項目名": "同期ステータス", "type": "外部連携ステータス", "tooltip": "現在の同期ステータス"}
+                  ],
+                  "operations": ["同期実行", "キャンセル"],
+                  "data_access": [
+                    {"entity": "料金カレンダー", "CRUD": ["R", "U"]},
+                    {"entity": "外部連携設定", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "予約管理",
+      "BUCs": [
+        {
+          "buc_name": "予約を取り込む",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "外部連携管理画面",
+                  "fields": [
+                    {"項目名": "サイトコントローラー", "type": "サイトコントローラー種別", "tooltip": "接続するサイトコントローラー"},
+                    {"項目名": "接続状態", "type": "string", "tooltip": "現在の接続状態"},
+                    {"項目名": "最終同期日時", "type": "string", "tooltip": "最後に同期した日時"}
+                  ],
+                  "operations": ["接続", "切断"],
+                  "data_access": [{"entity": "外部連携設定", "CRUD": ["R", "U"]}]
+                },
+                {
+                  "screen_name": "予約取込画面",
+                  "fields": [
+                    {"項目名": "取込期間", "type": "string", "tooltip": "予約を取り込む期間"},
+                    {"項目名": "取込件数", "type": "number", "tooltip": "取り込む予約件数"}
+                  ],
+                  "operations": ["取込実行"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["C", "R"]},
+                    {"entity": "外部連携設定", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "予約検証画面",
+                  "fields": [
+                    {"項目名": "検証結果一覧", "type": "string", "tooltip": "予約データの検証結果"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "重複チェック画面",
+                  "fields": [
+                    {"項目名": "重複予約一覧", "type": "string", "tooltip": "ダブルブッキングの可能性がある予約"}
+                  ],
+                  "operations": ["照会", "確認"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "在庫", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "予約登録画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "予約番号"},
+                    {"項目名": "ゲスト名", "type": "string", "tooltip": "ゲスト名"},
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "チェックイン日"},
+                    {"項目名": "チェックアウト日", "type": "string", "tooltip": "チェックアウト日"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "予約した部屋タイプ"},
+                    {"項目名": "料金", "type": "number", "tooltip": "料金合計"},
+                    {"項目名": "流入元OTA", "type": "OTA種別", "tooltip": "予約の流入元OTA"}
+                  ],
+                  "operations": ["登録", "キャンセル"],
+                  "data_access": [{"entity": "予約", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "在庫更新画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "在庫を更新する部屋タイプ"},
+                    {"項目名": "対象日", "type": "string", "tooltip": "在庫を更新する日付"},
+                    {"項目名": "残数", "type": "number", "tooltip": "更新後の残数"}
+                  ],
+                  "operations": ["更新"],
+                  "data_access": [{"entity": "在庫", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "予約を検索する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "予約検索画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "検索する予約番号"},
+                    {"項目名": "ゲスト名", "type": "string", "tooltip": "検索するゲスト名"},
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "検索するチェックイン日"},
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "検索する予約ステータス"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約検索結果画面",
+                  "fields": [
+                    {"項目名": "検索結果一覧", "type": "string", "tooltip": "検索結果の予約一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "検索結果一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧表示"}
+                  ],
+                  "operations": ["照会", "選択", "ソート", "フィルタ"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                }
+              ]
+            },
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約検索画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "検索する予約番号"},
+                    {"項目名": "ゲスト名", "type": "string", "tooltip": "検索するゲスト名"},
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "検索するチェックイン日"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約検索結果画面",
+                  "fields": [
+                    {"項目名": "検索結果一覧", "type": "string", "tooltip": "検索結果の予約一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "検索結果一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧表示"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "予約をカレンダーで確認する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "予約カレンダー画面",
+                  "fields": [
+                    {"項目名": "表示月", "type": "string", "tooltip": "表示する月"},
+                    {"項目名": "施設", "type": "string", "tooltip": "表示対象の施設"},
+                    {"項目名": "カレンダー表示", "type": "string", "tooltip": "カレンダー形式の予約表示"}
+                  ],
+                  "operations": ["照会", "月切替"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "施設切替画面",
+                  "fields": [
+                    {"項目名": "施設一覧", "type": "string", "tooltip": "切替可能な施設一覧"}
+                  ],
+                  "operations": ["切替"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "施設", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋タイプ別表示画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ別一覧", "type": "string", "tooltip": "部屋タイプ別の予約状況"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "部屋タイプ", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            },
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約カレンダー画面",
+                  "fields": [
+                    {"項目名": "表示月", "type": "string", "tooltip": "表示する月"},
+                    {"項目名": "カレンダー表示", "type": "string", "tooltip": "カレンダー形式の予約表示"}
+                  ],
+                  "operations": ["照会", "月切替"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "施設切替画面",
+                  "fields": [
+                    {"項目名": "施設一覧", "type": "string", "tooltip": "切替可能な施設一覧"}
+                  ],
+                  "operations": ["切替"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "施設", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋タイプ別表示画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ別一覧", "type": "string", "tooltip": "部屋タイプ別の予約状況"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "部屋タイプ", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "予約詳細を確認する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "予約一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約詳細画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "予約番号"},
+                    {"項目名": "ゲスト情報", "type": "string", "tooltip": "ゲストの詳細情報"},
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "チェックイン日"},
+                    {"項目名": "チェックアウト日", "type": "string", "tooltip": "チェックアウト日"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "予約した部屋タイプ"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当て部屋番号"},
+                    {"項目名": "宿泊人数", "type": "number", "tooltip": "宿泊人数"},
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "予約ステータス"},
+                    {"項目名": "料金合計", "type": "number", "tooltip": "料金合計"},
+                    {"項目名": "特記事項", "type": "string", "tooltip": "ゲストの要望等"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "ゲスト", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            },
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約詳細画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "予約番号"},
+                    {"項目名": "ゲスト情報", "type": "string", "tooltip": "ゲストの詳細情報"},
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "チェックイン日"},
+                    {"項目名": "チェックアウト日", "type": "string", "tooltip": "チェックアウト日"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "予約した部屋タイプ"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当て部屋番号"},
+                    {"項目名": "宿泊人数", "type": "number", "tooltip": "宿泊人数"},
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "予約ステータス"},
+                    {"項目名": "特記事項", "type": "string", "tooltip": "ゲストの要望等"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "ゲスト", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "予約情報を更新する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "予約一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約編集画面",
+                  "fields": [
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "予約ステータス"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当て部屋番号"},
+                    {"項目名": "特記事項", "type": "string", "tooltip": "ゲストの要望等"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R", "U"]}]
+                },
+                {
+                  "screen_name": "外部同期画面",
+                  "fields": [
+                    {"項目名": "同期対象", "type": "string", "tooltip": "同期対象の予約"},
+                    {"項目名": "同期ステータス", "type": "外部連携ステータス", "tooltip": "同期ステータス"}
+                  ],
+                  "operations": ["同期実行"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "外部連携設定", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            },
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約一覧画面",
+                  "fields": [
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "予約の一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "予約編集画面",
+                  "fields": [
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "予約ステータス"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当て部屋番号"},
+                    {"項目名": "特記事項", "type": "string", "tooltip": "ゲストの要望等"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R", "U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "ダブルブッキングを調整する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "重複検出画面",
+                  "fields": [
+                    {"項目名": "重複予約一覧", "type": "string", "tooltip": "ダブルブッキングの予約一覧"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "在庫", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋検索画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "検索する部屋タイプ"},
+                    {"項目名": "対象日", "type": "string", "tooltip": "検索する日付"},
+                    {"項目名": "空室一覧", "type": "string", "tooltip": "空室の一覧"}
+                  ],
+                  "operations": ["検索"],
+                  "data_access": [
+                    {"entity": "部屋", "CRUD": ["R"]},
+                    {"entity": "部屋状態", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋再割当画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "再割当対象の予約"},
+                    {"項目名": "新しい部屋", "type": "string", "tooltip": "新しく割り当てる部屋"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R", "U"]},
+                    {"entity": "部屋", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "ゲスト連絡画面",
+                  "fields": [
+                    {"項目名": "宛先", "type": "string", "tooltip": "連絡先メールアドレス"},
+                    {"項目名": "件名", "type": "string", "tooltip": "メール件名"},
+                    {"項目名": "本文", "type": "string", "tooltip": "メール本文"}
+                  ],
+                  "operations": ["送信", "キャンセル"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "ゲスト", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "在庫を調整する",
+          "actors": [
+            {
+              "actor_name": "予約管理部担当者",
+              "screens": [
+                {
+                  "screen_name": "在庫管理画面",
+                  "fields": [
+                    {"項目名": "施設", "type": "string", "tooltip": "対象の施設"},
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "対象の部屋タイプ"},
+                    {"項目名": "対象日", "type": "string", "tooltip": "在庫確認の対象日"},
+                    {"項目名": "販売可能数", "type": "number", "tooltip": "販売可能な部屋数"},
+                    {"項目名": "予約済数", "type": "number", "tooltip": "予約済みの部屋数"},
+                    {"項目名": "残数", "type": "number", "tooltip": "残りの部屋数"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "在庫", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "在庫調整画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "調整対象の部屋タイプ"},
+                    {"項目名": "対象日", "type": "string", "tooltip": "調整対象の日付"},
+                    {"項目名": "販売可能数", "type": "number", "tooltip": "新しい販売可能数"}
+                  ],
+                  "operations": ["更新", "キャンセル"],
+                  "data_access": [{"entity": "在庫", "CRUD": ["R", "U"]}]
+                },
+                {
+                  "screen_name": "外部同期画面",
+                  "fields": [
+                    {"項目名": "同期対象", "type": "string", "tooltip": "同期対象の在庫"},
+                    {"項目名": "同期ステータス", "type": "外部連携ステータス", "tooltip": "同期ステータス"}
+                  ],
+                  "operations": ["同期実行"],
+                  "data_access": [
+                    {"entity": "在庫", "CRUD": ["R", "U"]},
+                    {"entity": "外部連携設定", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "チェックイン業務",
+      "BUCs": [
+        {
+          "buc_name": "チェックイン案内を送信する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約抽出画面",
+                  "fields": [
+                    {"項目名": "チェックイン日", "type": "string", "tooltip": "抽出対象のチェックイン日"},
+                    {"項目名": "予約一覧", "type": "string", "tooltip": "抽出された予約一覧"}
+                  ],
+                  "operations": ["抽出", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "メール作成画面",
+                  "fields": [
+                    {"項目名": "宛先", "type": "string", "tooltip": "送信先メールアドレス"},
+                    {"項目名": "件名", "type": "string", "tooltip": "メール件名"},
+                    {"項目名": "本文", "type": "string", "tooltip": "案内メール本文"}
+                  ],
+                  "operations": ["作成", "プレビュー"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "チェックイン案内", "CRUD": ["C"]}
+                  ]
+                },
+                {
+                  "screen_name": "メール送信画面",
+                  "fields": [
+                    {"項目名": "送信対象一覧", "type": "string", "tooltip": "送信対象の予約一覧"},
+                    {"項目名": "送信ステータス", "type": "string", "tooltip": "送信状態"}
+                  ],
+                  "operations": ["送信", "キャンセル"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "チェックイン案内", "CRUD": ["C", "U"]},
+                    {"entity": "ゲスト", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "宿泊者名簿記入を依頼する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "トークン発行画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "対象の予約番号"},
+                    {"項目名": "有効期限", "type": "string", "tooltip": "トークンの有効期限"}
+                  ],
+                  "operations": ["発行"],
+                  "data_access": [{"entity": "チェックイン案内", "CRUD": ["C", "U"]}]
+                },
+                {
+                  "screen_name": "記入依頼送信画面",
+                  "fields": [
+                    {"項目名": "宛先", "type": "string", "tooltip": "送信先メールアドレス"},
+                    {"項目名": "トークンURL", "type": "string", "tooltip": "記入用URL"},
+                    {"項目名": "有効期限", "type": "string", "tooltip": "トークンの有効期限"}
+                  ],
+                  "operations": ["送信", "キャンセル"],
+                  "data_access": [
+                    {"entity": "チェックイン案内", "CRUD": ["R", "U"]},
+                    {"entity": "ゲスト", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "宿泊者名簿を確認する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "名簿一覧画面",
+                  "fields": [
+                    {"項目名": "名簿一覧", "type": "string", "tooltip": "記入済み名簿の一覧"},
+                    {"項目名": "記入ステータス", "type": "宿泊者名簿記入ステータス", "tooltip": "記入状態"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "名簿詳細画面",
+                  "fields": [
+                    {"項目名": "氏名", "type": "string", "tooltip": "宿泊者氏名"},
+                    {"項目名": "住所", "type": "string", "tooltip": "宿泊者住所"},
+                    {"項目名": "電話番号", "type": "string", "tooltip": "宿泊者電話番号"},
+                    {"項目名": "職業", "type": "string", "tooltip": "宿泊者職業"},
+                    {"項目名": "国籍", "type": "string", "tooltip": "宿泊者国籍"},
+                    {"項目名": "パスポート番号", "type": "string", "tooltip": "パスポート番号"}
+                  ],
+                  "operations": ["照会", "確認"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "名簿確認完了画面",
+                  "fields": [
+                    {"項目名": "確認結果", "type": "string", "tooltip": "確認結果"},
+                    {"項目名": "確認者", "type": "string", "tooltip": "確認したスタッフ"}
+                  ],
+                  "operations": ["確認完了"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "部屋をアサインする",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "予約確認画面",
+                  "fields": [
+                    {"項目名": "チェックイン予定一覧", "type": "string", "tooltip": "当日チェックイン予定の予約一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "空室一覧画面",
+                  "fields": [
+                    {"項目名": "部屋タイプ", "type": "string", "tooltip": "検索する部屋タイプ"},
+                    {"項目名": "空室一覧", "type": "string", "tooltip": "利用可能な部屋一覧"},
+                    {"項目名": "部屋状態", "type": "部屋状態ステータス", "tooltip": "部屋の状態"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [
+                    {"entity": "部屋", "CRUD": ["R"]},
+                    {"entity": "部屋状態", "CRUD": ["R"]},
+                    {"entity": "清掃", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋割当画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "割当対象の予約"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当てる部屋番号"}
+                  ],
+                  "operations": ["割当", "キャンセル"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R", "U"]},
+                    {"entity": "部屋", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "チェックイン処理を行う",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "チェックイン画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "チェックインする予約番号"},
+                    {"項目名": "ゲスト名", "type": "string", "tooltip": "ゲスト名"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "割り当て部屋番号"}
+                  ],
+                  "operations": ["確認", "チェックイン"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "ステータス更新画面",
+                  "fields": [
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "更新後のステータス"}
+                  ],
+                  "operations": ["更新"],
+                  "data_access": [{"entity": "予約", "CRUD": ["U"]}]
+                },
+                {
+                  "screen_name": "部屋状態変更画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "状態変更対象の部屋"},
+                    {"項目名": "部屋状態", "type": "部屋状態ステータス", "tooltip": "変更後の部屋状態"}
+                  ],
+                  "operations": ["更新"],
+                  "data_access": [{"entity": "部屋状態", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "ゲストの要望を記録する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "要望入力画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "対象の予約番号"},
+                    {"項目名": "アメニティ要望", "type": "string", "tooltip": "アメニティに関する要望"},
+                    {"項目名": "到着時刻", "type": "string", "tooltip": "予定到着時刻"},
+                    {"項目名": "その他要望", "type": "string", "tooltip": "その他の要望"}
+                  ],
+                  "operations": ["入力"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "要望保存画面",
+                  "fields": [
+                    {"項目名": "特記事項", "type": "string", "tooltip": "保存する要望内容"}
+                  ],
+                  "operations": ["保存", "キャンセル"],
+                  "data_access": [{"entity": "予約", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "チェックアウト業務",
+      "BUCs": [
+        {
+          "buc_name": "チェックアウト処理を行う",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "チェックアウト画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "チェックアウトする予約番号"},
+                    {"項目名": "ゲスト名", "type": "string", "tooltip": "ゲスト名"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "部屋番号"}
+                  ],
+                  "operations": ["確認", "チェックアウト"],
+                  "data_access": [{"entity": "予約", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "ステータス更新画面",
+                  "fields": [
+                    {"項目名": "予約ステータス", "type": "予約ステータス", "tooltip": "更新後のステータス"}
+                  ],
+                  "operations": ["更新"],
+                  "data_access": [{"entity": "予約", "CRUD": ["U"]}]
+                },
+                {
+                  "screen_name": "部屋状態変更画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "状態変更対象の部屋"},
+                    {"項目名": "部屋状態", "type": "部屋状態ステータス", "tooltip": "変更後の部屋状態"}
+                  ],
+                  "operations": ["更新"],
+                  "data_access": [{"entity": "部屋状態", "CRUD": ["U"]}]
+                },
+                {
+                  "screen_name": "売上計上画面",
+                  "fields": [
+                    {"項目名": "予約番号", "type": "string", "tooltip": "売上計上対象の予約"},
+                    {"項目名": "売上金額", "type": "number", "tooltip": "売上金額"},
+                    {"項目名": "OTA手数料", "type": "number", "tooltip": "OTA手数料"},
+                    {"項目名": "純利益", "type": "number", "tooltip": "純利益"}
+                  ],
+                  "operations": ["計上"],
+                  "data_access": [{"entity": "売上", "CRUD": ["C"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "清掃を依頼する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "清掃対象登録画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "清掃対象の部屋番号"},
+                    {"項目名": "清掃日", "type": "string", "tooltip": "清掃日"}
+                  ],
+                  "operations": ["登録"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "清掃通知画面",
+                  "fields": [
+                    {"項目名": "清掃対象一覧", "type": "string", "tooltip": "清掃対象の部屋一覧"}
+                  ],
+                  "operations": ["通知"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "清掃管理",
+      "BUCs": [
+        {
+          "buc_name": "清掃対象部屋を確認する",
+          "actors": [
+            {
+              "actor_name": "清掃スタッフ",
+              "screens": [
+                {
+                  "screen_name": "清掃リスト画面",
+                  "fields": [
+                    {"項目名": "清掃対象一覧", "type": "string", "tooltip": "清掃が必要な部屋一覧"},
+                    {"項目名": "清掃ステータス", "type": "清掃ステータス", "tooltip": "清掃状態"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "優先順位表示画面",
+                  "fields": [
+                    {"項目名": "優先順位一覧", "type": "string", "tooltip": "優先順位順の部屋一覧"},
+                    {"項目名": "次回チェックイン予定", "type": "string", "tooltip": "次回チェックイン予定時刻"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [
+                    {"entity": "清掃", "CRUD": ["R"]},
+                    {"entity": "部屋状態", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "清掃状況を更新する",
+          "actors": [
+            {
+              "actor_name": "清掃スタッフ",
+              "screens": [
+                {
+                  "screen_name": "部屋選択画面",
+                  "fields": [
+                    {"項目名": "部屋一覧", "type": "string", "tooltip": "清掃対象の部屋一覧"}
+                  ],
+                  "operations": ["選択"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "清掃開始画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "清掃開始する部屋"},
+                    {"項目名": "開始時刻", "type": "string", "tooltip": "清掃開始時刻"}
+                  ],
+                  "operations": ["開始"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["U"]}]
+                },
+                {
+                  "screen_name": "清掃完了画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "清掃完了する部屋"},
+                    {"項目名": "完了時刻", "type": "string", "tooltip": "清掃完了時刻"}
+                  ],
+                  "operations": ["完了"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "備品不足を記録する",
+          "actors": [
+            {
+              "actor_name": "清掃スタッフ",
+              "screens": [
+                {
+                  "screen_name": "備品不足入力画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "対象の部屋番号"},
+                    {"項目名": "不足備品", "type": "string", "tooltip": "不足している備品"},
+                    {"項目名": "数量", "type": "number", "tooltip": "不足数量"}
+                  ],
+                  "operations": ["入力"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "備品不足保存画面",
+                  "fields": [
+                    {"項目名": "備品不足情報", "type": "string", "tooltip": "保存する不足情報"}
+                  ],
+                  "operations": ["保存"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "清掃完了を通知する",
+          "actors": [
+            {
+              "actor_name": "清掃スタッフ",
+              "screens": [
+                {
+                  "screen_name": "完了通知作成画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "清掃完了した部屋"},
+                    {"項目名": "完了時刻", "type": "string", "tooltip": "清掃完了時刻"}
+                  ],
+                  "operations": ["作成"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "フロント通知画面",
+                  "fields": [
+                    {"項目名": "通知内容", "type": "string", "tooltip": "フロントへの通知内容"}
+                  ],
+                  "operations": ["通知"],
+                  "data_access": [{"entity": "清掃", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "清掃完了を確認する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "清掃完了部屋一覧画面",
+                  "fields": [
+                    {"項目名": "清掃完了部屋一覧", "type": "string", "tooltip": "清掃完了した部屋一覧"}
+                  ],
+                  "operations": ["照会", "選択"],
+                  "data_access": [
+                    {"entity": "清掃", "CRUD": ["R"]},
+                    {"entity": "部屋状態", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "部屋点検画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "点検する部屋番号"},
+                    {"項目名": "点検項目", "type": "string", "tooltip": "点検項目一覧"}
+                  ],
+                  "operations": ["点検"],
+                  "data_access": [
+                    {"entity": "清掃", "CRUD": ["R"]},
+                    {"entity": "部屋", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "確認完了画面",
+                  "fields": [
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "確認完了する部屋"},
+                    {"項目名": "部屋状態", "type": "部屋状態ステータス", "tooltip": "確認後の部屋状態"}
+                  ],
+                  "operations": ["確認完了"],
+                  "data_access": [{"entity": "部屋状態", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "売上分析",
+      "BUCs": [
+        {
+          "buc_name": "売上レポートを作成する",
+          "actors": [
+            {
+              "actor_name": "経理担当者",
+              "screens": [
+                {
+                  "screen_name": "期間選択画面",
+                  "fields": [
+                    {"項目名": "開始日", "type": "string", "tooltip": "集計開始日"},
+                    {"項目名": "終了日", "type": "string", "tooltip": "集計終了日"},
+                    {"項目名": "施設", "type": "string", "tooltip": "対象施設"}
+                  ],
+                  "operations": ["選択"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "データ集計画面",
+                  "fields": [
+                    {"項目名": "集計結果", "type": "string", "tooltip": "売上の集計結果"}
+                  ],
+                  "operations": ["集計"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "レポート生成画面",
+                  "fields": [
+                    {"項目名": "レポート形式", "type": "string", "tooltip": "出力するレポート形式"}
+                  ],
+                  "operations": ["生成"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "レポート出力画面",
+                  "fields": [
+                    {"項目名": "出力形式", "type": "string", "tooltip": "出力形式（PDF、Excel等）"}
+                  ],
+                  "operations": ["出力", "ダウンロード"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "売上指標を分析する",
+          "actors": [
+            {
+              "actor_name": "経理担当者",
+              "screens": [
+                {
+                  "screen_name": "指標選択画面",
+                  "fields": [
+                    {"項目名": "分析指標", "type": "売上分析指標", "tooltip": "分析するKPI"},
+                    {"項目名": "対象期間", "type": "string", "tooltip": "分析対象期間"}
+                  ],
+                  "operations": ["選択"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "データ計算画面",
+                  "fields": [
+                    {"項目名": "計算結果", "type": "string", "tooltip": "指標の計算結果"}
+                  ],
+                  "operations": ["計算"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "推移表示画面",
+                  "fields": [
+                    {"項目名": "推移グラフ", "type": "string", "tooltip": "指標の時系列推移"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "流入元別売上を分析する",
+          "actors": [
+            {
+              "actor_name": "経理担当者",
+              "screens": [
+                {
+                  "screen_name": "OTA別集計画面",
+                  "fields": [
+                    {"項目名": "OTA種別", "type": "OTA種別", "tooltip": "分析対象のOTA"},
+                    {"項目名": "対象期間", "type": "string", "tooltip": "分析対象期間"},
+                    {"項目名": "売上合計", "type": "number", "tooltip": "OTA別売上合計"},
+                    {"項目名": "手数料合計", "type": "number", "tooltip": "OTA別手数料合計"}
+                  ],
+                  "operations": ["集計"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "比較分析画面",
+                  "fields": [
+                    {"項目名": "比較グラフ", "type": "string", "tooltip": "OTA別比較グラフ"}
+                  ],
+                  "operations": ["分析"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "分析結果表示画面",
+                  "fields": [
+                    {"項目名": "分析結果", "type": "string", "tooltip": "OTA別分析結果"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "対年比を分析する",
+          "actors": [
+            {
+              "actor_name": "経理担当者",
+              "screens": [
+                {
+                  "screen_name": "前年データ取得画面",
+                  "fields": [
+                    {"項目名": "当期", "type": "string", "tooltip": "当期の期間"},
+                    {"項目名": "前年同期", "type": "string", "tooltip": "前年同期の期間"}
+                  ],
+                  "operations": ["取得"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "対年比計算画面",
+                  "fields": [
+                    {"項目名": "当期売上", "type": "number", "tooltip": "当期の売上"},
+                    {"項目名": "前年売上", "type": "number", "tooltip": "前年の売上"},
+                    {"項目名": "増減率", "type": "number", "tooltip": "対年比増減率"}
+                  ],
+                  "operations": ["計算"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "増減分析画面",
+                  "fields": [
+                    {"項目名": "増減要因", "type": "string", "tooltip": "売上増減の要因分析"}
+                  ],
+                  "operations": ["分析"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "分析結果表示画面",
+                  "fields": [
+                    {"項目名": "対年比結果", "type": "string", "tooltip": "対年比分析結果"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "売上", "CRUD": ["R"]}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "business_name": "宿泊者名簿管理",
+      "BUCs": [
+        {
+          "buc_name": "宿泊者名簿を記入する",
+          "actors": [
+            {
+              "actor_name": "ゲスト",
+              "screens": [
+                {
+                  "screen_name": "トークン認証画面",
+                  "fields": [
+                    {"項目名": "トークンURL", "type": "string", "tooltip": "記入用URL"}
+                  ],
+                  "operations": ["認証"],
+                  "data_access": [{"entity": "チェックイン案内", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "名簿入力画面",
+                  "fields": [
+                    {"項目名": "氏名", "type": "string", "tooltip": "宿泊者氏名"},
+                    {"項目名": "住所", "type": "string", "tooltip": "住所"},
+                    {"項目名": "郵便番号", "type": "string", "tooltip": "郵便番号"},
+                    {"項目名": "電話番号", "type": "string", "tooltip": "電話番号"},
+                    {"項目名": "職業", "type": "string", "tooltip": "職業"},
+                    {"項目名": "国籍", "type": "string", "tooltip": "国籍"},
+                    {"項目名": "パスポート番号", "type": "string", "tooltip": "パスポート番号（外国人の場合）"}
+                  ],
+                  "operations": ["入力"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["C"]}]
+                },
+                {
+                  "screen_name": "入力確認画面",
+                  "fields": [
+                    {"項目名": "入力内容", "type": "string", "tooltip": "入力した内容の確認"}
+                  ],
+                  "operations": ["確認", "戻る"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "名簿送信画面",
+                  "fields": [
+                    {"項目名": "送信確認", "type": "string", "tooltip": "送信の最終確認"}
+                  ],
+                  "operations": ["送信"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "宿泊者名簿を保存する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "名簿受領画面",
+                  "fields": [
+                    {"項目名": "受領名簿一覧", "type": "string", "tooltip": "受領した名簿の一覧"}
+                  ],
+                  "operations": ["照会"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["R"]}]
+                },
+                {
+                  "screen_name": "データ保存画面",
+                  "fields": [
+                    {"項目名": "保存確認", "type": "string", "tooltip": "保存の確認"}
+                  ],
+                  "operations": ["保存"],
+                  "data_access": [{"entity": "宿泊者名簿", "CRUD": ["U"]}]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "buc_name": "滞在者を確認する",
+          "actors": [
+            {
+              "actor_name": "フロントスタッフ",
+              "screens": [
+                {
+                  "screen_name": "滞在者抽出画面",
+                  "fields": [
+                    {"項目名": "抽出条件", "type": "string", "tooltip": "滞在者抽出条件"}
+                  ],
+                  "operations": ["抽出"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "宿泊者名簿", "CRUD": ["R"]}
+                  ]
+                },
+                {
+                  "screen_name": "滞在者リスト画面",
+                  "fields": [
+                    {"項目名": "滞在者一覧", "type": "string", "tooltip": "現在滞在中のゲスト一覧"},
+                    {"項目名": "部屋番号", "type": "string", "tooltip": "滞在部屋番号"}
+                  ],
+                  "operations": ["照会", "出力"],
+                  "data_access": [
+                    {"entity": "予約", "CRUD": ["R"]},
+                    {"entity": "宿泊者名簿", "CRUD": ["R"]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
